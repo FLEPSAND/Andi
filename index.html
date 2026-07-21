@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#1b1d24">
+  <title>Andi — Remote Control</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <main class="remote" aria-label="Remote control">
+    <header class="remote__top">
+      <button class="btn btn--power" data-command="power" aria-label="Power">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v9" stroke-linecap="round"/><path d="M6.5 6.5a8 8 0 1 0 11 0" stroke-linecap="round"/></svg>
+      </button>
+      <div class="status" aria-live="polite">
+        <span class="status__dot" id="status-dot"></span>
+        <span id="status-text">Standby</span>
+      </div>
+      <button class="btn btn--mute" data-command="mute" aria-label="Mute">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 9l4 6m0-6l-4 6" stroke-linecap="round"/></svg>
+      </button>
+    </header>
+
+    <!-- D-pad -->
+    <section class="dpad" aria-label="Navigation">
+      <button class="btn dpad__up"    data-command="up"    aria-label="Up">▲</button>
+      <button class="btn dpad__left"  data-command="left"  aria-label="Left">◀</button>
+      <button class="btn dpad__ok"    data-command="ok"    aria-label="OK">OK</button>
+      <button class="btn dpad__right" data-command="right" aria-label="Right">▶</button>
+      <button class="btn dpad__down"  data-command="down"  aria-label="Down">▼</button>
+    </section>
+
+    <!-- Volume / Back / Channel -->
+    <section class="rockers" aria-label="Volume and channel">
+      <div class="rocker" aria-label="Volume">
+        <button class="btn" data-command="vol_up"   aria-label="Volume up">+</button>
+        <span class="rocker__label">VOL</span>
+        <button class="btn" data-command="vol_down" aria-label="Volume down">−</button>
+      </div>
+      <div class="rocker rocker--mid">
+        <button class="btn btn--wide" data-command="back" aria-label="Back">Back</button>
+        <button class="btn btn--wide" data-command="home" aria-label="Home">Home</button>
+      </div>
+      <div class="rocker" aria-label="Channel">
+        <button class="btn" data-command="ch_up"   aria-label="Channel up">+</button>
+        <span class="rocker__label">CH</span>
+        <button class="btn" data-command="ch_down" aria-label="Channel down">−</button>
+      </div>
+    </section>
+
+    <!-- Media transport -->
+    <section class="media" aria-label="Media transport">
+      <button class="btn" data-command="rewind"  aria-label="Rewind">⏪</button>
+      <button class="btn" data-command="play"    aria-label="Play/Pause">⏯</button>
+      <button class="btn" data-command="forward" aria-label="Forward">⏩</button>
+    </section>
+
+    <!-- Number pad -->
+    <section class="numpad" aria-label="Number pad">
+      <button class="btn" data-command="num_1" data-digit="1">1</button>
+      <button class="btn" data-command="num_2" data-digit="2">2</button>
+      <button class="btn" data-command="num_3" data-digit="3">3</button>
+      <button class="btn" data-command="num_4" data-digit="4">4</button>
+      <button class="btn" data-command="num_5" data-digit="5">5</button>
+      <button class="btn" data-command="num_6" data-digit="6">6</button>
+      <button class="btn" data-command="num_7" data-digit="7">7</button>
+      <button class="btn" data-command="num_8" data-digit="8">8</button>
+      <button class="btn" data-command="num_9" data-digit="9">9</button>
+      <button class="btn btn--muted" data-command="clear" aria-label="Clear">✕</button>
+      <button class="btn" data-command="num_0" data-digit="0">0</button>
+      <button class="btn btn--muted" data-command="enter" aria-label="Enter">↵</button>
+    </section>
+
+    <!-- Command log -->
+    <section class="console" aria-label="Command log">
+      <div class="console__head">
+        <span>Command log</span>
+        <button class="console__clear" id="log-clear" aria-label="Clear log">clear</button>
+      </div>
+      <ol class="console__list" id="log"></ol>
+    </section>
+  </main>
+
+  <script src="js/transport.js"></script>
+  <script src="js/remote.js"></script>
+</body>
+</html>
