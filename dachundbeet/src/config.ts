@@ -16,8 +16,8 @@ export const SITE = {
   url: 'https://dachundbeet.de',
   locale: 'de-DE',
   lang: 'de',
-  /** E-Mail für Kontakt/Impressum (Platzhalter — vor Launch anpassen) */
-  email: 'kontakt@dachundbeet.de',
+  /** E-Mail für Kontakt/Impressum */
+  email: 'andreas.fleps@proton.me',
 } as const;
 
 /**
