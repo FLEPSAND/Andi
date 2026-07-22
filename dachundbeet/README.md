@@ -56,8 +56,8 @@ npm run preview  # dist/ lokal testen
 
 ## ✅ Vor dem Launch erledigen
 
-- [ ] **Impressum** (`src/pages/impressum.astro`) — alle `[PLATZHALTER]` durch echte Angaben ersetzen (Pflicht nach § 5 DDG).
-- [ ] **Datenschutz** (`src/pages/datenschutz.astro`) — Platzhalter füllen, an tatsächliche Dienste anpassen, rechtlich prüfen lassen.
+- [x] **Impressum** (`src/pages/impressum.astro`) — ausgefüllt (private Nutzung). Bei Gewerbeanmeldung/USt-Pflicht später ergänzen.
+- [x] **Datenschutz** (`src/pages/datenschutz.astro`) — ausgefüllt, inkl. Cloudflare als Hosting-Anbieter. Vor dem Launch einmal rechtlich prüfen lassen.
 - [x] **Cookie-/Consent-Banner:** eingebaut (`ConsentBanner.astro` + `scripts/consent.ts` +
       `scripts/ads.ts`). Blockiert das AdSense-Skript technisch, bis der Nutzer zustimmt;
       „Cookie-Einstellungen“ im Footer setzt die Wahl zurück. **Achtung:** Das ist ein
@@ -69,7 +69,7 @@ npm run preview  # dist/ lokal testen
       pro `<AdSlot slot="…">` die jeweilige Ad-Slot-ID eintragen.
 - [ ] **Affiliate-Links:** in `src/data/rechner.ts` die `affiliate.href`-Platzhalter (`#`)
       durch echte Partnerprogramm-URLs ersetzen.
-- [ ] **Kontakt-E-Mail** in `src/config.ts` (`SITE.email`) anpassen.
+- [x] **Kontakt-E-Mail** in `src/config.ts` (`SITE.email`) gesetzt.
 
 ## 🔌 Neuen Rechner hinzufügen (modular — bestehende Seiten bleiben unberührt)
 
