@@ -9,7 +9,7 @@ Domain: **dachundbeet.de** · Monetarisierung: Google AdSense + Affiliate/Lead-G
 
 ## Was schon drin ist
 
-**6 Start-Rechner** (Schwerpunkt Energie = höchster CPC):
+**12 Rechner** (Schwerpunkt Energie = höchster CPC), je mit Ratgeber-Artikel verlinkt:
 | Rechner | Slug | Kategorie |
 |---|---|---|
 | ☀️ Photovoltaik-Rechner | `pv-solar` | Energie |
@@ -18,10 +18,20 @@ Domain: **dachundbeet.de** · Monetarisierung: Google AdSense + Affiliate/Lead-G
 | 🚗 E-Auto Ladekosten-Rechner | `wallbox-ladekosten` | Energie |
 | 💡 Stromkosten-Rechner | `stromkosten` | Energie |
 | 🌱 Hochbeet-Füllmengen-Rechner | `hochbeet` | Garten |
+| 🧱 Dämmungs-Rechner | `daemmung` | Haus |
+| 🌡️ Heizlast-Rechner | `heizlast` | Haus |
+| 🚰 Zisternen-Rechner | `zisterne` | Garten |
+| 🧩 Pflaster-Rechner | `pflaster` | Garten |
+| 🌾 Rasen-Rechner | `rasen` | Garten |
+| 🪵 Brennholz-Rechner | `brennholz` | Haus |
+
+Dazu **12 Ratgeber-Artikel** (einer pro Rechner, gegenseitig verlinkt — Rechner zeigt
+„Passender Ratgeber", Artikel verlinkt zurück zum Rechner).
 
 Dazu: Startseite, Rechner-Übersicht, Ratgeber-Hub, **Impressum**, **Datenschutz**,
 Über uns, Kontakt, 404 — plus SEO-Basis (`sitemap.xml`, `robots.txt`, `ads.txt`,
-Open Graph, FAQ-/WebApplication-/Breadcrumb-Schema) und AdSense-/Affiliate-Slots.
+Open Graph, FAQ-/WebApplication-/Article-/Breadcrumb-Schema), Cookie-Consent-Banner
+und AdSense-/Affiliate-Slots.
 
 ## Entwickeln
 

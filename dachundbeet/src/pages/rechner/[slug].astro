@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Calculator from '../../components/Calculator.astro';
 import Faq from '../../components/Faq.astro';
@@ -19,6 +20,8 @@ const url = `${SITE.url}/rechner/${rechner.slug}`;
 const related = RECHNER.filter((r) => r.slug !== rechner.slug)
   .sort((a) => (a.category === rechner.category ? -1 : 1))
   .slice(0, 3);
+
+const article = (await getCollection('ratgeber')).find((p) => p.data.rechner === rechner.slug);
 
 const jsonLd = [
   {
@@ -78,6 +81,19 @@ const jsonLd = [
   <section class="section container" style="padding-top:0">
     <div class="prose"><Faq items={rechner.faq} /></div>
   </section>
+
+  {article && (
+    <section class="container" style="padding-bottom:1rem">
+      <a class="card rcard" href={`/ratgeber/${article.id}`} style="display:flex;flex-direction:row;align-items:center;gap:1.2rem;max-width:720px">
+        <span class="rcard__icon" aria-hidden="true" style="margin-bottom:0;flex:none">{article.data.icon}</span>
+        <span>
+          <span class="pill">📖 Passender Ratgeber</span>
+          <h3 style="margin:.5rem 0 .2rem">{article.data.title}</h3>
+          <span class="rcard__more">Artikel lesen →</span>
+        </span>
+      </a>
+    </section>
+  )}
 
   <section class="section container" style="padding-top:0">
     <h2 style="font-size:1.4rem;margin-bottom:1.2rem">Weitere Rechner</h2>
