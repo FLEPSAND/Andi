@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Dach und Beet">
+  <rect width="32" height="32" rx="7" fill="#2f6b45"/>
+  <!-- Dach (roof) -->
+  <path d="M6 15 L16 7 L26 15" fill="none" stroke="#e7b93f" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+  <!-- Beet / Spross (sprout) -->
+  <path d="M16 25 L16 17" fill="none" stroke="#f4efe3" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M16 19 C16 16 13 15 11 15.5 C11 18.5 13.5 20 16 19 Z" fill="#c8532f"/>
+  <path d="M16 21 C16 18.5 19 17.5 21 18 C21 20.5 18.5 22 16 21 Z" fill="#e7b93f"/>
+</svg>

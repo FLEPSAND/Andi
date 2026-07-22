@@ -1,0 +1,25 @@
+---
+import { AFFILIATE } from '../config';
+import type { Affiliate } from '../data/rechner';
+
+interface Props { data?: Affiliate }
+const { data } = Astro.props;
+---
+
+{AFFILIATE.enabled && data && (
+  <aside class="affil" aria-label="Empfehlung">
+    <div class="affil__row">
+      <div>
+        <div class="affil__head">💡 {data.heading}</div>
+        <p class="affil__text">{data.text}</p>
+      </div>
+      <a
+        class="btn btn--terra"
+        href={data.href}
+        rel="sponsored nofollow noopener"
+        target="_blank"
+      >{data.cta} →</a>
+    </div>
+    <p class="affil__disclosure">{AFFILIATE.disclosure}</p>
+  </aside>
+)}

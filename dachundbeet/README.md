@@ -1,0 +1,94 @@
+# Dach & Beet 🏡
+
+Rechner-Hub für **Haus · Energie · Garten** — kostenlose, präzise Online-Rechner,
+die vollständig **lokal im Browser** rechnen. Gebaut mit [Astro](https://astro.build)
+als **statische Seite** (Top-Speed, perfektes SEO) und modular auf beliebig viele
+Rechner erweiterbar.
+
+Domain: **dachundbeet.de** · Monetarisierung: Google AdSense + Affiliate/Lead-Gen.
+
+## Was schon drin ist
+
+**6 Start-Rechner** (Schwerpunkt Energie = höchster CPC):
+| Rechner | Slug | Kategorie |
+|---|---|---|
+| ☀️ Photovoltaik-Rechner | `pv-solar` | Energie |
+| 🔌 Balkonkraftwerk-Rechner | `balkonkraftwerk` | Energie |
+| 🔥 Wärmepumpen-Rechner | `waermepumpe` | Energie |
+| 🚗 E-Auto Ladekosten-Rechner | `wallbox-ladekosten` | Energie |
+| 💡 Stromkosten-Rechner | `stromkosten` | Energie |
+| 🌱 Hochbeet-Füllmengen-Rechner | `hochbeet` | Garten |
+
+Dazu: Startseite, Rechner-Übersicht, Ratgeber-Hub, **Impressum**, **Datenschutz**,
+Über uns, Kontakt, 404 — plus SEO-Basis (`sitemap.xml`, `robots.txt`, `ads.txt`,
+Open Graph, FAQ-/WebApplication-/Breadcrumb-Schema) und AdSense-/Affiliate-Slots.
+
+## Entwickeln
+
+```bash
+cd dachundbeet
+npm install
+npm run dev      # http://localhost:4321
+npm run build    # erzeugt statische Dateien in dist/
+npm run preview  # dist/ lokal testen
+```
+
+## Deploy auf IONOS (oder jeden Webspace)
+
+1. `npm run build` → alle fertigen Dateien liegen in **`dist/`**.
+2. Den **Inhalt von `dist/`** per FTP in das Web-Root deines IONOS-Pakets laden
+   (z. B. `/`), sodass `dachundbeet.de` direkt `index.html` ausliefert.
+3. Fertig — es ist reines statisches HTML/CSS/JS, kein Node auf dem Server nötig.
+
+> **Später komfortabler:** Repo mit **Cloudflare Pages** verbinden (Build-Befehl
+> `npm run build`, Output-Ordner `dist`) → bei jedem `git push` wird automatisch
+> deployt, inkl. globalem CDN und HTTPS. Kostenlos.
+
+## ✅ Vor dem Launch erledigen
+
+- [ ] **Impressum** (`src/pages/impressum.astro`) — alle `[PLATZHALTER]` durch echte Angaben ersetzen (Pflicht nach § 5 DDG).
+- [ ] **Datenschutz** (`src/pages/datenschutz.astro`) — Platzhalter füllen, an tatsächliche Dienste anpassen, rechtlich prüfen lassen.
+- [ ] **Consent-Banner (CMP):** Für AdSense im EWR ist eine **Google-zertifizierte
+      Consent-Lösung** Pflicht, bevor Anzeigen laufen dürfen.
+- [ ] **AdSense scharfstellen:** in `src/config.ts` `ADSENSE.enabled = true` setzen und
+      pro `<AdSlot slot="…">` die jeweilige Ad-Slot-ID eintragen.
+- [ ] **Affiliate-Links:** in `src/data/rechner.ts` die `affiliate.href`-Platzhalter (`#`)
+      durch echte Partnerprogramm-URLs ersetzen.
+- [ ] **Kontakt-E-Mail** in `src/config.ts` (`SITE.email`) anpassen.
+
+## 🔌 Neuen Rechner hinzufügen (modular — bestehende Seiten bleiben unberührt)
+
+Zwei Schritte, dann entstehen Detailseite, Übersichts-Karte, Nav-Zähler, Sitemap
+und interne Verlinkung **automatisch**:
+
+1. **Rechen-Funktion** in `src/scripts/compute.ts` ergänzen (Schlüssel = neuer `slug`):
+   ```ts
+   function meinRechner(v: Inputs): Outputs {
+     const ergebnis = v.eingabeA * v.eingabeB;
+     return { ergebnis };
+   }
+   export const COMPUTE = { /* … */, 'mein-rechner': meinRechner };
+   ```
+2. **Eintrag** in `src/data/rechner.ts` (Array `RECHNER`) anhängen — mit `slug`,
+   `inputs` (Slider), `outputs` (Ergebnis-Felder), `content` (Ratgeber-Text) und `faq`.
+   Die `id`s der `inputs`/`outputs` müssen zu den Feldern der Rechen-Funktion passen.
+
+Neu bauen (`npm run build`) — der Rechner ist live.
+
+## Projektstruktur
+
+```
+src/
+  config.ts               # EINE zentrale Config: Marke, Domain, AdSense, Affiliate, Nav
+  data/rechner.ts         # Rechner-Registry (Metadaten, Inputs, Outputs, Content, FAQ)
+  scripts/
+    compute.ts            # reine Rechen-Funktionen (Browser + Build)
+    calculator.ts         # Client-Runtime: Slider → rechnen → Ergebnis (de-DE-Format)
+  layouts/BaseLayout.astro # <head> mit SEO/OG/Schema, Header + Footer
+  components/             # Header, Footer, Calculator, RechnerCard, Faq, AdSlot, AffiliateCTA
+  pages/                  # index, rechner/, ratgeber/, Rechtsseiten, 404
+public/                   # ads.txt, robots.txt, favicon.svg
+```
+
+Alle Angaben in den Rechnern sind vereinfachte Modellrechnungen ohne Gewähr und
+ersetzen keine fachliche Beratung.

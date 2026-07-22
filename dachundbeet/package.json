@@ -1,0 +1,17 @@
+{
+  "name": "dachundbeet",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Dach & Beet – Rechner-Hub für Haus, Energie & Garten",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.2.0",
+    "astro": "^5.6.0"
+  }
+}

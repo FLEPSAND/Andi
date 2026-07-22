@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config';
+---
+
+<BaseLayout title="Über uns" description={`Was hinter ${SITE.name} steckt: präzise, kostenlose Rechner für Haus, Energie und Garten.`}>
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Brotkrümel"><a href="/">Startseite</a> / <span aria-current="page">Über uns</span></nav>
+  </div>
+  <section class="section container" style="padding-top:0">
+    <div class="prose">
+      <h1>Über {SITE.name}</h1>
+      <p><strong>{SITE.name}</strong> ist ein unabhängiges Projekt mit einem einfachen Ziel: Entscheidungen rund um Haus, Energie und Garten sollen auf <strong>nachvollziehbaren Zahlen</strong> beruhen – nicht auf Bauchgefühl oder Werbeversprechen.</p>
+
+      <h2>Wofür wir stehen</h2>
+      <ul>
+        <li><strong>Transparenz:</strong> Jeder Rechner erklärt, wie er rechnet und wo seine Grenzen liegen.</li>
+        <li><strong>Datenschutz:</strong> Alle Berechnungen laufen lokal in deinem Browser. Deine Eingaben verlassen dein Gerät nicht.</li>
+        <li><strong>Kostenlos:</strong> Ohne Anmeldung, ohne Abo. Wir finanzieren das Angebot über dezente Werbung und Empfehlungen.</li>
+        <li><strong>Deutschland-Fokus:</strong> Förderungen, Vergütungssätze und typische Verbrauchswerte sind auf den deutschen Markt abgestimmt.</li>
+      </ul>
+
+      <h2>Wichtiger Hinweis</h2>
+      <p>Unsere Rechner liefern eine <strong>erste Orientierung</strong> und ersetzen keine individuelle Fach- oder Rechtsberatung. Für verbindliche Entscheidungen – etwa zu Photovoltaik, Heizung oder Finanzierung – solltest du einen qualifizierten Fachbetrieb hinzuziehen. Alle Angaben erfolgen ohne Gewähr.</p>
+
+      <p>Fragen oder Feedback? Schreib uns über die <a href="/kontakt">Kontaktseite</a>.</p>
+    </div>
+  </section>
+</BaseLayout>

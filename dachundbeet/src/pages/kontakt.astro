@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config';
+---
+
+<BaseLayout title="Kontakt" description={`So erreichst du das Team von ${SITE.name}.`}>
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Brotkrümel"><a href="/">Startseite</a> / <span aria-current="page">Kontakt</span></nav>
+  </div>
+  <section class="section container" style="padding-top:0">
+    <div class="prose">
+      <h1>Kontakt</h1>
+      <p>Du hast eine Frage, einen Fehler in einem Rechner entdeckt oder einen Vorschlag für einen neuen Rechner? Wir freuen uns über deine Nachricht.</p>
+
+      <div class="card" style="margin-top:1.5rem">
+        <h3>📧 E-Mail</h3>
+        <p><a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
+        <p class="text-muted" style="font-size:.9rem">Wir antworten in der Regel innerhalb weniger Werktage.</p>
+      </div>
+
+      <p style="margin-top:1.5rem">Rechtliche Angaben findest du im <a href="/impressum">Impressum</a>. Wie wir mit Daten umgehen, steht in der <a href="/datenschutz">Datenschutzerklärung</a>.</p>
+    </div>
+  </section>
+</BaseLayout>

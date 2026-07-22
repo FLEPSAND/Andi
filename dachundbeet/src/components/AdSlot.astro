@@ -1,0 +1,31 @@
+---
+import { ADSENSE } from '../config';
+
+interface Props {
+  /** AdSense Ad-Slot-ID (data-ad-slot). Vor Launch pro Platzierung eintragen. */
+  slot?: string;
+  layout?: 'horizontal' | 'rectangle';
+  label?: string;
+}
+const { slot = '', layout = 'horizontal', label = 'Anzeige' } = Astro.props;
+const minH = layout === 'rectangle' ? 250 : 90;
+---
+
+<div class="adslot">
+  <div class="adslot__label">{label}</div>
+  {ADSENSE.enabled && slot ? (
+    <ins
+      class="adsbygoogle"
+      style="display:block"
+      data-ad-client={ADSENSE.publisherId}
+      data-ad-slot={slot}
+      data-ad-format="auto"
+      data-full-width-responsive="true"
+    />
+    <script is:inline>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  ) : (
+    <div class="adslot__ph" style={`min-height:${minH}px`}>
+      AdSense-Platzhalter · Anzeige erscheint nach Freigabe
+    </div>
+  )}
+</div>

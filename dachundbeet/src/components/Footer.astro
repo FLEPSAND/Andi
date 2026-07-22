@@ -1,0 +1,51 @@
+---
+import { SITE } from '../config';
+import { RECHNER } from '../data/rechner';
+
+const year = new Date().getFullYear();
+const topRechner = RECHNER.slice(0, 6);
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__grid">
+    <div>
+      <a href="/" class="brand" aria-label={`${SITE.name} – Startseite`}>
+        <img src="/favicon.svg" alt="" class="brand__mark" width="38" height="38" />
+        <span>
+          <span class="brand__name">{SITE.name}</span><br />
+          <span class="brand__tag">{SITE.tagline}</span>
+        </span>
+      </a>
+      <p class="text-muted" style="margin-top:1rem;max-width:38ch;font-size:.92rem">
+        Kostenlose, präzise Rechner für Haus, Energie und Garten – sofort im Browser, ohne Anmeldung.
+      </p>
+    </div>
+
+    <div>
+      <h4>Rechner</h4>
+      <ul>
+        {topRechner.map((r) => (
+          <li><a href={`/rechner/${r.slug}`}>{r.cardTitle}</a></li>
+        ))}
+        <li><a href="/rechner">Alle Rechner →</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Rechtliches</h4>
+      <ul>
+        <li><a href="/ueber-uns">Über uns</a></li>
+        <li><a href="/kontakt">Kontakt</a></li>
+        <li><a href="/impressum">Impressum</a></li>
+        <li><a href="/datenschutz">Datenschutz</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="site-footer__bottom">
+      <span>© {year} {SITE.name}. Alle Angaben ohne Gewähr.</span>
+      <span>Rechner dienen der Orientierung und ersetzen keine fachliche Beratung.</span>
+    </div>
+  </div>
+</footer>

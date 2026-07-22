@@ -1,0 +1,13 @@
+---
+import type { Rechner } from '../data/rechner';
+interface Props { rechner: Rechner }
+const { rechner } = Astro.props;
+---
+
+<a class="card rcard" href={`/rechner/${rechner.slug}`}>
+  <span class="rcard__icon" aria-hidden="true">{rechner.icon}</span>
+  <span class="pill rcard__tag">{rechner.category}</span>
+  <h3>{rechner.cardTitle}</h3>
+  <p>{rechner.tagline}</p>
+  <span class="rcard__more">Zum Rechner →</span>
+</a>

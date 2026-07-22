@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RechnerCard from '../../components/RechnerCard.astro';
+import { SITE } from '../../config';
+import { RECHNER, rechnerByCategory } from '../../data/rechner';
+
+const energie = rechnerByCategory('Energie');
+const garten = rechnerByCategory('Garten');
+---
+
+<BaseLayout title="Ratgeber – Haus, Energie & Garten" description={`Verständliche Ratgeber und Rechner rund um Solar, Wärmepumpe, Energiekosten und Garten von ${SITE.name}.`}>
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Brotkrümel"><a href="/">Startseite</a> / <span aria-current="page">Ratgeber</span></nav>
+  </div>
+  <section class="section container" style="padding-top:0">
+    <div class="prose" style="max-width:720px">
+      <h1>Ratgeber</h1>
+      <p>Rund um Energie, Haus und Garten gibt es viele Zahlen, die auf den ersten Blick abschrecken. Unsere Ratgeber machen sie greifbar – mit klaren Erklärungen und passenden Rechnern, mit denen du deine eigene Situation direkt durchrechnest.</p>
+    </div>
+
+    <h2 style="font-size:1.4rem;margin:2rem 0 1.2rem">🔋 Energie sparen &amp; erzeugen</h2>
+    <div class="grid grid--3">
+      {energie.map((r) => <RechnerCard rechner={r} />)}
+    </div>
+
+    <h2 style="font-size:1.4rem;margin:2.5rem 0 1.2rem">🌱 Garten &amp; Außenbereich</h2>
+    <div class="grid grid--3">
+      {garten.map((r) => <RechnerCard rechner={r} />)}
+    </div>
+
+    <div class="prose" style="max-width:720px;margin-top:2.5rem">
+      <p class="text-muted">Weitere ausführliche Ratgeber-Artikel folgen. Alle Rechner findest du gebündelt in der <a href="/rechner">Rechner-Übersicht</a> ({RECHNER.length} Tools).</p>
+    </div>
+  </section>
+</BaseLayout>

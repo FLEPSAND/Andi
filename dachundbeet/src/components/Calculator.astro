@@ -1,0 +1,67 @@
+---
+import type { Rechner } from '../data/rechner';
+import { COMPUTE } from '../scripts/compute';
+
+interface Props { rechner: Rechner }
+const { rechner } = Astro.props;
+
+const nf = (val: number, dec = 0) =>
+  new Intl.NumberFormat('de-DE', { minimumFractionDigits: dec, maximumFractionDigits: dec }).format(val);
+
+const defaults: Record<string, number> = Object.fromEntries(
+  rechner.inputs.map((i) => [i.id, i.default])
+);
+const compute = COMPUTE[rechner.slug];
+const initial: Record<string, number> = compute ? compute(defaults) : {};
+const outUnit = (o: { money?: boolean; unit?: string }) => (o.money ? '€' : o.unit || '');
+const outDec = (o: { money?: boolean; decimals?: number }) => o.decimals ?? (o.money ? 0 : 0);
+---
+
+<div class="calc" data-calc={rechner.slug} aria-label={`${rechner.title} – Eingaben`}>
+  <div class="calc__inputs">
+    {rechner.inputs.map((inp) => (
+      <div class="field">
+        <div class="field__top">
+          <label class="field__label" for={`in-${inp.id}`}>
+            <span class="i" aria-hidden="true">{inp.icon}</span>{inp.label}
+          </label>
+          <span class="field__val">
+            <span data-value={inp.id} data-decimals={inp.decimals ?? 0}>{nf(inp.default, inp.decimals ?? 0)}</span>{inp.unit && <span class="u">{inp.unit}</span>}
+          </span>
+        </div>
+        <input
+          type="range"
+          id={`in-${inp.id}`}
+          data-input={inp.id}
+          data-decimals={inp.decimals ?? 0}
+          min={inp.min}
+          max={inp.max}
+          step={inp.step}
+          value={inp.default}
+          aria-label={inp.label}
+        />
+        <div class="field__minmax">
+          <span>{nf(inp.min, inp.decimals ?? 0)} {inp.unit}</span>
+          <span>{nf(inp.max, inp.decimals ?? 0)} {inp.unit}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <div class="calc__results">
+    {rechner.outputs.map((o) => (
+      <div class={`result${o.primary ? ' result--primary' : ''}`}>
+        <div class="result__label">{o.label}</div>
+        <div class="result__val">
+          <span data-output={o.id} data-decimals={outDec(o)}>{nf(initial[o.id] ?? 0, outDec(o))}</span>{outUnit(o) && <span class="u">{outUnit(o)}</span>}
+        </div>
+      </div>
+    ))}
+  </div>
+
+  {rechner.note && <p class="calc__note">ℹ️ {rechner.note}</p>}
+</div>
+
+<script>
+  import '../scripts/calculator.ts';
+</script>

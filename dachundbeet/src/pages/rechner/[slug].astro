@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Calculator from '../../components/Calculator.astro';
+import Faq from '../../components/Faq.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import AffiliateCTA from '../../components/AffiliateCTA.astro';
+import RechnerCard from '../../components/RechnerCard.astro';
+import { SITE } from '../../config';
+import { RECHNER, type Rechner } from '../../data/rechner';
+
+export function getStaticPaths() {
+  return RECHNER.map((r) => ({ params: { slug: r.slug }, props: { rechner: r } }));
+}
+
+interface Props { rechner: Rechner }
+const { rechner } = Astro.props;
+const url = `${SITE.url}/rechner/${rechner.slug}`;
+
+const related = RECHNER.filter((r) => r.slug !== rechner.slug)
+  .sort((a) => (a.category === rechner.category ? -1 : 1))
+  .slice(0, 3);
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: rechner.title,
+    url,
+    applicationCategory: 'FinanceApplication',
+    operatingSystem: 'Web',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+    inLanguage: 'de-DE',
+    description: rechner.seoDescription,
+    dateModified: rechner.updated,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Startseite', item: SITE.url },
+      { '@type': 'ListItem', position: 2, name: 'Rechner', item: `${SITE.url}/rechner` },
+      { '@type': 'ListItem', position: 3, name: rechner.cardTitle, item: url },
+    ],
+  },
+];
+---
+
+<BaseLayout title={rechner.seoTitle} description={rechner.seoDescription} jsonLd={jsonLd} ogType="article">
+  <section class="hero hero--calc">
+    <div class="hero__bg"></div>
+    <div class="container hero__inner">
+      <span class="pill"><span aria-hidden="true">{rechner.icon}</span> {rechner.category}</span>
+      <h1 class="mt-2">{rechner.title}</h1>
+      <p class="hero__lead">{rechner.heroSubtitle}</p>
+    </div>
+  </section>
+
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Brotkrümel">
+      <a href="/">Startseite</a> / <a href="/rechner">Rechner</a> / <span aria-current="page">{rechner.cardTitle}</span>
+    </nav>
+  </div>
+
+  <section class="container" style="padding-bottom:1rem">
+    <Calculator rechner={rechner} />
+  </section>
+
+  {rechner.affiliate && (
+    <div class="container"><AffiliateCTA data={rechner.affiliate} /></div>
+  )}
+
+  <div class="container"><AdSlot slot="" layout="horizontal" /></div>
+
+  <section class="section container" style="padding-top:1rem">
+    <div class="prose" set:html={rechner.content} />
+  </section>
+
+  <section class="section container" style="padding-top:0">
+    <div class="prose"><Faq items={rechner.faq} /></div>
+  </section>
+
+  <section class="section container" style="padding-top:0">
+    <h2 style="font-size:1.4rem;margin-bottom:1.2rem">Weitere Rechner</h2>
+    <div class="grid grid--3">
+      {related.map((r) => <RechnerCard rechner={r} />)}
+    </div>
+  </section>
+</BaseLayout>

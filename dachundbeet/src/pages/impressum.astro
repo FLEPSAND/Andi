@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config';
+---
+
+<BaseLayout title="Impressum" description={`Impressum und Anbieterkennzeichnung von ${SITE.name}.`}>
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Brotkrümel"><a href="/">Startseite</a> / <span aria-current="page">Impressum</span></nav>
+  </div>
+  <section class="section container" style="padding-top:0">
+    <div class="prose">
+      <h1>Impressum</h1>
+
+      <div class="card" style="border-color:var(--terra);background:var(--terra-soft)">
+        <strong>⚠️ Vor dem Launch ausfüllen:</strong> Ersetze alle <code>[PLATZHALTER]</code> durch deine echten Angaben.
+        Ein Impressum ist nach § 5 DDG (früher TMG) gesetzlich Pflicht. Fehlende oder falsche Angaben können abgemahnt werden.
+        Nutze im Zweifel einen Impressums-Generator (z. B. von eRecht24 oder der IHK) und lasse dies rechtlich prüfen.
+      </div>
+
+      <h2>Angaben gemäß § 5 DDG</h2>
+      <p>
+        [PLATZHALTER: Vor- und Nachname]<br />
+        [PLATZHALTER: Straße und Hausnummer]<br />
+        [PLATZHALTER: PLZ und Ort]<br />
+        Deutschland
+      </p>
+
+      <h2>Kontakt</h2>
+      <p>
+        E-Mail: {SITE.email}<br />
+        Telefon: [PLATZHALTER: optional]
+      </p>
+
+      <h2>Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV</h2>
+      <p>[PLATZHALTER: Name und Anschrift wie oben]</p>
+
+      <h2>Haftung für Inhalte</h2>
+      <p>Die Inhalte dieser Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte – insbesondere der Rechenergebnisse – können wir jedoch keine Gewähr übernehmen. Die Rechner dienen der unverbindlichen Orientierung.</p>
+
+      <h2>Haftung für Links</h2>
+      <p>Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter verantwortlich.</p>
+
+      <h2>Urheberrecht</h2>
+      <p>Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht.</p>
+    </div>
+  </section>
+</BaseLayout>

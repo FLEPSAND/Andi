@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config';
+---
+
+<BaseLayout title="Datenschutzerklärung" description={`Wie ${SITE.name} mit deinen Daten umgeht.`}>
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Brotkrümel"><a href="/">Startseite</a> / <span aria-current="page">Datenschutz</span></nav>
+  </div>
+  <section class="section container" style="padding-top:0">
+    <div class="prose">
+      <h1>Datenschutzerklärung</h1>
+
+      <div class="card" style="border-color:var(--terra);background:var(--terra-soft)">
+        <strong>⚠️ Vorlage – vor dem Launch anpassen und rechtlich prüfen lassen.</strong> Diese Erklärung ist ein Muster.
+        Ergänze deine echten Angaben ([PLATZHALTER]) und passe die Abschnitte an die tatsächlich eingesetzten Dienste an
+        (Hosting, Google AdSense, Analytics, Affiliate-Partner). Für Google-Werbung im EWR ist zusätzlich eine
+        <strong>Google-zertifizierte Consent-Lösung (CMP)</strong> erforderlich.
+      </div>
+
+      <h2>1. Verantwortlicher</h2>
+      <p>[PLATZHALTER: Name, Anschrift] · E-Mail: {SITE.email}. Weitere Angaben im <a href="/impressum">Impressum</a>.</p>
+
+      <h2>2. Berechnungen erfolgen lokal</h2>
+      <p>Alle Rechner auf {SITE.name} führen ihre Berechnungen <strong>ausschließlich lokal in deinem Browser</strong> aus. Die von dir eingegebenen Werte werden nicht an einen Server übertragen, nicht gespeichert und nicht ausgewertet.</p>
+
+      <h2>3. Server-Logfiles / Hosting</h2>
+      <p>Beim Aufruf der Website verarbeitet der Hosting-Anbieter [PLATZHALTER: z. B. IONOS] technisch notwendige Daten (u. a. IP-Adresse, Datum/Uhrzeit, abgerufene Seite, Browsertyp) in Server-Logfiles. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einem sicheren, stabilen Betrieb).</p>
+
+      <h2>4. Cookies &amp; lokale Speicherung</h2>
+      <p>Wir speichern lediglich deine Einstellung zum Farbschema (hell/dunkel) lokal in deinem Browser (localStorage). Dies dient allein der Bedienbarkeit und wird nicht an Dritte übertragen.</p>
+
+      <h2>5. Google AdSense</h2>
+      <p>Diese Website nutzt zur Finanzierung Google AdSense, einen Dienst der Google Ireland Limited. AdSense verwendet Cookies und ähnliche Technologien, um Anzeigen auszuspielen und deren Leistung zu messen; dabei können Nutzungsdaten (u. a. IP-Adresse) verarbeitet und an Google übertragen werden. Die Verarbeitung erfolgt auf Grundlage deiner <strong>Einwilligung</strong> (Art. 6 Abs. 1 lit. a DSGVO), die du über unser Consent-Banner erteilst oder verweigerst. Du kannst personalisierte Werbung in den <a href="https://adssettings.google.com" rel="noopener" target="_blank">Google-Anzeigeneinstellungen</a> deaktivieren. Weitere Infos: <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">Google-Datenschutzerklärung</a>.</p>
+
+      <h2>6. Affiliate-Links</h2>
+      <p>Wir binden Empfehlungs-/Affiliate-Links ein. Klickst du auf einen solchen Link, kann der Partner ein Cookie setzen, um einen daraus resultierenden Kauf zuzuordnen. Es entstehen für dich keine Mehrkosten. Details regelt die Datenschutzerklärung des jeweiligen Partners.</p>
+
+      <h2>7. Deine Rechte</h2>
+      <p>Du hast das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch sowie das Recht, eine erteilte Einwilligung jederzeit zu widerrufen. Zudem steht dir ein Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu.</p>
+
+      <h2>8. Stand</h2>
+      <p>Diese Datenschutzerklärung hat den Stand [PLATZHALTER: Monat/Jahr] und wird bei Bedarf aktualisiert.</p>
+    </div>
+  </section>
+</BaseLayout>

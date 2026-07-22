@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RechnerCard from '../../components/RechnerCard.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import { SITE } from '../../config';
+import { RECHNER, categories, rechnerByCategory } from '../../data/rechner';
+
+const jsonLd = [{
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Startseite', item: SITE.url },
+    { '@type': 'ListItem', position: 2, name: 'Rechner', item: `${SITE.url}/rechner` },
+  ],
+}];
+---
+
+<BaseLayout
+  title={`Alle Rechner (${RECHNER.length}) – Haus, Energie & Garten`}
+  description={`${RECHNER.length} kostenlose Online-Rechner für Solar, Wärmepumpe, Energiekosten und Garten. Sofort im Browser, ohne Anmeldung.`}
+  jsonLd={jsonLd}
+>
+  <section class="hero hero--calc">
+    <div class="hero__bg"></div>
+    <div class="container hero__inner">
+      <span class="pill">Rechner</span>
+      <h1 class="mt-2">Interaktive Rechner</h1>
+      <p class="hero__lead">{RECHNER.length} kostenlose Online-Tools für datenbasierte Entscheidungen rund um Haus, Energie und Garten.</p>
+    </div>
+  </section>
+
+  <div class="container">
+    <nav class="breadcrumb" aria-label="Brotkrümel">
+      <a href="/">Startseite</a> / <span aria-current="page">Rechner</span>
+    </nav>
+  </div>
+
+  <section class="section container" style="padding-top:0">
+    {categories().map((cat) => (
+      <div style="margin-bottom:2.5rem">
+        <h2 style="font-size:1.4rem;margin-bottom:1.2rem">{cat}</h2>
+        <div class="grid grid--3">
+          {rechnerByCategory(cat).map((r) => <RechnerCard rechner={r} />)}
+        </div>
+      </div>
+    ))}
+
+    <AdSlot slot="" layout="horizontal" />
+  </section>
+</BaseLayout>
