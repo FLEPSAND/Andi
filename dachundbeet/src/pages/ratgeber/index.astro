@@ -1,35 +1,61 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import RechnerCard from '../../components/RechnerCard.astro';
 import { SITE } from '../../config';
 import { RECHNER, rechnerByCategory } from '../../data/rechner';
 
+const posts = (await getCollection('ratgeber')).sort(
+  (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
+);
 const energie = rechnerByCategory('Energie');
 const garten = rechnerByCategory('Garten');
 ---
 
 <BaseLayout title="Ratgeber – Haus, Energie & Garten" description={`Verständliche Ratgeber und Rechner rund um Solar, Wärmepumpe, Energiekosten und Garten von ${SITE.name}.`}>
+  <section class="hero hero--calc">
+    <div class="hero__bg"></div>
+    <div class="container hero__inner">
+      <span class="pill">Ratgeber</span>
+      <h1 class="mt-2">Ratgeber &amp; Wissen</h1>
+      <p class="hero__lead">Verständliche Artikel und passende Rechner rund um Energie, Haus und Garten – für Entscheidungen mit Zahlen statt Bauchgefühl.</p>
+    </div>
+  </section>
+
   <div class="container">
     <nav class="breadcrumb" aria-label="Brotkrümel"><a href="/">Startseite</a> / <span aria-current="page">Ratgeber</span></nav>
   </div>
-  <section class="section container" style="padding-top:0">
-    <div class="prose" style="max-width:720px">
-      <h1>Ratgeber</h1>
-      <p>Rund um Energie, Haus und Garten gibt es viele Zahlen, die auf den ersten Blick abschrecken. Unsere Ratgeber machen sie greifbar – mit klaren Erklärungen und passenden Rechnern, mit denen du deine eigene Situation direkt durchrechnest.</p>
-    </div>
 
-    <h2 style="font-size:1.4rem;margin:2rem 0 1.2rem">🔋 Energie sparen &amp; erzeugen</h2>
+  <section class="section container" style="padding-top:0">
+    {posts.length > 0 && (
+      <>
+        <h2 style="font-size:1.4rem;margin-bottom:1.2rem">📖 Artikel</h2>
+        <div class="grid grid--3">
+          {posts.map((p) => (
+            <a class="card rcard" href={`/ratgeber/${p.id}`}>
+              <span class="rcard__icon" aria-hidden="true">{p.data.icon}</span>
+              <span class="pill rcard__tag">{p.data.category}</span>
+              <h3>{p.data.title}</h3>
+              <p>{p.data.description}</p>
+              <span class="rcard__more">Weiterlesen →</span>
+            </a>
+          ))}
+        </div>
+      </>
+    )}
+
+    <h2 style="font-size:1.4rem;margin:2.5rem 0 1.2rem">🔋 Energie-Rechner</h2>
     <div class="grid grid--3">
       {energie.map((r) => <RechnerCard rechner={r} />)}
     </div>
 
-    <h2 style="font-size:1.4rem;margin:2.5rem 0 1.2rem">🌱 Garten &amp; Außenbereich</h2>
+    <h2 style="font-size:1.4rem;margin:2.5rem 0 1.2rem">🌱 Garten-Rechner</h2>
     <div class="grid grid--3">
       {garten.map((r) => <RechnerCard rechner={r} />)}
     </div>
 
     <div class="prose" style="max-width:720px;margin-top:2.5rem">
-      <p class="text-muted">Weitere ausführliche Ratgeber-Artikel folgen. Alle Rechner findest du gebündelt in der <a href="/rechner">Rechner-Übersicht</a> ({RECHNER.length} Tools).</p>
+      <p class="text-muted">Alle {RECHNER.length} Rechner findest du gebündelt in der <a href="/rechner">Rechner-Übersicht</a>.</p>
     </div>
   </section>
 </BaseLayout>

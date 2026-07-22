@@ -76,6 +76,59 @@ function hochbeet(v: Inputs): Outputs {
   return { liter, haecksel, kompost, erde, saecke };
 }
 
+/** 🧱 Dämmung / U-Wert — Wärmeverlust & Heizkosten-Ersparnis */
+function daemmung(v: Inputs): Outputs {
+  // Faktor 84 = Heizgradtage (~3500 Kd/a) × 24 h / 1000 → kWh je (W/m²K · m²)
+  const hgt = 84;
+  const verlustAlt = v.uAlt * v.flaeche * hgt;
+  const verlustNeu = v.uNeu * v.flaeche * hgt;
+  const ersparnisKwh = verlustAlt - verlustNeu;
+  const ersparnis = ersparnisKwh * (v.energiepreis / 100);
+  return { verlustAlt, verlustNeu, ersparnisKwh, ersparnis };
+}
+
+/** 🌡️ Heizlast — benötigte Heizleistung & Wärmebedarf */
+function heizlast(v: Inputs): Outputs {
+  const kw = (v.flaeche * v.spez) / 1000;
+  const bedarf = kw * v.vbh; // Vollbenutzungsstunden
+  const gasM3 = bedarf / 10; // ~10 kWh je m³ Erdgas
+  return { kw, bedarf, gasM3 };
+}
+
+/** 🚰 Regenwasser / Zisterne — Auffangmenge & Zisternengröße */
+function zisterne(v: Inputs): Outputs {
+  const ertrag = v.dachflaeche * v.niederschlag * v.abfluss; // m² · mm · Beiwert = Liter
+  const empfohlen = ertrag * 0.06; // Faustregel Zisternenvolumen
+  const ersparnis = (ertrag / 1000) * v.wasserpreis; // m³ · €/m³
+  return { ertrag, empfohlen, ersparnis };
+}
+
+/** 🧩 Pflaster — Steinbedarf, Splitt & Schotter */
+function pflaster(v: Inputs): Outputs {
+  const flaeche = v.laenge * v.breite;
+  const steine = Math.ceil(flaeche * v.proQm * (1 + v.verschnitt / 100));
+  const splitt = flaeche * 0.05; // 5 cm Bettung (m³)
+  const schotter = flaeche * 0.15; // 15 cm Unterbau (m³)
+  return { flaeche, steine, splitt, schotter };
+}
+
+/** 🌾 Rasen — Saatgut, Dünger & Wasser */
+function rasen(v: Inputs): Outputs {
+  const saat = (v.flaeche * v.saatmenge) / 1000; // kg
+  const duenger = (v.flaeche * v.duengermenge) / 1000; // kg
+  const wasser = v.flaeche * 15; // ~15 L/m² je Wässerung
+  return { saat, duenger, wasser };
+}
+
+/** 🪵 Brennholz — benötigte Raummeter & Kosten */
+function brennholz(v: Inputs): Outputs {
+  const nutzbarProRm = v.heizwert * (v.wirkungsgrad / 100);
+  const rm = nutzbarProRm > 0 ? v.heizbedarf / nutzbarProRm : 0;
+  const kosten = rm * v.preis;
+  const fm = rm * 0.7; // 1 Raummeter ≈ 0,7 Festmeter
+  return { rm, kosten, fm };
+}
+
 export const COMPUTE: Record<string, ComputeFn> = {
   'pv-solar': pvSolar,
   'balkonkraftwerk': balkonkraftwerk,
@@ -83,4 +136,10 @@ export const COMPUTE: Record<string, ComputeFn> = {
   'wallbox-ladekosten': wallbox,
   'stromkosten': stromkosten,
   'hochbeet': hochbeet,
+  'daemmung': daemmung,
+  'heizlast': heizlast,
+  'zisterne': zisterne,
+  'pflaster': pflaster,
+  'rasen': rasen,
+  'brennholz': brennholz,
 };
