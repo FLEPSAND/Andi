@@ -1,0 +1,38 @@
+---
+/**
+ * Cookie-/Werbe-Consent-Banner.
+ * Blockiert AdSense technisch, bis der Nutzer zugestimmt hat (siehe scripts/ads.ts).
+ * Wird beim ersten Besuch angezeigt; die Wahl landet in localStorage.
+ * Über den Footer-Link "Cookie-Einstellungen" (siehe Footer.astro) erneut aufrufbar.
+ */
+---
+
+<div class="consent" id="consent-banner" hidden>
+  <div class="consent__box">
+    <p class="consent__text">
+      Wir nutzen lokale Speicherung (Cookies) für Google AdSense, das uns hilft, diese Seite
+      kostenlos anzubieten. Ohne deine Zustimmung werden keine Werbe-Skripte geladen. Mehr dazu in
+      unserer <a href="/datenschutz">Datenschutzerklärung</a>.
+    </p>
+    <div class="consent__actions">
+      <button class="btn btn--ghost" id="consent-reject" type="button">Nur notwendige</button>
+      <button class="btn btn--primary" id="consent-accept" type="button">Alle akzeptieren</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { getConsent, setConsent } from '../scripts/consent';
+
+  const banner = document.getElementById('consent-banner');
+  if (banner && !getConsent()) banner.hidden = false;
+
+  document.getElementById('consent-accept')?.addEventListener('click', () => {
+    setConsent('accepted');
+    if (banner) banner.hidden = true;
+  });
+  document.getElementById('consent-reject')?.addEventListener('click', () => {
+    setConsent('rejected');
+    if (banner) banner.hidden = true;
+  });
+</script>

@@ -48,8 +48,13 @@ npm run preview  # dist/ lokal testen
 
 - [ ] **Impressum** (`src/pages/impressum.astro`) — alle `[PLATZHALTER]` durch echte Angaben ersetzen (Pflicht nach § 5 DDG).
 - [ ] **Datenschutz** (`src/pages/datenschutz.astro`) — Platzhalter füllen, an tatsächliche Dienste anpassen, rechtlich prüfen lassen.
-- [ ] **Consent-Banner (CMP):** Für AdSense im EWR ist eine **Google-zertifizierte
-      Consent-Lösung** Pflicht, bevor Anzeigen laufen dürfen.
+- [x] **Cookie-/Consent-Banner:** eingebaut (`ConsentBanner.astro` + `scripts/consent.ts` +
+      `scripts/ads.ts`). Blockiert das AdSense-Skript technisch, bis der Nutzer zustimmt;
+      „Cookie-Einstellungen“ im Footer setzt die Wahl zurück. **Achtung:** Das ist ein
+      funktionierender, selbstgebauter Consent-Gate — für volle Rechtssicherheit bei
+      Google-Werbung im EWR empfiehlt Google zusätzlich eine **zertifizierte
+      IAB-TCF-CMP** (z. B. consentmanager, CookieYes, Cookiebot – kostenlose Tarife
+      vorhanden). Lässt sich später einfach in `ConsentBanner.astro` einsetzen.
 - [ ] **AdSense scharfstellen:** in `src/config.ts` `ADSENSE.enabled = true` setzen und
       pro `<AdSlot slot="…">` die jeweilige Ad-Slot-ID eintragen.
 - [ ] **Affiliate-Links:** in `src/data/rechner.ts` die `affiliate.href`-Platzhalter (`#`)

@@ -12,10 +12,12 @@ import { SITE } from '../config';
       <h1>Datenschutzerklärung</h1>
 
       <div class="card" style="border-color:var(--terra);background:var(--terra-soft)">
-        <strong>⚠️ Vorlage – vor dem Launch anpassen und rechtlich prüfen lassen.</strong> Diese Erklärung ist ein Muster.
+        <strong>⚠️ Vorlage – vor dem Launch rechtlich prüfen lassen.</strong> Diese Erklärung ist ein Muster.
         Ergänze deine echten Angaben ([PLATZHALTER]) und passe die Abschnitte an die tatsächlich eingesetzten Dienste an
-        (Hosting, Google AdSense, Analytics, Affiliate-Partner). Für Google-Werbung im EWR ist zusätzlich eine
-        <strong>Google-zertifizierte Consent-Lösung (CMP)</strong> erforderlich.
+        (Hosting, Analytics, Affiliate-Partner). Der eingebaute Cookie-Banner blockiert AdSense technisch, bis
+        zugestimmt wird – das ist die technische Grundlage. Für volle Rechtssicherheit bei Google-Werbung im EWR
+        empfiehlt Google zusätzlich eine <strong>zertifizierte Consent-Management-Plattform (IAB-TCF-CMP)</strong>,
+        z. B. von consentmanager, CookieYes oder Cookiebot.
       </div>
 
       <h2>1. Verantwortlicher</h2>
@@ -28,10 +30,11 @@ import { SITE } from '../config';
       <p>Beim Aufruf der Website verarbeitet der Hosting-Anbieter [PLATZHALTER: z. B. IONOS] technisch notwendige Daten (u. a. IP-Adresse, Datum/Uhrzeit, abgerufene Seite, Browsertyp) in Server-Logfiles. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einem sicheren, stabilen Betrieb).</p>
 
       <h2>4. Cookies &amp; lokale Speicherung</h2>
-      <p>Wir speichern lediglich deine Einstellung zum Farbschema (hell/dunkel) lokal in deinem Browser (localStorage). Dies dient allein der Bedienbarkeit und wird nicht an Dritte übertragen.</p>
+      <p>Wir speichern zwei Dinge lokal in deinem Browser (localStorage), ohne Cookie-Banner-Pflicht, da technisch notwendig: deine Einstellung zum Farbschema (hell/dunkel) und deine Entscheidung zum Cookie-Banner selbst. Beides dient allein der Bedienbarkeit und wird nicht an Dritte übertragen.</p>
 
-      <h2>5. Google AdSense</h2>
-      <p>Diese Website nutzt zur Finanzierung Google AdSense, einen Dienst der Google Ireland Limited. AdSense verwendet Cookies und ähnliche Technologien, um Anzeigen auszuspielen und deren Leistung zu messen; dabei können Nutzungsdaten (u. a. IP-Adresse) verarbeitet und an Google übertragen werden. Die Verarbeitung erfolgt auf Grundlage deiner <strong>Einwilligung</strong> (Art. 6 Abs. 1 lit. a DSGVO), die du über unser Consent-Banner erteilst oder verweigerst. Du kannst personalisierte Werbung in den <a href="https://adssettings.google.com" rel="noopener" target="_blank">Google-Anzeigeneinstellungen</a> deaktivieren. Weitere Infos: <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">Google-Datenschutzerklärung</a>.</p>
+      <h2>5. Google AdSense &amp; Einwilligung</h2>
+      <p>Diese Website nutzt zur Finanzierung Google AdSense, einen Dienst der Google Ireland Limited. AdSense verwendet Cookies und ähnliche Technologien, um Anzeigen auszuspielen und deren Leistung zu messen; dabei können Nutzungsdaten (u. a. IP-Adresse) verarbeitet und an Google übertragen werden.</p>
+      <p>Beim ersten Besuch zeigen wir dir ein <strong>Cookie-Banner</strong>. Erst wenn du auf „Alle akzeptieren" klickst, wird das AdSense-Skript geladen und Werbung ausgespielt. Klickst du auf „Nur notwendige“, bleibt AdSense vollständig deaktiviert. Rechtsgrundlage ist deine <strong>Einwilligung</strong> (Art. 6 Abs. 1 lit. a DSGVO). Du kannst deine Wahl jederzeit über den Link „Cookie-Einstellungen“ im Footer ändern. Zusätzlich kannst du personalisierte Werbung in den <a href="https://adssettings.google.com" rel="noopener" target="_blank">Google-Anzeigeneinstellungen</a> deaktivieren. Weitere Infos: <a href="https://policies.google.com/privacy" rel="noopener" target="_blank">Google-Datenschutzerklärung</a>.</p>
 
       <h2>6. Affiliate-Links</h2>
       <p>Wir binden Empfehlungs-/Affiliate-Links ein. Klickst du auf einen solchen Link, kann der Partner ein Cookie setzen, um einen daraus resultierenden Kauf zuzuordnen. Es entstehen für dich keine Mehrkosten. Details regelt die Datenschutzerklärung des jeweiligen Partners.</p>

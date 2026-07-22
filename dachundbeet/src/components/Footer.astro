@@ -38,6 +38,7 @@ const topRechner = RECHNER.slice(0, 6);
         <li><a href="/kontakt">Kontakt</a></li>
         <li><a href="/impressum">Impressum</a></li>
         <li><a href="/datenschutz">Datenschutz</a></li>
+        <li><a href="#" id="footer-consent-reopen">Cookie-Einstellungen</a></li>
       </ul>
     </div>
   </div>
@@ -49,3 +50,13 @@ const topRechner = RECHNER.slice(0, 6);
     </div>
   </div>
 </footer>
+
+<script>
+  import { resetConsent } from '../scripts/consent';
+  document.getElementById('footer-consent-reopen')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    resetConsent();
+    const banner = document.getElementById('consent-banner');
+    if (banner) banner.hidden = false;
+  });
+</script>

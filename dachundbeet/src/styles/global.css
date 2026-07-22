@@ -304,6 +304,24 @@ input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; border-radius
 .site-footer__bottom { border-top: 1px solid var(--border); padding-block: 1.2rem; font-size: .82rem; color: var(--text-muted);
   display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; justify-content: space-between; }
 
+/* ---- Consent-Banner ---- */
+.consent {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 100;
+  padding: 1rem clamp(1rem, 4vw, 2rem);
+  display: flex; justify-content: center;
+}
+.consent[hidden] { display: none; }
+.consent__box {
+  width: 100%; max-width: 880px;
+  background: var(--surface); border: 1px solid var(--border-strong);
+  border-radius: var(--radius); box-shadow: var(--shadow-lg);
+  padding: 1.2rem 1.4rem;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; justify-content: space-between;
+}
+.consent__text { flex: 1 1 320px; font-size: .88rem; color: var(--text-muted); }
+.consent__text a { color: var(--green); font-weight: 600; }
+.consent__actions { display: flex; gap: .6rem; flex-wrap: wrap; }
+
 /* ---- Utilities ---- */
 .text-muted { color: var(--text-muted); }
 .center { text-align: center; }

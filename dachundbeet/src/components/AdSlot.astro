@@ -9,23 +9,22 @@ interface Props {
 }
 const { slot = '', layout = 'horizontal', label = 'Anzeige' } = Astro.props;
 const minH = layout === 'rectangle' ? 250 : 90;
+const enabled = ADSENSE.enabled && !!slot;
 ---
 
-<div class="adslot">
+<div
+  class="adslot"
+  data-adslot
+  data-ad-client={ADSENSE.publisherId}
+  data-ad-slot={slot}
+  data-enabled={enabled ? '1' : '0'}
+>
   <div class="adslot__label">{label}</div>
-  {ADSENSE.enabled && slot ? (
-    <ins
-      class="adsbygoogle"
-      style="display:block"
-      data-ad-client={ADSENSE.publisherId}
-      data-ad-slot={slot}
-      data-ad-format="auto"
-      data-full-width-responsive="true"
-    />
-    <script is:inline>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  ) : (
+  <div class="adslot__body" data-adslot-body>
     <div class="adslot__ph" style={`min-height:${minH}px`}>
-      AdSense-Platzhalter · Anzeige erscheint nach Freigabe
+      {enabled
+        ? 'Anzeige wird geladen, sobald du der Cookie-Nutzung zustimmst'
+        : 'AdSense-Platzhalter · Anzeige erscheint nach Freigabe'}
     </div>
-  )}
+  </div>
 </div>
