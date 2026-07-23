@@ -45,6 +45,15 @@ export const AFFILIATE = {
 } as const;
 
 /**
+ * Google Analytics (GA4).
+ * Lädt — genau wie AdSense — erst nach Zustimmung im Cookie-Banner.
+ */
+export const ANALYTICS = {
+  enabled: true,
+  measurementId: 'G-WJ2KT6VJ83',
+} as const;
+
+/**
  * Website-Verifizierung für Suchmaschinen-Tools (Search Console, Bing etc.).
  * Leerer String = Meta-Tag wird nicht gerendert.
  */
