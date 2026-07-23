@@ -9,7 +9,7 @@ Domain: **dachundbeet.de** · Monetarisierung: Google AdSense + Affiliate/Lead-G
 
 ## Was schon drin ist
 
-**12 Rechner** (Schwerpunkt Energie = höchster CPC), je mit Ratgeber-Artikel verlinkt:
+**18 Rechner** (Schwerpunkt Energie = höchster CPC), je mit Ratgeber-Artikel verlinkt:
 | Rechner | Slug | Kategorie |
 |---|---|---|
 | ☀️ Photovoltaik-Rechner | `pv-solar` | Energie |
@@ -17,15 +17,21 @@ Domain: **dachundbeet.de** · Monetarisierung: Google AdSense + Affiliate/Lead-G
 | 🔥 Wärmepumpen-Rechner | `waermepumpe` | Energie |
 | 🚗 E-Auto Ladekosten-Rechner | `wallbox-ladekosten` | Energie |
 | 💡 Stromkosten-Rechner | `stromkosten` | Energie |
+| 🔋 Batteriespeicher-Rechner | `batteriespeicher` | Energie |
+| ❄️ Klimaanlagen-Rechner | `klimaanlage-stromkosten` | Energie |
 | 🌱 Hochbeet-Füllmengen-Rechner | `hochbeet` | Garten |
-| 🧱 Dämmungs-Rechner | `daemmung` | Haus |
-| 🌡️ Heizlast-Rechner | `heizlast` | Haus |
 | 🚰 Zisternen-Rechner | `zisterne` | Garten |
 | 🧩 Pflaster-Rechner | `pflaster` | Garten |
 | 🌾 Rasen-Rechner | `rasen` | Garten |
+| 🏊 Pool-Rechner | `pool-wasser` | Garten |
+| ♻️ Kompost-Rechner | `kompost` | Garten |
+| 🧱 Dämmungs-Rechner | `daemmung` | Haus |
+| 🌡️ Heizlast-Rechner | `heizlast` | Haus |
 | 🪵 Brennholz-Rechner | `brennholz` | Haus |
+| 🎨 Farbrechner (Streichen) | `streichen-farbe` | Haus |
+| 🪚 Bodenbelag-Rechner | `bodenbelag-laminat` | Haus |
 
-Dazu **12 Ratgeber-Artikel** (einer pro Rechner, gegenseitig verlinkt — Rechner zeigt
+Dazu **18 Ratgeber-Artikel** (einer pro Rechner, gegenseitig verlinkt — Rechner zeigt
 „Passender Ratgeber", Artikel verlinkt zurück zum Rechner).
 
 Dazu: Startseite, Rechner-Übersicht, Ratgeber-Hub, **Impressum**, **Datenschutz**,

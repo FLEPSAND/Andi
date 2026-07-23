@@ -721,6 +721,336 @@ export const RECHNER: Rechner[] = [
     },
     updated: '2026-07-22',
   },
+
+  // ── 🔋 Batteriespeicher ───────────────────────────────────────────────────
+  {
+    slug: 'batteriespeicher',
+    category: 'Energie',
+    icon: '🔋',
+    title: 'Batteriespeicher-Rechner',
+    cardTitle: 'Batteriespeicher-Rechner',
+    tagline: 'Lohnt sich ein Speicher für deine PV-Anlage?',
+    heroSubtitle: 'Wie viel zusätzlichen Eigenverbrauch bringt ein Batteriespeicher – und wann hat er sich bezahlt gemacht?',
+    seoTitle: 'Batteriespeicher-Rechner 2026 – Amortisation berechnen',
+    seoDescription: 'Lohnt sich ein Batteriespeicher für deine Solaranlage? Berechne zusätzlichen Eigenverbrauch, Ersparnis und Amortisationszeit – kostenlos und sofort.',
+    inputs: [
+      { id: 'jahresertrag', label: 'PV-Jahresertrag', icon: '☀️', min: 2000, max: 20000, step: 100, default: 8000, unit: 'kWh/a', decimals: 0 },
+      { id: 'eigenverbrauchOhne', label: 'Eigenverbr. ohne Speicher', icon: '🏠', min: 15, max: 50, step: 1, default: 30, unit: '%', decimals: 0 },
+      { id: 'eigenverbrauchMit', label: 'Eigenverbr. mit Speicher', icon: '🔋', min: 40, max: 90, step: 1, default: 60, unit: '%', decimals: 0 },
+      { id: 'kosten', label: 'Investition Speicher', icon: '💰', min: 2000, max: 15000, step: 250, default: 6000, unit: '€', decimals: 0 },
+      { id: 'strompreis', label: 'Strompreis', icon: '⚡', min: 20, max: 60, step: 0.5, default: 33, unit: 'ct/kWh', decimals: 1 },
+    ],
+    outputs: [
+      { id: 'ersparnis', label: 'Zusatz-Ersparnis/Jahr', money: true, primary: true },
+      { id: 'zusatzKwh', label: 'Zusätzl. Eigenverbrauch', unit: 'kWh', decimals: 0 },
+      { id: 'amortisation', label: 'Amortisation', unit: 'Jahre', decimals: 1 },
+      { id: 'gewinn10', label: 'Gewinn in 10 J.', money: true },
+    ],
+    note: 'Vereinfachte Modellrechnung. Reale Eigenverbrauchsquoten hängen stark von Speichergröße, Verbrauchsprofil und Lastmanagement ab.',
+    content: `
+      <h2>Was ein Batteriespeicher wirklich bringt</h2>
+      <p>Ein Batteriespeicher speichert überschüssigen Solarstrom, der tagsüber nicht verbraucht wird, und gibt ihn abends oder nachts wieder ab. Der Effekt: Deine <strong>Eigenverbrauchsquote</strong> steigt deutlich – typischerweise von 25–35 % ohne Speicher auf 55–75 % mit passend dimensioniertem Speicher.</p>
+      <p>Der Rechner ermittelt, wie viel zusätzlicher Solarstrom durch den Speicher selbst genutzt wird, statt für wenig Geld ins Netz eingespeist zu werden – und stellt diesen Zugewinn der Investition gegenüber.</p>
+      <h3>Rechenbeispiel</h3>
+      <p>8.000 kWh Jahresertrag, Eigenverbrauch steigt von 30 % auf 60 %, Speicher für 6.000 €, Strompreis 33 ct/kWh: Das ergibt rund <strong>2.400 kWh</strong> zusätzlichen Eigenverbrauch und etwa <strong>790 € Ersparnis</strong> pro Jahr – die Amortisation liegt bei rund <strong>7,6 Jahren</strong>.</p>
+      <h3>Wie groß sollte der Speicher sein?</h3>
+      <ul>
+        <li><strong>Faustregel:</strong> etwa 1 kWh Speicherkapazität pro 1.000 kWh Jahresverbrauch des Haushalts.</li>
+        <li><strong>Zu groß dimensioniert:</strong> Der Speicher wird nie voll ausgenutzt – teurer, ohne zusätzlichen Nutzen.</li>
+        <li><strong>Zu klein dimensioniert:</strong> Überschussstrom geht trotzdem verloren, das Sparpotenzial wird nicht ausgeschöpft.</li>
+      </ul>
+    `,
+    faq: [
+      { q: 'Ab wann lohnt sich ein Speicher?', a: 'Meist erst, wenn die PV-Anlage bereits steht und der Eigenverbrauch ohne Speicher spürbar unter 40 % liegt. Bei sehr hohem Eigenverbrauch (z. B. durch Wärmepumpe/E-Auto tagsüber) bringt ein Speicher weniger zusätzlichen Nutzen.' },
+      { q: 'Wie groß sollte mein Batteriespeicher sein?', a: 'Als grobe Orientierung 1 kWh Speicher pro 1.000 kWh Jahresstromverbrauch. Ein größerer Speicher erhöht die Kosten stärker als den zusätzlichen Nutzen.' },
+      { q: 'Wie lange hält ein Batteriespeicher?', a: 'Moderne Lithium-Speicher sind meist auf 6.000–10.000 Ladezyklen bzw. 10–15 Jahre Garantie ausgelegt – das deckt sich gut mit der Lebensdauer der PV-Anlage.' },
+      { q: 'Gibt es Förderung für Batteriespeicher?', a: 'Bundesweite Förderungen sind ausgelaufen, aber einzelne Bundesländer und Kommunen fördern Speicher zeitweise. Ein Blick in regionale Förderdatenbanken lohnt sich vor dem Kauf.' },
+    ],
+    affiliate: {
+      heading: 'Batteriespeicher-Angebote vergleichen',
+      text: 'Hol dir unverbindliche Angebote für Batteriespeicher passend zu deiner PV-Anlage.',
+      cta: 'Angebote vergleichen',
+      href: '#',
+    },
+    updated: '2026-07-22',
+  },
+
+  // ── ❄️ Klimaanlage ────────────────────────────────────────────────────────
+  {
+    slug: 'klimaanlage-stromkosten',
+    category: 'Energie',
+    icon: '❄️',
+    title: 'Klimaanlagen-Stromkosten-Rechner',
+    cardTitle: 'Klimaanlagen-Rechner',
+    tagline: 'Was kostet Kühlen im Sommer wirklich?',
+    heroSubtitle: 'Wie viel Strom verbraucht deine Klimaanlage – und was kostet der Kühlbetrieb pro Saison, Tag und Stunde?',
+    seoTitle: 'Klimaanlage Stromkosten-Rechner 2026 – Kühlkosten berechnen',
+    seoDescription: 'Stromverbrauch und Kosten deiner Klimaanlage berechnen: pro Jahr, Tag und Stunde. Kostenloser Rechner für Split-Klimageräte und mobile Klimaanlagen.',
+    inputs: [
+      { id: 'leistung', label: 'Kühlleistung', icon: '❄️', min: 1, max: 8, step: 0.5, default: 2.5, unit: 'kW', decimals: 1 },
+      { id: 'eer', label: 'Effizienz (EER)', icon: '⚙️', min: 2.5, max: 6, step: 0.1, default: 3.5, unit: '', decimals: 1 },
+      { id: 'stundenProTag', label: 'Betrieb pro Tag', icon: '⏱️', min: 1, max: 24, step: 1, default: 6, unit: 'h', decimals: 0 },
+      { id: 'tageProJahr', label: 'Kühltage/Jahr', icon: '📅', min: 10, max: 180, step: 5, default: 90, unit: 'Tage', decimals: 0 },
+      { id: 'strompreis', label: 'Strompreis', icon: '⚡', min: 20, max: 60, step: 0.5, default: 33, unit: 'ct/kWh', decimals: 1 },
+    ],
+    outputs: [
+      { id: 'kosten', label: 'Kosten pro Saison', money: true, primary: true },
+      { id: 'verbrauch', label: 'Stromverbrauch', unit: 'kWh', decimals: 0 },
+      { id: 'kostenProTag', label: 'Kosten pro Tag', money: true },
+    ],
+    note: 'EER (Energy Efficiency Ratio) gibt an, wie viel Kühlleistung pro eingesetzter Kilowattstunde Strom erzeugt wird. Werte laut Typenschild/Datenblatt des Geräts verwenden für genauere Ergebnisse.',
+    content: `
+      <h2>Was kostet eine Klimaanlage im Betrieb?</h2>
+      <p>Der Stromverbrauch einer Klimaanlage hängt von der <strong>Kühlleistung</strong>, der <strong>Effizienz (EER)</strong> und der <strong>Laufzeit</strong> ab. Der EER-Wert sagt aus, wie viel Kühlleistung pro Kilowattstunde eingesetztem Strom erzeugt wird – ein EER von 3,5 bedeutet: 1 kW Strom erzeugt 3,5 kW Kühlleistung.</p>
+      <h3>Rechenbeispiel</h3>
+      <p>Ein Split-Klimagerät mit 2,5 kW Kühlleistung, EER 3,5, läuft 6 Stunden täglich an 90 Tagen im Jahr bei 33 ct/kWh: Das ergibt einen Stromverbrauch von rund <strong>386 kWh</strong> und Kosten von etwa <strong>127 € pro Saison</strong> – umgerechnet gut 1,40 € pro Kühltag.</p>
+      <h3>So senkst du die Kühlkosten</h3>
+      <ul>
+        <li><strong>Richtige Gerätegröße:</strong> Ein überdimensioniertes Gerät kühlt nicht effizienter, sondern verbraucht nur mehr Strom.</li>
+        <li><strong>Höhere Zieltemperatur:</strong> Jedes Grad weniger Temperaturunterschied spart spürbar Energie – 24–26 °C statt 20 °C reichen meist völlig.</li>
+        <li><strong>Verschattung nutzen:</strong> Rollläden/Jalousien tagsüber schließen senkt die nötige Kühlleistung erheblich.</li>
+        <li><strong>Split- statt Monoblock-Geräte:</strong> Fest installierte Split-Klimaanlagen sind meist deutlich effizienter als mobile Monoblock-Geräte.</li>
+      </ul>
+      <p>Läuft die Klimaanlage tagsüber, wenn ohnehin die Sonne scheint, passt sie zudem gut zu einer eigenen <a href="/rechner/pv-solar">Photovoltaik-Anlage</a> – der Kühlbedarf und der Solarertrag laufen zeitlich oft parallel.</p>
+    `,
+    faq: [
+      { q: 'Was ist ein guter EER-Wert?', a: 'Werte ab 3,5 gelten als effizient, moderne Geräte erreichen oft 4–6. Je höher der EER, desto weniger Strom pro Kühlleistung wird verbraucht.' },
+      { q: 'Split- oder Monoblock-Klimaanlage?', a: 'Fest installierte Split-Geräte sind deutlich effizienter (höherer EER) als mobile Monoblock-Geräte, da sie die warme Abluft direkt nach außen führen statt über einen Schlauch mit Wärmeverlust.' },
+      { q: 'Wie viel Strom verbraucht eine Klimaanlage im Monat?', a: 'Bei moderatem Betrieb (z. B. 4–6 Stunden täglich im Sommer) liegen die monatlichen Kosten meist im niedrigen zweistelligen Euro-Bereich – der Rechner zeigt dir den genauen Wert für dein Gerät.' },
+      { q: 'Lohnt sich eine Klimaanlage mit eigener PV-Anlage?', a: 'Ja, besonders gut: Der höchste Kühlbedarf fällt meist genau dann an, wenn auch die Solaranlage am meisten Strom liefert – tagsüber bei starker Sonneneinstrahlung.' },
+    ],
+    affiliate: {
+      heading: 'Klimageräte im Vergleich',
+      text: 'Effiziente Split- und Monoblock-Klimaanlagen vergleichen und passendes Gerät finden.',
+      cta: 'Geräte ansehen',
+      href: '#',
+    },
+    updated: '2026-07-22',
+  },
+
+  // ── 🎨 Streichen ──────────────────────────────────────────────────────────
+  {
+    slug: 'streichen-farbe',
+    category: 'Haus',
+    icon: '🎨',
+    title: 'Farbrechner (Streichen)',
+    cardTitle: 'Farbrechner',
+    tagline: 'Wie viel Farbe brauchst du für dein Zimmer?',
+    heroSubtitle: 'Gib die Maße deines Raums ein und erfahre, wie viel Farbe du für ein oder zwei Anstriche brauchst.',
+    seoTitle: 'Farbrechner 2026 – Wandfarbe & Menge berechnen',
+    seoDescription: 'Wandfarbe berechnen: Wie viel Liter Farbe brauchst du für dein Zimmer? Wandfläche, Farbmenge und Eimeranzahl kostenlos und sofort berechnen.',
+    inputs: [
+      { id: 'laenge', label: 'Raumlänge', icon: '📏', min: 1.5, max: 10, step: 0.1, default: 4, unit: 'm', decimals: 1 },
+      { id: 'breite', label: 'Raumbreite', icon: '📐', min: 1.5, max: 10, step: 0.1, default: 3.5, unit: 'm', decimals: 1 },
+      { id: 'hoehe', label: 'Raumhöhe', icon: '📶', min: 2, max: 4, step: 0.05, default: 2.5, unit: 'm', decimals: 2 },
+      { id: 'oeffnungen', label: 'Fenster & Türen', icon: '🚪', min: 0, max: 15, step: 0.5, default: 4, unit: 'm²', decimals: 1 },
+      { id: 'ergiebigkeit', label: 'Ergiebigkeit Farbe', icon: '🪣', min: 5, max: 14, step: 0.5, default: 8, unit: 'm²/L', decimals: 1 },
+      { id: 'anstriche', label: 'Anzahl Anstriche', icon: '🔁', min: 1, max: 3, step: 1, default: 2, unit: '', decimals: 0 },
+    ],
+    outputs: [
+      { id: 'farbmenge', label: 'Farbmenge gesamt', unit: 'L', decimals: 1, primary: true },
+      { id: 'wandflaeche', label: 'Wandfläche', unit: 'm²', decimals: 1 },
+      { id: 'eimer5L', label: 'Eimer (5 L)', unit: 'Stk', decimals: 0 },
+      { id: 'farbmengeProAnstrich', label: 'Farbe je Anstrich', unit: 'L', decimals: 1 },
+    ],
+    note: 'Die Ergiebigkeit steht meist auf dem Farbeimer (typisch 6–10 m²/L). Raue oder saugfähige Untergründe verbrauchen mehr Farbe als glatte.',
+    content: `
+      <h2>So berechnest du deinen Farbbedarf richtig</h2>
+      <p>Der Farbbedarf ergibt sich aus der <strong>Wandfläche</strong> (Raumumfang × Höhe, abzüglich Fenster und Türen), geteilt durch die <strong>Ergiebigkeit</strong> der Farbe – multipliziert mit der Anzahl der Anstriche. Die Ergiebigkeit findest du auf dem Farbeimer, typischerweise zwischen 6 und 10 m² pro Liter.</p>
+      <h3>Rechenbeispiel</h3>
+      <p>Ein Zimmer mit 4 × 3,5 m Grundfläche und 2,5 m Höhe, abzüglich 4 m² für Fenster und Tür, ergibt eine Wandfläche von rund <strong>33,5 m²</strong>. Bei einer Ergiebigkeit von 8 m²/L und zwei Anstrichen brauchst du etwa <strong>8,4 Liter Farbe</strong> – also zwei 5-Liter-Eimer.</p>
+      <h3>Warum meist zwei Anstriche nötig sind</h3>
+      <ul>
+        <li><strong>Deckkraft:</strong> Ein Anstrich reicht selten für ein gleichmäßiges Ergebnis, besonders bei Farbwechseln (z. B. dunkel auf hell).</li>
+        <li><strong>Saugfähiger Untergrund:</strong> Neu verputzte oder unbehandelte Wände nehmen den ersten Anstrich stärker auf.</li>
+        <li><strong>Tipp:</strong> Bei starkem Farbkontrast lohnt sich eine Grundierung vor dem ersten Farbanstrich – das spart am Ende teure Deckfarbe.</li>
+      </ul>
+      <h3>Immer etwas Reserve einplanen</h3>
+      <p>Kaufe lieber 5–10 % mehr Farbe als errechnet – für Nacharbeiten, Ausbesserungen oder falls sich die Wandfläche beim Streichen als etwas größer herausstellt. Reste derselben Charge/Mischung lassen sich zudem für spätere Ausbesserungen aufheben.</p>
+    `,
+    faq: [
+      { q: 'Wie viel m² deckt ein Liter Farbe?', a: 'Das hängt vom Produkt ab, typisch sind 6–10 m² pro Liter je Anstrich – der genaue Wert steht auf dem Eimer. Raue Untergründe verbrauchen mehr, glatte weniger.' },
+      { q: 'Reicht ein Anstrich?', a: 'Bei einem Farbwechsel oder unbehandelten Wänden meist nicht – zwei Anstriche sind Standard für ein gleichmäßiges Ergebnis. Bei ähnlicher Vorfarbe kann ein Anstrich mit hochdeckender Farbe reichen.' },
+      { q: 'Wie berechne ich Fenster und Türen richtig ab?', a: 'Addiere die Flächen aller Fenster und Türen im Raum (Breite × Höhe je Öffnung) und trage die Summe im Feld „Fenster & Türen“ ein – der Rechner zieht sie automatisch von der Wandfläche ab.' },
+      { q: 'Sollte ich lieber zu viel oder zu wenig Farbe kaufen?', a: 'Lieber etwas mehr: Farbchargen können sich leicht im Farbton unterscheiden, und Nachkäufe aus einer anderen Charge sind oft sichtbar. 5–10 % Reserve ist eine sinnvolle Faustregel.' },
+    ],
+    affiliate: {
+      heading: 'Wandfarbe & Malerbedarf',
+      text: 'Hochwertige Wandfarben, Grundierung und Malerzubehör für dein Projekt.',
+      cta: 'Produkte ansehen',
+      href: '#',
+    },
+    updated: '2026-07-22',
+  },
+
+  // ── 🪚 Bodenbelag ─────────────────────────────────────────────────────────
+  {
+    slug: 'bodenbelag-laminat',
+    category: 'Haus',
+    icon: '🪚',
+    title: 'Bodenbelag-Rechner (Laminat & Parkett)',
+    cardTitle: 'Bodenbelag-Rechner',
+    tagline: 'Wie viele Pakete Laminat oder Parkett brauchst du?',
+    heroSubtitle: 'Gib die Raummaße ein und erfahre, wie viele Pakete Laminat oder Parkett du kaufen musst – inklusive Verschnitt und Kosten.',
+    seoTitle: 'Bodenbelag-Rechner 2026 – Laminat & Parkett Bedarf berechnen',
+    seoDescription: 'Laminat- oder Parkettbedarf berechnen: Wie viele Pakete brauchst du für deinen Raum, inklusive Verschnitt? Plus Kostenschätzung – kostenlos.',
+    inputs: [
+      { id: 'laenge', label: 'Raumlänge', icon: '📏', min: 1.5, max: 12, step: 0.1, default: 5, unit: 'm', decimals: 1 },
+      { id: 'breite', label: 'Raumbreite', icon: '📐', min: 1.5, max: 12, step: 0.1, default: 4, unit: 'm', decimals: 1 },
+      { id: 'verschnitt', label: 'Verschnitt', icon: '✂️', min: 5, max: 20, step: 1, default: 10, unit: '%', decimals: 0 },
+      { id: 'paketgroesse', label: 'Paketgröße', icon: '📦', min: 1, max: 4, step: 0.1, default: 2.4, unit: 'm²', decimals: 1 },
+      { id: 'preis', label: 'Preis pro m²', icon: '💶', min: 8, max: 80, step: 1, default: 25, unit: '€', decimals: 0 },
+    ],
+    outputs: [
+      { id: 'pakete', label: 'Benötigte Pakete', unit: 'Stk', decimals: 0, primary: true },
+      { id: 'flaeche', label: 'Raumfläche', unit: 'm²', decimals: 1 },
+      { id: 'bedarf', label: 'Bedarf inkl. Verschnitt', unit: 'm²', decimals: 1 },
+      { id: 'kosten', label: 'Materialkosten', money: true },
+    ],
+    note: 'Verschnitt hängt stark vom Verlegemuster ab: gerade Verlegung braucht weniger, diagonale oder Fischgrät-Muster deutlich mehr Reserve.',
+    content: `
+      <h2>Laminat oder Parkett richtig einkaufen</h2>
+      <p>Boden-Pakete werden in festen Flächenmaßen verkauft (häufig 2–2,5 m² pro Paket). Rechnest du nur die reine Raumfläche, kaufst du fast immer zu wenig – Verschnitt an Rändern, Dielen und beim Zuschnitt an Wänden ist unvermeidbar.</p>
+      <h3>Wie viel Verschnitt einplanen?</h3>
+      <ul>
+        <li><strong>Gerade Verlegung, rechteckiger Raum:</strong> 5–8 % Verschnitt reichen meist.</li>
+        <li><strong>Unregelmäßiger Raumzuschnitt, viele Nischen:</strong> 10–12 % einplanen.</li>
+        <li><strong>Diagonale Verlegung oder Fischgrät-Muster:</strong> 15–20 % Verschnitt sind realistisch.</li>
+      </ul>
+      <h3>Rechenbeispiel</h3>
+      <p>Ein Raum von 5 × 4 m (20 m²), 10 % Verschnitt, Pakete zu 2,4 m² und 25 €/m²: Der Bedarf liegt bei 22 m², du brauchst <strong>10 Pakete</strong> (= 24 m²) und zahlst rund <strong>600 €</strong> Materialkosten.</p>
+      <h3>Tipps für die Verlegung</h3>
+      <ul>
+        <li><strong>Gleiche Charge kaufen:</strong> Unterschiedliche Chargen können leichte Farb-/Musterunterschiede haben.</li>
+        <li><strong>Akklimatisieren lassen:</strong> Laminat/Parkett vor dem Verlegen 48 Stunden im Raum lagern.</li>
+        <li><strong>Dehnungsfugen einplanen:</strong> An Wänden und Übergängen 8–10 mm Abstand lassen.</li>
+      </ul>
+    `,
+    faq: [
+      { q: 'Wie viel Verschnitt sollte ich einplanen?', a: 'Bei gerader Verlegung in einem rechteckigen Raum reichen 5–8 %. Bei diagonaler Verlegung oder Fischgrät-Mustern solltest du eher 15–20 % einplanen.' },
+      { q: 'Wie groß ist ein Laminat-Paket üblicherweise?', a: 'Meist zwischen 1,5 und 2,5 m² pro Paket, abhängig vom Hersteller und Dielenformat. Die genaue Größe steht auf der Verpackung – trage sie im Rechner ein.' },
+      { q: 'Muss ich Laminat vor dem Verlegen lagern?', a: 'Ja, idealerweise 48 Stunden ungeöffnet im Verlegeraum bei Raumtemperatur, damit sich das Material akklimatisiert und sich später nicht verzieht.' },
+      { q: 'Sind Dehnungsfugen wirklich nötig?', a: 'Ja. Laminat und Parkett arbeiten mit Temperatur und Luftfeuchtigkeit. Ohne Dehnungsfuge an den Rändern kann sich der Boden aufwölben.' },
+    ],
+    affiliate: {
+      heading: 'Laminat & Parkett im Vergleich',
+      text: 'Laminat, Vinyl und Parkett vergleichen und passendes Zubehör (Trittschalldämmung, Sockelleisten) finden.',
+      cta: 'Böden ansehen',
+      href: '#',
+    },
+    updated: '2026-07-22',
+  },
+
+  // ── 🏊 Pool ───────────────────────────────────────────────────────────────
+  {
+    slug: 'pool-wasser',
+    category: 'Garten',
+    icon: '🏊',
+    title: 'Pool-Rechner',
+    cardTitle: 'Pool-Rechner',
+    tagline: 'Wasservolumen & Nachfüllkosten deines Pools.',
+    heroSubtitle: 'Wie viel Wasser fasst dein Pool – und was kostet das jährliche Nachfüllen durch Verdunstung und Rückspülung?',
+    seoTitle: 'Pool-Rechner 2026 – Wasservolumen & Kosten berechnen',
+    seoDescription: 'Pool-Wasservolumen berechnen sowie jährliche Nachfüllmenge und Wasserkosten durch Verdunstung und Filterrückspülung – kostenlos und sofort.',
+    inputs: [
+      { id: 'laenge', label: 'Poollänge', icon: '📏', min: 2, max: 15, step: 0.25, default: 6, unit: 'm', decimals: 2 },
+      { id: 'breite', label: 'Poolbreite', icon: '📐', min: 1, max: 8, step: 0.25, default: 3, unit: 'm', decimals: 2 },
+      { id: 'tiefe', label: 'Wassertiefe', icon: '📉', min: 0.5, max: 2.5, step: 0.05, default: 1.4, unit: 'm', decimals: 2 },
+      { id: 'wasserwechsel', label: 'Nachfüllanteil/Jahr', icon: '💧', min: 10, max: 60, step: 5, default: 30, unit: '%', decimals: 0 },
+      { id: 'wasserpreis', label: 'Wasserpreis', icon: '💶', min: 2, max: 7, step: 0.1, default: 4, unit: '€/m³', decimals: 1 },
+    ],
+    outputs: [
+      { id: 'volumenL', label: 'Wasservolumen', unit: 'L', decimals: 0, primary: true },
+      { id: 'volumenM3', label: 'Volumen', unit: 'm³', decimals: 1 },
+      { id: 'nachfuellL', label: 'Nachfüllmenge/Jahr', unit: 'L', decimals: 0 },
+      { id: 'wasserkosten', label: 'Wasserkosten/Jahr', money: true },
+    ],
+    note: 'Der Nachfüllanteil hängt von Standort (Sonne/Wind), Abdeckung und Filtertechnik ab. Ohne Abdeckung verdunstet deutlich mehr Wasser als mit.',
+    content: `
+      <h2>Wie viel Wasser braucht mein Pool?</h2>
+      <p>Das Volumen berechnet sich einfach aus <strong>Länge × Breite × mittlerer Wassertiefe</strong>. Bei Pools mit unterschiedlicher Tiefe (z. B. Treppenbereich vs. Schwimmbereich) verwendest du am besten die durchschnittliche Tiefe für eine realistische Schätzung.</p>
+      <p>Interessanter als das einmalige Befüllen ist meist die <strong>jährliche Nachfüllmenge</strong>: Wasser geht durch Verdunstung, Spritzverluste und die Rückspülung des Sandfilters verloren und muss ersetzt werden.</p>
+      <h3>Rechenbeispiel</h3>
+      <p>Ein Pool von 6 × 3 m mit 1,4 m Wassertiefe fasst rund <strong>25.200 Liter</strong>. Bei einem Nachfüllanteil von 30 % im Jahr (Verdunstung, Rückspülung) und 4 €/m³ Wasserpreis kostet das Nachfüllen rund <strong>30 € pro Jahr</strong>.</p>
+      <h3>So senkst du Wasserverlust und Kosten</h3>
+      <ul>
+        <li><strong>Pool-Abdeckung nutzen:</strong> Reduziert die Verdunstung nachts und bei Nichtgebrauch um bis zu 90 %.</li>
+        <li><strong>Windschutz:</strong> Wind erhöht die Verdunstung erheblich – eine geschützte Lage spart Wasser.</li>
+        <li><strong>Filterrückspülung seltener/bedarfsgerecht:</strong> Nicht öfter rückspülen als nötig, das spart direkt Wasser.</li>
+      </ul>
+      <p>Ein beheizter Pool verliert zusätzlich Energie durch Verdunstungskühlung – auch hier hilft eine Abdeckung doppelt: weniger Wasser- und weniger Heizkosten.</p>
+    `,
+    faq: [
+      { q: 'Wie berechne ich das Volumen bei unterschiedlicher Tiefe?', a: 'Verwende die durchschnittliche Wassertiefe (z. B. Mittelwert aus flachem und tiefem Bereich) für eine gute Näherung. Bei stark unterschiedlichen Zonen kannst du auch beide Bereiche einzeln berechnen und addieren.' },
+      { q: 'Wie viel Wasser verdunstet ein Pool pro Tag?', a: 'Je nach Wetter, Windexposition und Poolgröße können das mehrere Millimeter Wasserstand täglich sein – bei ungünstigen Bedingungen ohne Abdeckung durchaus 1 % des Volumens pro Woche oder mehr.' },
+      { q: 'Lohnt sich eine Pool-Abdeckung finanziell?', a: 'Ja, meist deutlich: Sie spart sowohl Wasser- als auch Heizkosten (bei beheizten Pools) und reduziert zusätzlich den Reinigungsaufwand durch weniger Laub und Schmutzeintrag.' },
+      { q: 'Wie oft muss ich den Sandfilter rückspülen?', a: 'Meist einmal pro Woche oder wenn der Druckanzeiger einen spürbaren Anstieg zeigt. Jede Rückspülung verbraucht mehrere hundert Liter Wasser, die in die Nachfüllmenge einfließen.' },
+    ],
+    affiliate: {
+      heading: 'Pool-Zubehör & Pflege',
+      text: 'Abdeckungen, Filtertechnik und Pflegeprodukte für sauberes, klares Poolwasser.',
+      cta: 'Zubehör ansehen',
+      href: '#',
+    },
+    updated: '2026-07-22',
+  },
+
+  // ── ♻️ Kompost ────────────────────────────────────────────────────────────
+  {
+    slug: 'kompost',
+    category: 'Garten',
+    icon: '♻️',
+    title: 'Kompost-Rechner',
+    cardTitle: 'Kompost-Rechner',
+    tagline: 'Wie viel Kompost entsteht aus deinen Gartenabfällen?',
+    heroSubtitle: 'Wie viel fertiger Kompost entsteht aus deinen Grünabfällen – und wie viel sparst du gegenüber gekaufter Komposterde?',
+    seoTitle: 'Kompost-Rechner 2026 – Ertrag & Ersparnis berechnen',
+    seoDescription: 'Kompostmenge berechnen: Wie viel fertiger Kompost entsteht aus deinen Gartenabfällen und wie viel sparst du gegenüber Kauf-Komposterde? Kostenlos.',
+    inputs: [
+      { id: 'abfallProWoche', label: 'Grünabfall/Woche', icon: '🍂', min: 5, max: 150, step: 5, default: 40, unit: 'L', decimals: 0 },
+      { id: 'dauer', label: 'Kompostierdauer', icon: '⏳', min: 3, max: 18, step: 1, default: 9, unit: 'Monate', decimals: 0 },
+      { id: 'reduktion', label: 'Volumenreduktion', icon: '📉', min: 40, max: 80, step: 5, default: 60, unit: '%', decimals: 0 },
+      { id: 'preisProSack', label: 'Preis Kauf-Kompost', icon: '💶', min: 2, max: 12, step: 0.5, default: 5, unit: '€/40L', decimals: 1 },
+    ],
+    outputs: [
+      { id: 'fertigerKompost', label: 'Fertiger Kompost', unit: 'L', decimals: 0, primary: true },
+      { id: 'gesamtInput', label: 'Eingesetztes Material', unit: 'L', decimals: 0 },
+      { id: 'saecke', label: 'entspricht Säcken (40 L)', unit: 'Stk', decimals: 1 },
+      { id: 'ersparnis', label: 'Ersparnis ggü. Kauf', money: true },
+    ],
+    note: 'Die Volumenreduktion durch Rotte variiert je nach Material (Laub, Rasenschnitt, Küchenabfälle) und Kompostführung deutlich – 50–70 % ist ein üblicher Bereich.',
+    content: `
+      <h2>Aus Gartenabfall wird wertvoller Kompost</h2>
+      <p>Beim Kompostieren verrotten organische Gartenabfälle über Monate zu nährstoffreicher Erde. Dabei verliert das Material deutlich an Volumen – Wasser verdunstet, organisches Material wird von Mikroorganismen abgebaut. Eine <strong>Volumenreduktion von 50–70 %</strong> ist normal: Aus 100 Litern frischem Grünschnitt werden am Ende oft nur 30–50 Liter fertiger Kompost.</p>
+      <h3>Rechenbeispiel</h3>
+      <p>40 Liter Grünabfall pro Woche, 9 Monate Kompostierdauer, 60 % Volumenreduktion: Insgesamt kommen rund <strong>1.560 Liter</strong> Material zusammen, daraus entstehen etwa <strong>624 Liter fertiger Kompost</strong> – das entspricht rund 15,6 Säcken Kauf-Komposterde und spart bei 5 €/Sack etwa <strong>78 € im Jahr</strong>.</p>
+      <h3>Was gehört auf den Kompost?</h3>
+      <ul>
+        <li><strong>Gut geeignet:</strong> Rasenschnitt, Laub, Staudenschnitt, unbehandelte Küchenabfälle (Obst-/Gemüsereste), Eierschalen, Kaffeesatz.</li>
+        <li><strong>In Maßen:</strong> Zeitungspapier, Karton (klein geschnitten) als Strukturmaterial.</li>
+        <li><strong>Nicht geeignet:</strong> Gekochte Speisereste, Fleisch, Fisch (ziehen Schädlinge an), kranke Pflanzen, samentragendes Unkraut.</li>
+      </ul>
+      <h3>Tipps für schnellere, bessere Rotte</h3>
+      <ul>
+        <li><strong>Mischverhältnis:</strong> Grünes (stickstoffreich) und Braunes (kohlenstoffreich, z. B. trockenes Laub) im Wechsel schichten.</li>
+        <li><strong>Feuchtigkeit:</strong> Der Kompost sollte feucht wie ein ausgedrückter Schwamm sein, nicht nass und nicht trocken.</li>
+        <li><strong>Umsetzen:</strong> Gelegentliches Durchmischen beschleunigt die Rotte und versorgt sie mit frischem Sauerstoff.</li>
+      </ul>
+    `,
+    faq: [
+      { q: 'Wie lange dauert Kompostieren?', a: 'Je nach Material, Mischung und Pflege dauert es etwa 6–12 Monate bis zu fertigem, reifem Kompost. Mit regelmäßigem Umsetzen geht es schneller als in einem ruhenden Haufen.' },
+      { q: 'Warum wird aus so viel Material so wenig Kompost?', a: 'Beim Verrotten verdunstet Wasser und organisches Material wird von Mikroorganismen zu CO₂ und Wärme abgebaut. Eine Volumenreduktion von 50–70 % ist völlig normal.' },
+      { q: 'Darf gekochtes Essen auf den Kompost?', a: 'Besser nicht – gekochte Speisereste, Fleisch und Fisch ziehen Ratten und andere Schädlinge an und riechen unangenehm beim Verrotten. Rohe Obst- und Gemüsereste sind dagegen unproblematisch.' },
+      { q: 'Wie groß sollte mein Komposter sein?', a: 'Orientiere dich an deiner wöchentlichen Abfallmenge über die Kompostierdauer – der Rechner zeigt dir das eingesetzte Gesamtvolumen. Ein Komposter mit 300–600 Litern reicht für die meisten Hausgärten.' },
+    ],
+    affiliate: {
+      heading: 'Komposter & Gartenzubehör',
+      text: 'Passende Komposter, Wendehilfen und Kompostbeschleuniger für deinen Garten.',
+      cta: 'Produkte ansehen',
+      href: '#',
+    },
+    updated: '2026-07-22',
+  },
 ];
 
 /** Hilfsfunktionen für Seiten & Navigation */

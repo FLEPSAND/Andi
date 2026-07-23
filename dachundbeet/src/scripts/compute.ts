@@ -129,6 +129,62 @@ function brennholz(v: Inputs): Outputs {
   return { rm, kosten, fm };
 }
 
+/** 🔋 Batteriespeicher — zusätzlicher Eigenverbrauch & Amortisation */
+function batteriespeicher(v: Inputs): Outputs {
+  const zusatzKwh = v.jahresertrag * ((v.eigenverbrauchMit - v.eigenverbrauchOhne) / 100);
+  const ersparnis = zusatzKwh * (v.strompreis / 100);
+  const amortisation = ersparnis > 0 ? v.kosten / ersparnis : 0;
+  const gewinn10 = ersparnis * 10 - v.kosten;
+  return { zusatzKwh, ersparnis, amortisation, gewinn10 };
+}
+
+/** ❄️ Klimaanlage — Stromverbrauch & Kosten im Kühlbetrieb */
+function klimaanlage(v: Inputs): Outputs {
+  const stromProStunde = v.leistung / v.eer; // kW elektrisch
+  const verbrauch = stromProStunde * v.stundenProTag * v.tageProJahr;
+  const kosten = verbrauch * (v.strompreis / 100);
+  const kostenProTag = kosten / (v.tageProJahr || 1);
+  return { verbrauch, kosten, kostenProTag };
+}
+
+/** 🎨 Streichen — Wandfläche & Farbmenge */
+function streichen(v: Inputs): Outputs {
+  const umfang = 2 * (v.laenge + v.breite);
+  const wandflaeche = Math.max(umfang * v.hoehe - v.oeffnungen, 0);
+  const farbmengeProAnstrich = wandflaeche / v.ergiebigkeit;
+  const farbmenge = farbmengeProAnstrich * v.anstriche;
+  const eimer5L = Math.ceil(farbmenge / 5);
+  return { wandflaeche, farbmenge, eimer5L, farbmengeProAnstrich };
+}
+
+/** 🪚 Bodenbelag — Paketbedarf & Kosten */
+function bodenbelag(v: Inputs): Outputs {
+  const flaeche = v.laenge * v.breite;
+  const bedarf = flaeche * (1 + v.verschnitt / 100);
+  const pakete = Math.ceil(bedarf / v.paketgroesse);
+  const kosten = pakete * v.paketgroesse * v.preis;
+  return { pakete, flaeche, bedarf, kosten };
+}
+
+/** 🏊 Pool — Wasservolumen & Nachfüllkosten */
+function pool(v: Inputs): Outputs {
+  const volumenM3 = v.laenge * v.breite * v.tiefe;
+  const volumenL = volumenM3 * 1000;
+  const nachfuellL = volumenL * (v.wasserwechsel / 100);
+  const wasserkosten = (nachfuellL / 1000) * v.wasserpreis;
+  return { volumenL, volumenM3, nachfuellL, wasserkosten };
+}
+
+/** ♻️ Kompost — Ausgangsmaterial, fertiger Kompost & Ersparnis */
+function kompost(v: Inputs): Outputs {
+  const wochen = v.dauer * 4.33;
+  const gesamtInput = v.abfallProWoche * wochen;
+  const fertigerKompost = gesamtInput * (1 - v.reduktion / 100);
+  const saecke = fertigerKompost / 40;
+  const ersparnis = saecke * v.preisProSack;
+  return { fertigerKompost, gesamtInput, saecke, ersparnis };
+}
+
 export const COMPUTE: Record<string, ComputeFn> = {
   'pv-solar': pvSolar,
   'balkonkraftwerk': balkonkraftwerk,
@@ -142,4 +198,10 @@ export const COMPUTE: Record<string, ComputeFn> = {
   'pflaster': pflaster,
   'rasen': rasen,
   'brennholz': brennholz,
+  'batteriespeicher': batteriespeicher,
+  'klimaanlage-stromkosten': klimaanlage,
+  'streichen-farbe': streichen,
+  'bodenbelag-laminat': bodenbelag,
+  'pool-wasser': pool,
+  'kompost': kompost,
 };
