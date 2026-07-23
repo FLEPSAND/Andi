@@ -44,6 +44,15 @@ export const AFFILIATE = {
     'erhalten wir ggf. eine Provision — für dich ohne Mehrkosten.',
 } as const;
 
+/**
+ * Website-Verifizierung für Suchmaschinen-Tools (Search Console, Bing etc.).
+ * Leerer String = Meta-Tag wird nicht gerendert.
+ */
+export const VERIFICATION = {
+  google: 'ZFI8O9KBF5JEtJS_YjgNU9G3DFU3mAkCk6sGkHvpDj4',
+  bing: '',
+} as const;
+
 /** Hauptnavigation. Neue Punkte hier ergänzen — Header/Footer ziehen nach. */
 export const NAV = [
   { label: 'Rechner', href: '/rechner' },
