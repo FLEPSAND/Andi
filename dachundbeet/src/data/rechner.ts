@@ -110,9 +110,9 @@ export const RECHNER: Rechner[] = [
     ],
     affiliate: {
       heading: 'Kostenlose Photovoltaik-Angebote vergleichen',
-      text: 'Lass dir unverbindlich mehrere Angebote geprüfter Fachbetriebe aus deiner Region erstellen und finde den besten Preis für deine Anlage.',
+      text: 'Lass dir unverbindlich mehrere Angebote geprüfter Fachbetriebe aus deiner Region erstellen und finde den besten Preis für deine Anlage – über Tarifcheck24.',
       cta: 'Angebote vergleichen',
-      href: '#',
+      href: 'https://a.partner-versicherung.de/click.php?partner_id=199206&ad_id=15&deep=solaranlage',
     },
     updated: '2026-07-22',
   },
