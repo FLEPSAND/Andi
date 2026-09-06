@@ -37,7 +37,18 @@ export default defineConfig({
   integrations: [
     sitemap({
       serialize(eintrag) {
-        const pfad = new URL(eintrag.url).pathname.replace(/\/$/, '');
+        const url = new URL(eintrag.url);
+        const pfad = url.pathname.replace(/\/$/, '');
+
+        /**
+         * Die Sitemap muss dieselbe Schreibweise melden wie das canonical-Tag der
+         * Seite, sonst erklärt sich jede aus der Sitemap geholte URL selbst für
+         * nicht-kanonisch. BaseLayout setzt das canonical ohne abschließenden
+         * Schrägstrich — die Sitemap zieht hier nach. Nur die Startseite behält
+         * ihren Schrägstrich, weil "https://dachundbeet.de" ohne Pfad ungültig wäre.
+         */
+        eintrag.url = pfad === '' ? `${url.origin}/` : `${url.origin}${pfad}`;
+
         const datum = letzteAenderung.get(pfad);
         if (datum) eintrag.lastmod = new Date(`${datum}T00:00:00Z`);
         return eintrag;
