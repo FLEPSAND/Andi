@@ -4,9 +4,15 @@ import type { Affiliate } from '../data/rechner';
 
 interface Props { data?: Affiliate }
 const { data } = Astro.props;
+
+/**
+ * Nur ausspielen, wenn eine echte Partner-URL hinterlegt ist. Solange der
+ * Platzhalter '#' drinsteht, würde sonst ein sichtbarer Button ins Leere führen.
+ */
+const aktiv = Boolean(data?.href && data.href !== '#' && data.href.startsWith('http'));
 ---
 
-{AFFILIATE.enabled && data && (
+{AFFILIATE.enabled && data && aktiv && (
   <aside class="affil" aria-label="Empfehlung">
     <div class="affil__row">
       <div>

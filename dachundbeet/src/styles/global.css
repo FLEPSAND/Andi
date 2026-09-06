@@ -269,6 +269,19 @@ input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; border-radius
 .prose li + li { margin-top: .4rem; }
 .prose strong { font-weight: 700; }
 
+/* Tabellen in Artikeln: scrollen bei Bedarf seitlich, statt die Seite zu sprengen. */
+.prose table {
+  display: block; overflow-x: auto; max-width: 100%;
+  border-collapse: collapse; margin-top: 1.4rem; font-size: .95rem;
+}
+.prose th, .prose td { border: 1px solid var(--border); padding: .6rem .8rem; text-align: left; vertical-align: top; }
+.prose thead th { background: var(--surface-2); font-weight: 700; white-space: nowrap; }
+.prose tbody tr:nth-child(even) { background: var(--surface-2); }
+@media (max-width: 620px) {
+  .prose table { font-size: .84rem; }
+  .prose th, .prose td { padding: .45rem .55rem; }
+}
+
 /* ---- FAQ ---- */
 .faq details { border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); padding: 0 1.2rem; margin-top: .8rem; }
 .faq summary { cursor: pointer; font-weight: 700; padding: 1rem 0; list-style: none; display: flex; justify-content: space-between; gap: 1rem; align-items: center; }
@@ -301,6 +314,10 @@ input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; border-radius
 .site-footer li { margin-bottom: .5rem; }
 .site-footer a { color: var(--text); }
 .site-footer a:hover { color: var(--green); }
+/* Cookie-Einstellungen öffnen einen Dialog statt eine Seite — deshalb ein Button,
+   der wie die übrigen Footer-Links aussieht. */
+.footer__linkbtn { background: none; border: 0; padding: 0; font: inherit; color: var(--text); cursor: pointer; }
+.footer__linkbtn:hover { color: var(--green); }
 .site-footer__bottom { border-top: 1px solid var(--border); padding-block: 1.2rem; font-size: .82rem; color: var(--text-muted);
   display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; justify-content: space-between; }
 

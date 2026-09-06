@@ -34,6 +34,10 @@ Domain: **dachundbeet.de** · Monetarisierung: Google AdSense + Affiliate/Lead-G
 Dazu **18 Ratgeber-Artikel** (einer pro Rechner, gegenseitig verlinkt — Rechner zeigt
 „Passender Ratgeber", Artikel verlinkt zurück zum Rechner).
 
+Textumfang: rund 870 Wörter je Artikel und rund 420 Wörter Erklärtext plus sechs
+ausführliche FAQ je Rechnerseite. Jede Seite kommt damit auf etwa 950–1.500 sichtbare
+Wörter — der Umfang, den Google AdSense unter „eigener Content" erwartet.
+
 Dazu: Startseite, Rechner-Übersicht, Ratgeber-Hub, **Impressum**, **Datenschutz**,
 Über uns, Kontakt, 404 — plus SEO-Basis (`sitemap.xml`, `robots.txt`, `ads.txt`,
 Open Graph, FAQ-/WebApplication-/Article-/Breadcrumb-Schema), Cookie-Consent-Banner
@@ -72,9 +76,12 @@ npm run preview  # dist/ lokal testen
       IAB-TCF-CMP** (z. B. consentmanager, CookieYes, Cookiebot – kostenlose Tarife
       vorhanden). Lässt sich später einfach in `ConsentBanner.astro` einsetzen.
 - [ ] **AdSense scharfstellen:** in `src/config.ts` `ADSENSE.enabled = true` setzen und
-      pro `<AdSlot slot="…">` die jeweilige Ad-Slot-ID eintragen.
+      pro `<AdSlot slot="…">` die jeweilige Ad-Slot-ID eintragen. Solange beides fehlt,
+      gibt `AdSlot.astro` bewusst **gar nichts** aus — ein leerer Platzhalterrahmen
+      ließe die Seite unfertig wirken, auch für die AdSense-Prüfung.
 - [ ] **Affiliate-Links:** in `src/data/rechner.ts` die `affiliate.href`-Platzhalter (`#`)
-      durch echte Partnerprogramm-URLs ersetzen.
+      durch echte Partnerprogramm-URLs ersetzen. Einträge mit `#` werden von
+      `AffiliateCTA.astro` übersprungen, damit kein Button ins Leere führt.
 - [x] **Kontakt-E-Mail** in `src/config.ts` (`SITE.email`) gesetzt.
 
 ## 🔌 Neuen Rechner hinzufügen (modular — bestehende Seiten bleiben unberührt)

@@ -1,7 +1,7 @@
 ---
-title: "Lohnt sich Photovoltaik 2026? Kosten, Ertrag und Amortisation im Überblick"
-description: "Was kostet eine PV-Anlage, wie viel Strom bringt sie und wann hat sie sich bezahlt gemacht? Der ehrliche Überblick für 2026 – mit Rechenbeispiel."
-seoTitle: "Lohnt sich Photovoltaik 2026? Kosten, Ertrag & Amortisation"
+title: "Lohnt sich Photovoltaik 2026 noch?"
+description: "Trotz gesunkener Einspeisevergütung rechnet sich eine PV-Anlage für die meisten Eigenheime. Was Ertrag, Eigenverbrauch und Amortisation heute realistisch bedeuten."
+seoTitle: "Lohnt sich Photovoltaik 2026? Rechnung, Kosten & Amortisation"
 category: "Energie"
 icon: "☀️"
 pubDate: 2026-07-22
@@ -9,51 +9,71 @@ updated: 2026-09-06
 rechner: "pv-solar"
 ---
 
-Kaum eine Investition rund ums Haus wird so oft diskutiert wie die eigene Photovoltaik-Anlage. Die gute Nachricht vorweg: Für die meisten Eigenheimbesitzer **lohnt sich PV 2026 weiterhin** – allerdings kommt es stark auf die Details an. Dieser Ratgeber zeigt dir, welche Faktoren wirklich zählen und wie du in wenigen Minuten deine eigene Rechnung aufmachst.
+Die Einspeisevergütung ist seit Jahren rückläufig, die Modulpreise aber ebenso. Unterm Strich hat sich die Rechnung für Eigenheimbesitzer eher verbessert als verschlechtert – weil der entscheidende Hebel nicht mehr die Einspeisung ist, sondern der selbst verbrauchte Strom.
 
-## Was kostet eine Photovoltaik-Anlage 2026?
+## Warum sich die Logik verschoben hat
 
-Die Preise haben sich nach den Turbulenzen der Vorjahre stabilisiert. Als grobe Orientierung für eine schlüsselfertige Aufdachanlage gilt:
+Vor zehn Jahren war Photovoltaik ein Einspeisegeschäft: Man produzierte Strom, verkaufte ihn komplett ans Netz und kassierte eine hohe garantierte Vergütung. Heute liegt die Vergütung für kleine Dachanlagen mit Teileinspeisung bei rund 8 Cent je Kilowattstunde. Gleichzeitig kostet die Kilowattstunde aus dem Netz je nach Tarif 30 bis 40 Cent.
 
-- **Kleine Anlage (4–6 kWp):** ca. 8.000–12.000 €
-- **Mittlere Anlage (8–10 kWp):** ca. 12.000–18.000 €
-- **Mit Batteriespeicher:** je nach Größe 4.000–10.000 € Aufpreis
+Damit ist jede selbst verbrauchte Kilowattstunde vier- bis fünfmal so viel wert wie eine eingespeiste. Die Frage lautet nicht mehr „Wie viel Ertrag bringt das Dach?", sondern „Wie viel davon kann ich selbst nutzen?".
 
-Wichtig: Seit 2023 entfällt die Mehrwertsteuer auf Kauf und Installation privater Anlagen bis 30 kWp – die Preise oben verstehen sich also bereits als Endpreis.
+## Was eine Anlage heute kostet
 
-## Wie viel Strom bringt die Anlage?
+Für eine schlüsselfertige Aufdachanlage im Einfamilienhaus liegen die Preise typischerweise bei 1.300 bis 1.800 Euro pro kWp, inklusive Montage, Wechselrichter, Gerüst und Anmeldung. Eine 8-kWp-Anlage kostet damit grob 11.000 bis 14.000 Euro.
 
-Der Ertrag hängt von Standort, Ausrichtung und Dachneigung ab. In Deutschland liefert 1 kWp installierte Leistung pro Jahr rund **900 bis 1.050 Kilowattstunden**. Eine 8-kWp-Anlage erzeugt also grob **7.000 bis 8.400 kWh** im Jahr – oft mehr, als ein durchschnittlicher Haushalt verbraucht.
+Kleinere Anlagen sind pro kWp teurer, weil Gerüst, Anfahrt und Anmeldung unabhängig von der Größe anfallen. Eine 4-kWp-Anlage kostet selten die Hälfte einer 8-kWp-Anlage. Das ist einer der Gründe, warum sich größere Anlagen meist besser rechnen als knapp bemessene.
 
-Entscheidend für die Wirtschaftlichkeit ist aber nicht der Ertrag allein, sondern dein **Eigenverbrauch**: Jede selbst genutzte Kilowattstunde spart dir den vollen Strompreis (rund 30–40 ct), während du für eingespeisten Strom nur die Einspeisevergütung (2026 rund 8 ct/kWh) bekommst.
+Seit der Umsatzsteuer-Nullregelung für private Anlagen bis 30 kWp entfällt die Mehrwertsteuer auf Lieferung und Montage. Die Preise oben verstehen sich entsprechend als Endpreise.
 
-## Der Hebel: Eigenverbrauch erhöhen
+## Wie viel dein Dach hergibt
 
-Ohne Speicher liegt der Eigenverbrauch typischerweise bei 25–35 %. So hebst du ihn:
+Der spezifische Ertrag beschreibt, wie viele Kilowattstunden eine Anlage pro installiertem kWp und Jahr liefert. In Deutschland reicht die Spanne grob von 850 kWh/kWp an der Nordseeküste bis über 1.100 kWh/kWp im Alpenvorland und in der Rheinebene.
 
-- **Batteriespeicher:** bringt den Eigenverbrauch auf 55–75 %.
-- **Wärmepumpe:** nutzt tagsüber Solarstrom zum Heizen.
-- **E-Auto:** Laden mit Überschussstrom senkt die Ladekosten drastisch.
-- **Verbrauch verlagern:** Waschmaschine, Spülmaschine und Trockner laufen lassen, wenn die Sonne scheint.
+| Faktor | Auswirkung auf den Ertrag |
+|---|---|
+| Südausrichtung, 30° Neigung | Referenz, 100 % |
+| Ost-West-Dach | rund 80–85 % |
+| Reine Nordausrichtung | rund 55–60 %, meist unwirtschaftlich |
+| Flachdach, aufgeständert | rund 90–95 % |
+| Verschattung durch einen Baum | 10–30 % Verlust, je nach Lage |
 
-## Rechenbeispiel: Wann amortisiert sich die Anlage?
+Ost-West-Dächer haben trotz des geringeren Gesamtertrags einen Vorteil: Sie liefern morgens und abends, also dann, wenn im Haushalt tatsächlich Strom gebraucht wird. Die Eigenverbrauchsquote fällt dadurch oft höher aus als bei einer reinen Südanlage mit ihrer Mittagsspitze.
 
-Nehmen wir eine typische 8-kWp-Anlage für 13.000 €, spezifischer Ertrag 980 kWh/kWp, 35 % Eigenverbrauch, Strompreis 35 ct/kWh, Einspeisung 8,1 ct/kWh:
+Verschattung ist der am meisten unterschätzte Faktor. Ein Schornstein oder eine Satellitenschüssel kann bei ungünstiger Verschaltung ganze Modulstränge ausbremsen. Leistungsoptimierer oder Modulwechselrichter kosten Aufpreis, holen den Verlust aber teilweise zurück.
 
-- Jahresertrag: rund **7.840 kWh**
-- Jährlicher finanzieller Nutzen: rund **1.370 €**
-- Amortisation: knapp **10 Jahre**
+## Der Eigenverbrauch entscheidet
 
-Da eine PV-Anlage 25–30 Jahre hält und die Einspeisevergütung 20 Jahre garantiert ist, produziert sie danach viele Jahre praktisch kostenlosen Strom. Über die Gesamtlaufzeit ergibt sich meist ein deutlicher Gewinn.
+Ohne Speicher liegt der Eigenverbrauch in einem normalen Haushalt bei 25 bis 35 Prozent. Das klingt wenig, ist aber logisch: Die Anlage produziert mittags, wenn niemand da ist.
 
-> **Rechne deinen eigenen Fall durch:** Im [Photovoltaik-Rechner](/rechner/pv-solar) gibst du deine Werte ein und siehst Ertrag, Ersparnis und Amortisation sofort.
+Diese Quote lässt sich ohne Zusatzinvestition heben. Wer Spülmaschine, Waschmaschine und Trockner tagsüber per Zeitvorwahl laufen lässt, kommt schnell fünf bis zehn Prozentpunkte höher. Ein Warmwasser-Heizstab, der mittags den Überschuss in den Speicher schiebt, kostet wenige hundert Euro und bringt noch einmal ähnlich viel.
 
-## Worauf du beim Angebot achten solltest
+Die größten Hebel sind aber Wärmepumpe und E-Auto. Wer beides hat, kommt auch ohne Batteriespeicher auf 50 Prozent und mehr, weil zusätzliche Verbraucher genau dann laufen können, wenn die Sonne scheint.
 
-- **Mehrere Angebote** einholen und vergleichen – die Preisspanne ist groß.
-- Auf **Qualität der Komponenten** (Module, Wechselrichter) und Garantien achten.
-- Die **Dachstatik und Verschattung** realistisch bewerten lassen.
-- Bei Speicher: Nicht überdimensionieren – ein zu großer Speicher rechnet sich selten.
+> **Selbst durchrechnen:** Der [Photovoltaik-Rechner](/rechner/pv-solar) macht aus Anlagengröße, Eigenverbrauchsquote und Strompreis eine konkrete Amortisationszeit.
+
+## Eine Beispielrechnung
+
+Ein Haushalt mit 4.500 kWh Jahresverbrauch installiert 8 kWp für 13.000 Euro. Der Standort liefert 980 kWh/kWp, die Eigenverbrauchsquote liegt bei 35 Prozent, der Strompreis bei 35 Cent, die Einspeisevergütung bei 8,1 Cent.
+
+Der Jahresertrag beträgt 7.840 kWh. Davon werden 2.744 kWh selbst verbraucht, das spart 960 Euro. Die restlichen 5.096 kWh gehen ins Netz und bringen 413 Euro. Zusammen sind das 1.373 Euro Nutzen pro Jahr, die Anlage ist nach gut neun Jahren bezahlt.
+
+Bei einer Lebensdauer von 25 bis 30 Jahren und garantierter Vergütung über 20 Jahre bleibt danach ein deutlicher Überschuss. Selbst wenn man Wartung, Versicherung und einen Wechselrichtertausch nach 12 bis 15 Jahren gegenrechnet, ändert das die Größenordnung nicht.
+
+## Was die Rechnung verschlechtert und was sie verbessert
+
+Nach unten wirken die Degradation der Module von etwa 0,5 Prozent pro Jahr, Betriebskosten von grob 100 bis 200 Euro jährlich für Versicherung und Zähler sowie ein Wechselrichtertausch, für den man 1.000 bis 2.000 Euro einplanen sollte.
+
+Nach oben wirken steigende Strompreise, weil jede selbst verbrauchte Kilowattstunde dann mehr wert wird. In allen Beispielrechnungen hier ist der Strompreis konstant angesetzt, was bewusst konservativ ist. Ebenfalls nach oben wirkt jeder zusätzliche Verbraucher im Haus, der tagsüber läuft.
+
+## Steuern und Anmeldung
+
+Für Anlagen bis 30 kWp auf Einfamilienhäusern sind die Einnahmen aus Einspeisung und Eigenverbrauch von der Einkommensteuer befreit. Die Umsatzsteuer entfällt beim Kauf durch die Nullregelung. Für die meisten privaten Betreiber bedeutet das: kein Gewerbe, keine Einnahmen-Überschuss-Rechnung, keine Umsatzsteuervoranmeldung.
+
+Anmelden musst du die Anlage trotzdem, und zwar an zwei Stellen: beim Netzbetreiber vor der Inbetriebnahme und im Marktstammdatenregister der Bundesnetzagentur innerhalb eines Monats danach. Beides erledigt in der Regel der Installateur, aber die Verantwortung liegt bei dir.
+
+## Für wen es sich nicht lohnt
+
+Bei einem stark verschatteten oder reinen Nord-Dach bleibt der Ertrag zu gering. Wer in absehbarer Zeit das Dach neu decken muss, sollte das zuerst tun – Module abbauen und wieder aufbauen kostet einen vierstelligen Betrag. Und wer plant, das Haus in drei bis vier Jahren zu verkaufen, holt die Investition in dieser Zeit nicht über die Stromrechnung herein. Der Wertzuwachs der Immobilie kann das ausgleichen, ist aber schwerer zu beziffern.
 
 Für die meisten Eigenheime geht die Rechnung 2026 auf, vor allem bei hohem Eigenverbrauch. Ob sie auch bei dir aufgeht, hängt an deinen Zahlen: Dachfläche, Verbrauch, Strompreis. Der [Photovoltaik-Rechner](/rechner/pv-solar) macht daraus eine konkrete Amortisationszeit. Wer erst klein einsteigen will, schaut in den [Balkonkraftwerk-Rechner](/rechner/balkonkraftwerk).
 

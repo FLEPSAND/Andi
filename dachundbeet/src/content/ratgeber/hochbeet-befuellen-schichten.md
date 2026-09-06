@@ -1,7 +1,7 @@
 ---
-title: "Hochbeet richtig befüllen: Schicht für Schicht zum vollen Ertrag"
-description: "Wie befüllt man ein Hochbeet richtig? Der komplette Schichtaufbau, Materialmengen und Pflegetipps für ein Hochbeet, das jahrelang gut trägt."
-seoTitle: "Hochbeet richtig befüllen: Schichtaufbau & Materialmengen"
+title: "Hochbeet befüllen: Schichtaufbau, Mengen und Zeitpunkt"
+description: "Welche Schichten in ein Hochbeet gehören, wie viel Material du brauchst und warum sich das Beet im ersten Jahr absenkt."
+seoTitle: "Hochbeet befüllen: Schichten, Mengen & Anleitung"
 category: "Garten"
 icon: "🌱"
 pubDate: 2026-07-22
@@ -9,35 +9,64 @@ updated: 2026-09-06
 rechner: "hochbeet"
 ---
 
-Ein Hochbeet ist eine der lohnendsten Investitionen für den Garten: rückenschonend, ertragreich und dank der Verrottung im Inneren jahrelang mit Extra-Wärme für die Pflanzen versorgt. Damit das funktioniert, kommt es auf den richtigen Aufbau an.
+Ein Hochbeet ist kein großer Blumentopf. Der Schichtaufbau ist der Grund, warum es funktioniert: Die unteren Lagen verrotten über Jahre und liefern dabei Wärme und Nährstoffe an die Wurzeln darüber. Wer nur Blumenerde einfüllt, hat ein teures Pflanzgefäß gebaut.
 
-## Warum Schichten statt einfach Erde?
+## Der klassische Aufbau von unten nach oben
 
-Ein Hochbeet komplett mit teurer Pflanzerde zu füllen, wäre nicht nur unnötig kostspielig – es wäre auch weniger effektiv. Der klassische **Schichtaufbau** nutzt natürliche Verrottungsprozesse: Grobes organisches Material zersetzt sich langsam, setzt dabei Wärme und Nährstoffe frei und sorgt gleichzeitig für gute Drainage.
+Ganz unten kommt ein Wühlmausgitter aus verzinktem Draht mit maximal 13 Millimetern Maschenweite, an den Seiten einige Zentimeter hochgezogen. Ohne dieses Gitter sind Möhren und Sellerie im zweiten Jahr verschwunden.
 
-## Der Schichtaufbau von unten nach oben
+Darüber folgt die Drainage- und Grobschicht mit etwa 30 Prozent der Gesamthöhe: Baum- und Strauchschnitt, grobe Äste, Wurzelstöcke. Diese Schicht sorgt für Belüftung und Wasserabzug und ist gleichzeitig der langsam verrottende Energievorrat des Beetes.
 
-1. **Drainage-/Grobschicht (ca. 30 %):** Äste, grober Strauch- und Baumschnitt. Sorgt für Belüftung und verhindert Staunässe.
-2. **Kompostierschicht (ca. 45 %):** Grünschnitt, Laub, halbreifer Kompost, ggf. Mist. Das eigentliche „Kraftwerk" des Hochbeets – hier entsteht über Monate Wärme und Nährstoffe.
-3. **Pflanzschicht (ca. 25 %):** Hochwertige, torffreie Pflanz- oder Hochbeeterde mit Kompostanteil. Hier wachsen deine Pflanzen direkt.
+Es folgt eine Schicht aus umgedrehten Grassoden, groben Gartenabfällen und Laub, etwa 20 Prozent der Höhe. Die Grassoden mit der Grasseite nach unten zu legen verhindert, dass sie wieder anwachsen.
 
-Ein feinmaschiges Drahtgitter am Boden schützt zusätzlich vor Wühlmäusen, eine Teichfolie oder Pappe als Trennschicht verlängert die Lebensdauer der Holzkonstruktion.
+Darüber kommt halb verrotteter Kompost oder Mist, weitere 20 Prozent. Diese Schicht liefert die Nährstoffe der ersten Jahre.
 
-## Rechenbeispiel
+Ganz oben, in den obersten 25 bis 30 Prozent, liegt die eigentliche Pflanzschicht aus reifem Kompost gemischt mit hochwertiger Gartenerde. Sie sollte mindestens 25 bis 30 Zentimeter mächtig sein, sonst reicht der Wurzelraum für Tomaten oder Kohl nicht aus.
 
-Ein Hochbeet mit 200 × 100 cm Grundfläche und 80 cm Füllhöhe fasst rund **1.600 Liter**. Aufgeteilt ergibt das etwa 480 Liter Häckselgut, 720 Liter Kompost/Grünschnitt und 400 Liter Pflanzerde – das entspricht rund **10 Säcken** Pflanzerde à 40 Liter für die oberste Schicht.
+> **Mengen berechnen:** Der [Hochbeet-Rechner](/rechner/hochbeet) rechnet aus Länge, Breite und Höhe die Litermenge je Schicht aus.
 
-> **Deine eigenen Maße durchrechnen:** Im [Hochbeet-Rechner](/rechner/hochbeet) gibst du Länge, Breite und Füllhöhe ein und erhältst sofort die passenden Mengen je Schicht.
+## Wie viel Material das bedeutet
+
+Ein Hochbeet von 2,00 mal 0,80 Metern bei 0,80 Meter Höhe fasst 1,28 Kubikmeter, also 1.280 Liter.
+
+| Schicht | Anteil | Menge |
+|---|---|---|
+| Grobmaterial, Äste | 30 % | 384 l |
+| Grassoden, Laub, Grünschnitt | 20 % | 256 l |
+| Halbreifer Kompost oder Mist | 20 % | 256 l |
+| Pflanzschicht aus Kompost und Erde | 30 % | 384 l |
+
+Die beiden unteren Schichten kosten in der Regel nichts, weil sie aus dem eigenen Garten stammen. Bezahlen musst du meist nur die obere Schicht: 384 Liter entsprechen etwa acht bis neun Säcken zu 45 Litern. Bei größeren Beeten lohnt sich lose Ware vom Kompostwerk, die pro Kubikmeter oft nur ein Viertel dessen kostet, was Sackware kostet.
+
+Plane von Anfang an einen Puffer ein. Das Material setzt sich beim Einfüllen bereits, und du wirst mehr brauchen, als die reine Volumenrechnung ergibt.
+
+## Warum sich das Beet absenkt
+
+Im ersten Jahr sackt der Inhalt um 15 bis 25 Prozent ab, weil das organische Material zusammenfällt und verrottet. Das ist kein Fehler, sondern der Prozess, der die Wärme und die Nährstoffe erzeugt.
+
+Fülle deshalb jedes Frühjahr Kompost nach, etwa fünf bis zehn Zentimeter. Nach etwa fünf bis sieben Jahren ist der Vorrat der unteren Schichten aufgebraucht und der Ertrag lässt spürbar nach. Dann leerst du das Beet komplett aus – der Inhalt ist hervorragende Erde für die Beete im Garten – und baust es neu auf.
 
 ## Der richtige Zeitpunkt
 
-Am besten befüllst du ein Hochbeet im **Herbst**: Das Material hat über den Winter Zeit zum Setzen und zur ersten Verrottung, sodass du im Frühjahr direkt pflanzen kannst. Geht es schneller, funktioniert die Befüllung im Frühjahr ebenso – rechne dann aber mit etwas stärkerem Nachsacken im ersten Jahr.
+Der beste Zeitpunkt zum Befüllen ist der Herbst. Dann fällt das Schnittgut ohnehin an, und der Winter gibt dem Material Zeit, sich zu setzen. Im Frühjahr füllst du die abgesackte Höhe auf und kannst sofort pflanzen.
 
-## Pflege im ersten Jahr
+Wer im Frühjahr baut, sollte das Material gut verdichten und einkalkulieren, dass die Pflanzschicht im Sommer nachrutscht.
 
-- **Nachfüllen:** Das Volumen sinkt im ersten Jahr um 10–20 % – im Frühjahr einfach frische Erde oder Kompost nachlegen.
-- **Starkzehrer zuerst:** Tomaten, Kürbis und Zucchini profitieren im ersten Jahr am meisten von der hohen Nährstoffdichte.
-- **Nach 5–7 Jahren:** Ist das grobe Material meist vollständig zersetzt – dann lohnt sich eine komplette Neubefüllung.
+## Was du in welchem Jahr pflanzt
+
+Ein frisch befülltes Hochbeet ist im ersten Jahr sehr nährstoffreich – zu reich für viele Kulturen. Die Reihenfolge über die Jahre folgt deshalb dem abnehmenden Nährstoffangebot.
+
+Im ersten und zweiten Jahr gehören Starkzehrer hinein: Tomaten, Zucchini, Gurken, Kürbis, Kohlarten, Sellerie. Im dritten und vierten Jahr Mittelzehrer wie Möhren, Zwiebeln, Fenchel, Kohlrabi, Spinat und Mangold. Ab dem fünften Jahr Schwachzehrer wie Salate, Radieschen, Kräuter, Bohnen und Erbsen.
+
+Salat im ersten Jahr ist der klassische Fehler: Er reichert bei hohem Stickstoffangebot Nitrat an und schießt schnell in die Blüte.
+
+## Material und Standort des Beetes
+
+Beim Rahmen ist Lärche oder Douglasie ohne Imprägnierung eine gute Wahl; beide halten unbehandelt acht bis fünfzehn Jahre. Fichte hält nur drei bis fünf. Kleide die Innenseite mit Noppenfolie aus, damit das Holz nicht dauerhaft an feuchter Erde liegt, lass den Boden aber offen für Regenwürmer und Wasserabzug.
+
+Metall- und Steinbeete halten praktisch unbegrenzt, heizen sich aber im Sommer stärker auf. In heißen Lagen bedeutet das häufigeres Gießen.
+
+Beim Standort ist die Ausrichtung wichtiger als die Sonnenstunden allein: Ein Beet in Nord-Süd-Ausrichtung bekommt auf beiden Längsseiten gleichmäßig Licht. Und plane rundum mindestens 60 Zentimeter Arbeitsweg ein, besser 80 – ein Beet, an das man nur von einer Seite kommt, ist ab einer Breite von 80 Zentimetern unpraktisch.
 
 Der Schichtaufbau entscheidet darüber, ob ein Hochbeet eine Saison trägt oder mehrere Jahre. Welche Mengen du je Schicht brauchst, rechnet der [Hochbeet-Rechner](/rechner/hochbeet) für deine Maße aus.
 

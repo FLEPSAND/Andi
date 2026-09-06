@@ -1,7 +1,7 @@
 ---
-title: "Heizlast berechnen: Die unterschätzte Basis jeder Heizungsplanung"
-description: "Warum die Heizlast über Erfolg oder Frust bei der neuen Heizung entscheidet – und wie du sie überschlägig selbst einschätzt."
-seoTitle: "Heizlast berechnen: Warum sie über die Heizung entscheidet"
+title: "Heizlast berechnen: die Basis jeder Heizungsplanung"
+description: "Warum die Heizlast über die richtige Heizungsgröße entscheidet, wie die überschlägige Schätzung funktioniert und woran man eine überdimensionierte Anlage erkennt."
+seoTitle: "Heizlast berechnen: Faustformel, Werte & Auslegung 2026"
 category: "Haus"
 icon: "🌡️"
 pubDate: 2026-07-22
@@ -9,37 +9,63 @@ updated: 2026-09-06
 rechner: "heizlast"
 ---
 
-Wer eine neue Heizung plant – besonders eine Wärmepumpe – stolpert früh über einen Begriff: die Heizlast. Sie klingt technisch, ist aber der wichtigste Wert überhaupt, um Frust und Fehlkäufe zu vermeiden.
+Die Heizlast ist die Leistung in Kilowatt, die dein Haus am kältesten Tag des Jahres braucht, um innen warm zu bleiben. Sie ist die Zahl, aus der sich alles andere ableitet: Kesselgröße, Wärmepumpenleistung, Heizkörperauslegung, Rohrquerschnitte.
 
-## Was die Heizlast eigentlich bedeutet
+## Warum die Zahl so wichtig ist
 
-Die Heizlast ist die Leistung in Kilowatt, die deine Heizung an einem sehr kalten Tag liefern muss, damit dein Haus warm bleibt. Sie ist eine Momentaufnahme – anders als der Jahres-Wärmebedarf, der die gesamte Energiemenge über ein Jahr beschreibt. Beide hängen zusammen, beantworten aber unterschiedliche Fragen: Die Heizlast bestimmt, **wie groß** die Heizung sein muss; der Jahresbedarf, **wie viel** sie insgesamt verbraucht.
+Eine zu groß gewählte Heizung ist der häufigste und teuerste Planungsfehler im Bestand. Sie kostet in der Anschaffung mehr, taktet im Betrieb ständig – schaltet also fortlaufend ein und aus – und verschleißt dadurch schneller. Bei einer Wärmepumpe kommt hinzu, dass Takten die Jahresarbeitszahl spürbar drückt.
 
-## Warum eine falsche Heizlast teuer wird
+Eine zu klein gewählte Heizung wird an wenigen sehr kalten Tagen nicht warm. Das klingt schlimmer, ist aber in der Praxis das kleinere Problem, weil ein elektrischer Heizstab diese Spitzen abfangen kann. Der Fehler in Richtung „zu groß" ist deutlich verbreiteter.
 
-- **Zu groß ausgelegt:** Die Heizung taktet ständig ein und aus, was Verschleiß erhöht und die Effizienz senkt – besonders bei Wärmepumpen ein echtes Problem.
-- **Zu klein ausgelegt:** An kalten Tagen wird es nicht richtig warm, ein elektrischer Heizstab muss aushelfen und treibt die Stromkosten in die Höhe.
+Historisch hat sich das eingeschliffen, weil Installateure bei Gaskesseln lieber Reserve einplanten – der Mehrpreis war gering und die Effizienzeinbuße überschaubar. Bei einer Wärmepumpe ist beides nicht mehr der Fall.
 
-Gerade bei Wärmepumpen ist die korrekte Auslegung entscheidend für die Jahresarbeitszahl und damit für die Wirtschaftlichkeit der gesamten Anlage.
+## Die überschlägige Schätzung
 
-## Überschlägig selbst einschätzen
+Für einen ersten Anhaltspunkt multiplizierst du die beheizte Wohnfläche mit einem flächenbezogenen Heizlastwert, der vom energetischen Zustand des Gebäudes abhängt.
 
-Die grobe Formel lautet: **Heizlast = Wohnfläche × spezifische Heizlast.** Die spezifische Heizlast in W/m² hängt vom energetischen Zustand ab:
+| Gebäudezustand | Spezifische Heizlast |
+|---|---|
+| Unsanierter Altbau vor 1978 | 100–160 W/m² |
+| Teilsaniert, Fenster und Dach erneuert | 70–100 W/m² |
+| Gebäude nach Wärmeschutzverordnung 1995 | 60–80 W/m² |
+| Neubau nach aktuellem Standard | 30–50 W/m² |
+| Passivhaus | 10–15 W/m² |
 
-- **Neubau (KfW-Effizienzhaus):** 30–50 W/m²
-- **Gut saniert:** 50–70 W/m²
-- **Teilsaniert:** 70–100 W/m²
-- **Unsanierter Altbau:** 100–140 W/m²
+Ein teilsaniertes Haus mit 150 Quadratmetern und 85 W/m² kommt damit auf rund 12,8 Kilowatt.
 
-## Rechenbeispiel
+Diese Spannen sind breit, und das ist ehrlich gemeint. Zwei Häuser mit demselben Baujahr können sich um den Faktor zwei unterscheiden, je nachdem, ob das Dach gedämmt und die Fenster getauscht wurden.
 
-Ein teilsaniertes Haus mit 130 m² Wohnfläche und 70 W/m² spezifischer Heizlast kommt auf rund **9,1 kW** Heizlast. Bei 1.800 Vollbenutzungsstunden im Jahr ergibt das etwa **16.400 kWh** Wärmebedarf – umgerechnet rund 1.640 m³ Erdgas.
+> **Schnell überschlagen:** Der [Heizlast-Rechner](/rechner/heizlast) macht aus Wohnfläche, Baustandard und Auslegungstemperatur eine Größenordnung.
 
-> **Eigene Werte einschätzen:** Der [Heizlast-Rechner](/rechner/heizlast) gibt dir für deine Wohnfläche und deinen Dämmstandard eine erste Orientierung in Sekunden.
+## Der Gegencheck über den Verbrauch
 
-## Wichtig: Überschlag ersetzt keine Fachplanung
+Es gibt eine zweite, oft genauere Methode: die Rückrechnung aus dem tatsächlichen Verbrauch. Sie funktioniert nur, wenn du die Jahresverbrauchszahlen hast, dafür beschreibt sie dein Haus, wie es wirklich ist.
 
-Diese Faustformel eignet sich hervorragend, um ein Gefühl für die Größenordnung zu bekommen und erste Angebote realistisch einzuschätzen. Für die tatsächliche Auslegung – besonders bei einer Wärmepumpe – ist eine **raumweise Heizlastberechnung nach DIN EN 12831** durch einen Fachbetrieb notwendig. Sie berücksichtigt Fensterflächen, Ausrichtung, Wärmebrücken und jeden Raum einzeln.
+Nimm den Gasverbrauch eines vollen Jahres in Kilowattstunden, ziehe den Anteil für Warmwasser ab – grob 500 bis 800 kWh pro Person und Jahr – und teile den Rest durch die Vollbenutzungsstunden. Für Deutschland rechnet man je nach Region mit 1.800 bis 2.200 Stunden.
+
+Ein Beispiel: 20.000 kWh Gas, davon 2.400 kWh für Warmwasser bei drei Personen. Bleiben 17.600 kWh Heizwärme. Geteilt durch 2.000 Vollbenutzungsstunden ergibt das 8,8 Kilowatt.
+
+Wenn Flächenschätzung und Verbrauchsrechnung stark auseinandergehen, ist das ein Hinweis darauf, dass eine der Annahmen nicht stimmt. Häufig ist es die spezifische Heizlast, die zu hoch angesetzt wurde.
+
+## Was in eine richtige Berechnung einfließt
+
+Die normgerechte Heizlastberechnung nach DIN EN 12831 geht raumweise vor und berücksichtigt deutlich mehr Faktoren: die Fläche jedes Bauteils und dessen U-Wert, Wärmebrücken an Anschlüssen und auskragenden Bauteilen, den Lüftungswärmebedarf abhängig von der Luftdichtheit sowie die Norm-Außentemperatur des Standorts.
+
+Diese Norm-Außentemperatur ist regional festgelegt und liegt in Deutschland zwischen etwa −10 °C an der Küste und −16 °C in Höhenlagen der Mittelgebirge und Alpen. Sie ist keine Extremtemperatur, sondern ein statistischer Auslegungswert.
+
+Die raumweise Berechnung liefert nebenbei etwas, das die Überschlagsrechnung nicht kann: die Heizlast jedes einzelnen Raums. Nur damit lässt sich prüfen, ob die vorhandenen Heizkörper bei niedriger Vorlauftemperatur ausreichen – die Kernfrage vor jedem Wärmepumpeneinbau.
+
+## Warmwasser und Sperrzeiten
+
+Bei einer Wärmepumpe kommt zur Heizlast ein Zuschlag für die Warmwasserbereitung, üblicherweise 0,2 bis 0,3 Kilowatt pro Person. Dazu ein Zuschlag für Sperrzeiten des Netzbetreibers, der bei vergünstigten Wärmepumpentarifen bis zu drei mal zwei Stunden täglich abschalten darf. Üblich sind hierfür 5 bis 15 Prozent Aufschlag.
+
+Bei Gas- und Ölkesseln entfällt der Sperrzeitenzuschlag, dafür wird die Warmwasserleistung bei Kombigeräten oft komplett separat betrachtet, weil die Zapfleistung die Heizlast deutlich übersteigt.
+
+## Woran du eine überdimensionierte Anlage erkennst
+
+Der Brenner oder Kompressor springt in der Übergangszeit sehr häufig an und läuft jeweils nur wenige Minuten. Bei einer Wärmepumpe kannst du das oft in der App nachvollziehen: Mehr als etwa drei bis vier Starts pro Stunde bei milden Außentemperaturen deuten auf Takten hin.
+
+Bei einer bestehenden Anlage lässt sich das teilweise nachträglich beheben, indem die Leistung in der Regelung begrenzt, ein Pufferspeicher richtig eingebunden oder ein hydraulischer Abgleich durchgeführt wird. Ein Neukauf ist selten nötig.
 
 Bevor du Angebote für eine neue Heizung einholst, solltest du wenigstens die Größenordnung deiner Heizlast kennen. Der [Heizlast-Rechner](/rechner/heizlast) liefert sie, die Betriebskosten im Vergleich zeigt anschließend der [Wärmepumpen-Rechner](/rechner/waermepumpe). Die verbindliche Berechnung macht danach ein Fachbetrieb.
 
