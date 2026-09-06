@@ -304,6 +304,19 @@ input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; border-radius
 .site-footer__bottom { border-top: 1px solid var(--border); padding-block: 1.2rem; font-size: .82rem; color: var(--text-muted);
   display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; justify-content: space-between; }
 
+/* ---- Autorenbox ---- */
+.autor {
+  display: flex; gap: 1.1rem; align-items: flex-start;
+  max-width: 760px; margin-top: 2.5rem;
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 1.4rem 1.5rem;
+}
+.autor__mark { flex: none; width: 44px; height: 44px; border-radius: 12px; overflow: hidden; }
+.autor__name { font-weight: 800; font-size: 1.02rem; }
+.autor__rolle { font-size: .82rem; color: var(--text-muted); margin-top: .1rem; }
+.autor__text { font-size: .92rem; color: var(--text-muted); margin-top: .6rem; }
+.autor__links { font-size: .88rem; margin-top: .7rem; }
+
 /* ---- Consent-Banner ---- */
 .consent {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 100;

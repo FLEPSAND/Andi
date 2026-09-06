@@ -5,6 +5,7 @@ seoTitle: "Hochbeet richtig befüllen: Schichtaufbau & Materialmengen"
 category: "Garten"
 icon: "🌱"
 pubDate: 2026-07-22
+updated: 2026-09-06
 rechner: "hochbeet"
 ---
 
@@ -38,8 +39,6 @@ Am besten befüllst du ein Hochbeet im **Herbst**: Das Material hat über den Wi
 - **Starkzehrer zuerst:** Tomaten, Kürbis und Zucchini profitieren im ersten Jahr am meisten von der hohen Nährstoffdichte.
 - **Nach 5–7 Jahren:** Ist das grobe Material meist vollständig zersetzt – dann lohnt sich eine komplette Neubefüllung.
 
-## Fazit
-
-Der Schichtaufbau macht den Unterschied zwischen einem Hochbeet, das gerade so funktioniert, und einem, das über Jahre kräftig trägt. Nutze den [Hochbeet-Rechner](/rechner/hochbeet), um für deine Maße genau zu wissen, wie viel Material du besorgen musst – dann steht der nächsten Gemüsesaison nichts mehr im Weg.
+Der Schichtaufbau entscheidet darüber, ob ein Hochbeet eine Saison trägt oder mehrere Jahre. Welche Mengen du je Schicht brauchst, rechnet der [Hochbeet-Rechner](/rechner/hochbeet) für deine Maße aus.
 
 *Alle Angaben dienen der Orientierung und ersetzen keine individuelle Fachberatung.*

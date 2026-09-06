@@ -5,6 +5,7 @@ seoTitle: "Terrasse pflastern: Material & Kosten planen (Ratgeber 2026)"
 category: "Garten"
 icon: "🧩"
 pubDate: 2026-07-22
+updated: 2026-09-06
 rechner: "pflaster"
 ---
 
@@ -42,8 +43,6 @@ Für eine Terrasse von 5 × 4 m (20 m²) mit einem gängigen Betonstein (44 Stü
 
 Für reine Gehwege und Terrassen reichen meist 15–20 cm Schotter. Soll die Fläche mit dem Auto befahren werden, sollte der Unterbau auf **25–30 cm** verstärkt werden, da sonst die Punktlast der Reifen den Aufbau mit der Zeit verformt.
 
-## Fazit
-
-Der Unterbau entscheidet über die Haltbarkeit deiner gepflasterten Fläche – nicht die Steine allein. Plane lieber etwas großzügiger bei Schotterstärke und Verschnitt, statt später nachbessern zu müssen. Der [Pflastersteine-Rechner](/rechner/pflaster) gibt dir für deine Fläche die passenden Materialmengen, damit du beim Baustoffhandel gleich richtig bestellst.
+Über die Haltbarkeit entscheidet der Unterbau, nicht der Stein. Plane Schotterstärke und Verschnitt lieber großzügig. Die Mengen für deine Fläche liefert der [Pflastersteine-Rechner](/rechner/pflaster).
 
 *Alle Angaben dienen der Orientierung und ersetzen keine individuelle Fachberatung.*

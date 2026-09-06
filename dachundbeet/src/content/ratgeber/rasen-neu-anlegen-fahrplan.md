@@ -5,6 +5,7 @@ seoTitle: "Rasen neu anlegen: Fahrplan zum dichten Rasen (2026)"
 category: "Garten"
 icon: "🌾"
 pubDate: 2026-07-22
+updated: 2026-09-06
 rechner: "rasen"
 ---
 
@@ -42,8 +43,6 @@ In den ersten 2–3 Wochen darf der Boden nie komplett austrocknen – das ist d
 - **Falsche Samenmischung:** Spielrasen, Schattenrasen und Zierrasen haben unterschiedliche Anforderungen – die passende Mischung spart spätere Nachsaat.
 - **Vernachlässigte Nachsaat:** Kleine Lücken schließen sich am besten sofort, bevor sich Unkraut oder Moos dort ausbreitet.
 
-## Fazit
-
-Rasen anlegen ist keine Wissenschaft, aber die Details – Zeitpunkt, Bodenvorbereitung, konsequentes Wässern in der Keimphase – entscheiden über das Ergebnis. Nutze den [Rasen-Rechner](/rechner/rasen), um Saatgut und Dünger für deine Fläche exakt zu planen, statt über- oder unterzudosieren.
+Über das Ergebnis entscheiden der Zeitpunkt und die Wasserversorgung in den ersten drei Wochen, nicht das teuerste Saatgut. Die passenden Mengen für deine Fläche rechnet der [Rasen-Rechner](/rechner/rasen) aus.
 
 *Alle Angaben dienen der Orientierung und ersetzen keine individuelle Fachberatung.*

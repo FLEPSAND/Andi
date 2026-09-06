@@ -5,6 +5,7 @@ seoTitle: "Heizlast berechnen: Warum sie über die Heizung entscheidet"
 category: "Haus"
 icon: "🌡️"
 pubDate: 2026-07-22
+updated: 2026-09-06
 rechner: "heizlast"
 ---
 
@@ -40,8 +41,6 @@ Ein teilsaniertes Haus mit 130 m² Wohnfläche und 70 W/m² spezifischer Heizlas
 
 Diese Faustformel eignet sich hervorragend, um ein Gefühl für die Größenordnung zu bekommen und erste Angebote realistisch einzuschätzen. Für die tatsächliche Auslegung – besonders bei einer Wärmepumpe – ist eine **raumweise Heizlastberechnung nach DIN EN 12831** durch einen Fachbetrieb notwendig. Sie berücksichtigt Fensterflächen, Ausrichtung, Wärmebrücken und jeden Raum einzeln.
 
-## Fazit
-
-Die Heizlast ist der Ausgangspunkt jeder sinnvollen Heizungsplanung – wer sie ignoriert, riskiert eine falsch dimensionierte, ineffiziente Anlage. Nutze den [Heizlast-Rechner](/rechner/heizlast) für eine erste Einschätzung, bevor du in die konkrete Planung mit einem Fachbetrieb gehst, und vergleiche anschließend die Betriebskosten im [Wärmepumpen-Rechner](/rechner/waermepumpe).
+Bevor du Angebote für eine neue Heizung einholst, solltest du wenigstens die Größenordnung deiner Heizlast kennen. Der [Heizlast-Rechner](/rechner/heizlast) liefert sie, die Betriebskosten im Vergleich zeigt anschließend der [Wärmepumpen-Rechner](/rechner/waermepumpe). Die verbindliche Berechnung macht danach ein Fachbetrieb.
 
 *Alle Angaben dienen der Orientierung und ersetzen keine individuelle Fachberatung.*

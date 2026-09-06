@@ -5,6 +5,7 @@ seoTitle: "Dämmung im Altbau: Wo zuerst sanieren? (Ratgeber 2026)"
 category: "Haus"
 icon: "🧱"
 pubDate: 2026-07-22
+updated: 2026-09-06
 rechner: "daemmung"
 ---
 
@@ -38,8 +39,6 @@ Eine 40 m² große Außenwand mit einem U-Wert von 1,4 W/m²K (typischer unsanie
 - **Mittelfristig planen:** Dachdämmung, besonders bei ohnehin anstehender Dacheindeckung.
 - **Langfristig / im Sanierungszyklus:** Fassade und Fenster gemeinsam angehen, damit keine neuen Wärmebrücken entstehen.
 
-## Fazit
-
-Wer mit kleinem Budget startet, erzielt mit oberster Geschossdecke und Kellerdecke oft die schnellste Wirkung fürs Geld. Große Sanierungen wie die Fassade lohnen sich besonders im Zuge ohnehin fälliger Arbeiten. Prüfe im [Dämmungs-Rechner](/rechner/daemmung), welches Bauteil bei dir das größte Sparpotenzial hat, und plane danach deine Reihenfolge.
+Mit kleinem Budget fängst du oben an: oberste Geschossdecke, danach Kellerdecke. Die Fassade lohnt sich vor allem dann, wenn sie ohnehin ansteht. Welches Bauteil bei dir am meisten bringt, zeigt der [Dämmungs-Rechner](/rechner/daemmung).
 
 *Alle Angaben dienen der Orientierung und ersetzen keine individuelle Fachberatung.*

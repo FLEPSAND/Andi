@@ -1,0 +1,21 @@
+---
+/**
+ * Autorenhinweis unter Ratgeber-Artikeln. Macht die Urheberschaft sichtbar,
+ * die im Article-Schema als Person hinterlegt ist.
+ */
+import { AUTOR, SITE } from '../config';
+---
+
+<aside class="autor" aria-label="Über den Autor">
+  <div class="autor__mark" aria-hidden="true">
+    <img src="/favicon.svg" alt="" width="44" height="44" />
+  </div>
+  <div>
+    <p class="autor__name">{AUTOR.name}</p>
+    <p class="autor__rolle">{AUTOR.rolle}</p>
+    <p class="autor__text">{AUTOR.kurzvita}</p>
+    <p class="autor__links">
+      <a href="/ueber-uns">Über {SITE.name}</a> · <a href="/kontakt">Kontakt</a>
+    </p>
+  </div>
+</aside>

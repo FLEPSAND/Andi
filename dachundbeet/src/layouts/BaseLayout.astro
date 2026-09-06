@@ -11,11 +11,19 @@ interface Props {
   /** zusätzliche JSON-LD-Objekte (Schema.org) */
   jsonLd?: Record<string, unknown>[];
   ogType?: string;
+  /** Kategorie steuert das Vorschaubild; ohne Angabe das Standardbild */
+  ogKategorie?: 'Energie' | 'Garten' | 'Haus';
 }
 
-const { title, description, jsonLd = [], ogType = 'website' } = Astro.props;
+const { title, description, jsonLd = [], ogType = 'website', ogKategorie } = Astro.props;
 const canonical = new URL(Astro.url.pathname, SITE.url).href.replace(/\/$/, '') || SITE.url;
 const fullTitle = title.includes(SITE.name) ? title : `${title} · ${SITE.name}`;
+
+const ogDateien = { Energie: 'energie', Garten: 'garten', Haus: 'haus' } as const;
+const ogBild = new URL(
+  `/og/${ogKategorie ? ogDateien[ogKategorie] : 'standard'}.png`,
+  SITE.url
+).href;
 ---
 
 <!doctype html>
@@ -39,9 +47,14 @@ const fullTitle = title.includes(SITE.name) ? title : `${title} · ${SITE.name}`
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="de_DE" />
+    <meta property="og:image" content={ogBild} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${SITE.name} – ${SITE.tagline}`} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogBild} />
 
     <!-- Kein-Flash Dark-Mode: Theme vor dem Rendern setzen -->
     <script is:inline>

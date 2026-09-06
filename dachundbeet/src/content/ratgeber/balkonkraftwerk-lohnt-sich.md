@@ -5,6 +5,7 @@ seoTitle: "Balkonkraftwerk: Was bringt es wirklich? Ertrag & Ersparnis 2026"
 category: "Energie"
 icon: "🔌"
 pubDate: 2026-07-22
+updated: 2026-09-06
 rechner: "balkonkraftwerk"
 ---
 
@@ -54,8 +55,6 @@ Immer mehr Sets werden mit kleinem Speicher angeboten. Er verschiebt Solarstrom 
 - Seriöser Anbieter mit **Garantie** und Ersatzteilversorgung.
 - Prüfe, ob du zur Miete wohnst – dann ggf. Zustimmung von Vermieter/Eigentümergemeinschaft einholen (die Rechtslage ist inzwischen mieterfreundlich).
 
-## Fazit
-
-Ein Balkonkraftwerk ist der günstigste und schnellste Weg zu eigenem Solarstrom. Bei gutem Standort amortisiert es sich in 3–5 Jahren und spart danach jahrelang Geld. Wer mehr will, steigt später auf eine [große PV-Anlage](/rechner/pv-solar) um. Rechne zuerst deinen konkreten Fall im [Balkonkraftwerk-Rechner](/rechner/balkonkraftwerk) durch.
+Wer klein anfangen will, ist mit einem Balkonkraftwerk am schnellsten im Plus: Bei brauchbarer Ausrichtung sind drei bis fünf Jahre bis zur Amortisation realistisch. Was dein Standort hergibt, zeigt der [Balkonkraftwerk-Rechner](/rechner/balkonkraftwerk). Reicht dir das irgendwann nicht mehr, ist die [große PV-Anlage](/rechner/pv-solar) der nächste Schritt.
 
 *Alle Angaben dienen der Orientierung und ersetzen keine individuelle Fachberatung.*

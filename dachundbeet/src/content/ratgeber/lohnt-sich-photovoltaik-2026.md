@@ -5,6 +5,7 @@ seoTitle: "Lohnt sich Photovoltaik 2026? Kosten, Ertrag & Amortisation"
 category: "Energie"
 icon: "☀️"
 pubDate: 2026-07-22
+updated: 2026-09-06
 rechner: "pv-solar"
 ---
 
@@ -54,8 +55,6 @@ Da eine PV-Anlage 25–30 Jahre hält und die Einspeisevergütung 20 Jahre garan
 - Die **Dachstatik und Verschattung** realistisch bewerten lassen.
 - Bei Speicher: Nicht überdimensionieren – ein zu großer Speicher rechnet sich selten.
 
-## Fazit
-
-Photovoltaik lohnt sich 2026 für die allermeisten Eigenheime – besonders, wenn du den Eigenverbrauch clever erhöhst. Die Amortisation liegt oft bei 9–12 Jahren, danach sparst du über ein Jahrzehnt bares Geld. Der wichtigste erste Schritt ist eine ehrliche Rechnung mit deinen eigenen Zahlen: Nutze dafür unseren [Photovoltaik-Rechner](/rechner/pv-solar) und danach den [Balkonkraftwerk-Rechner](/rechner/balkonkraftwerk), falls du erst klein einsteigen möchtest.
+Für die meisten Eigenheime geht die Rechnung 2026 auf, vor allem bei hohem Eigenverbrauch. Ob sie auch bei dir aufgeht, hängt an deinen Zahlen: Dachfläche, Verbrauch, Strompreis. Der [Photovoltaik-Rechner](/rechner/pv-solar) macht daraus eine konkrete Amortisationszeit. Wer erst klein einsteigen will, schaut in den [Balkonkraftwerk-Rechner](/rechner/balkonkraftwerk).
 
 *Alle Angaben dienen der Orientierung und ersetzen keine individuelle Fachberatung.*

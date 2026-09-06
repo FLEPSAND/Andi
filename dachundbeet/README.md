@@ -100,15 +100,28 @@ Neu bauen (`npm run build`) — der Rechner ist live.
 
 ```
 src/
-  config.ts               # EINE zentrale Config: Marke, Domain, AdSense, Affiliate, Nav
+  config.ts               # EINE zentrale Config: Marke, Domain, Autor, AdSense, Affiliate, Nav
   data/rechner.ts         # Rechner-Registry (Metadaten, Inputs, Outputs, Content, FAQ)
   scripts/
     compute.ts            # reine Rechen-Funktionen (Browser + Build)
     calculator.ts         # Client-Runtime: Slider → rechnen → Ergebnis (de-DE-Format)
   layouts/BaseLayout.astro # <head> mit SEO/OG/Schema, Header + Footer
-  components/             # Header, Footer, Calculator, RechnerCard, Faq, AdSlot, AffiliateCTA
+  components/             # Header, Footer, Calculator, RechnerCard, Faq, AdSlot, AffiliateCTA, AutorBox
   pages/                  # index, rechner/, ratgeber/, Rechtsseiten, 404
-public/                   # ads.txt, robots.txt, favicon.svg
+scripts/generate-og.mjs   # erzeugt die OG-Vorschaubilder in public/og/
+public/                   # ads.txt, robots.txt, favicon.svg, og/*.png
+```
+
+## Vorschaubilder (Open Graph)
+
+Jede Seite liefert ein Vorschaubild für Social-Media-Shares. Es gibt vier
+Varianten (Standard plus je eine pro Kategorie); die Auswahl passiert automatisch
+über die Kategorie des Rechners bzw. Artikels.
+
+Neu erzeugen nach Farb- oder Markenänderungen:
+
+```bash
+node scripts/generate-og.mjs
 ```
 
 Alle Angaben in den Rechnern sind vereinfachte Modellrechnungen ohne Gewähr und

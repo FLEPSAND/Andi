@@ -5,6 +5,7 @@ seoTitle: "Pool im Garten: Wasserverbrauch & Kosten (Ratgeber 2026)"
 category: "Garten"
 icon: "🏊"
 pubDate: 2026-07-22
+updated: 2026-09-06
 rechner: "pool-wasser"
 ---
 
@@ -35,8 +36,6 @@ Ein Pool von 6 × 3 m mit 1,4 m mittlerer Wassertiefe fasst rund **25.200 Liter*
 
 Eine Pool-Abdeckung reduziert die Verdunstung um bis zu 90 % und spart dadurch nicht nur Wasser, sondern bei beheizten Pools auch erheblich Heizkosten, da weniger Wärme durch Verdunstungskühlung verloren geht. Zusätzlich hält sie Laub und Schmutz fern und reduziert den Reinigungsaufwand.
 
-## Fazit
-
-Ein Pool ist wasserwirtschaftlich meist unproblematischer, als viele annehmen – besonders mit einer guten Abdeckung. Berechne dein konkretes Volumen und deine voraussichtlichen Nachfüllkosten im [Pool-Rechner](/rechner/pool-wasser), bevor du dich für eine Poolgröße entscheidest.
+Die Wasserkosten sind selten das Problem, die Verdunstung ohne Abdeckung schon. Volumen und Nachfüllmenge für deine Poolmaße liefert der [Pool-Rechner](/rechner/pool-wasser).
 
 *Alle Angaben dienen der Orientierung und ersetzen keine individuelle Fachberatung.*

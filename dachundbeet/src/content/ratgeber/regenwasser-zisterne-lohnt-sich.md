@@ -5,6 +5,7 @@ seoTitle: "Zisterne lohnt sich? Regenwasser nutzen (Ratgeber 2026)"
 category: "Garten"
 icon: "🚰"
 pubDate: 2026-07-22
+updated: 2026-09-06
 rechner: "zisterne"
 ---
 
@@ -40,8 +41,6 @@ Für die genannten 90 m² Dachfläche empfiehlt sich als Faustregel eine Zistern
 - **Filtertechnik** einplanen, damit Laub und Grobschmutz nicht ins System gelangen.
 - **Überlauf** an den Kanal oder eine Versickerungsfläche anschließen.
 
-## Fazit
-
-Für reine Gartenbewässerung amortisiert sich eine Zisterne eher langsam, bleibt aber ökologisch sinnvoll. Richtig lohnend wird es, sobald auch die Toilettenspülung angeschlossen wird. Nutze den [Zisternen-Rechner](/rechner/zisterne), um für deine Dachfläche die passende Größe und realistische Ersparnis zu ermitteln.
+Für den Garten allein amortisiert sich eine Zisterne langsam. Sobald die Toilettenspülung mit dranhängt, sieht die Rechnung deutlich besser aus. Welche Größe zu deiner Dachfläche passt, zeigt der [Zisternen-Rechner](/rechner/zisterne).
 
 *Alle Angaben dienen der Orientierung und ersetzen keine individuelle Fachberatung.*

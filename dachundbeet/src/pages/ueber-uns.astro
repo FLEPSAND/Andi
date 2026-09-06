@@ -1,16 +1,39 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { SITE } from '../config';
+import { SITE, AUTOR } from '../config';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    name: `Über ${SITE.name}`,
+    url: `${SITE.url}/ueber-uns`,
+    inLanguage: 'de-DE',
+    mainEntity: {
+      '@type': 'Person',
+      name: AUTOR.name,
+      description: AUTOR.rolle,
+      url: `${SITE.url}/ueber-uns`,
+      email: SITE.email,
+      worksFor: { '@type': 'Organization', name: SITE.name, url: SITE.url },
+    },
+  },
+];
 ---
 
-<BaseLayout title="Über uns" description={`Was hinter ${SITE.name} steckt: präzise, kostenlose Rechner für Haus, Energie und Garten.`}>
+<BaseLayout title="Über uns" description={`Wer hinter ${SITE.name} steckt: ${AUTOR.name} entwickelt kostenlose Rechner für Haus, Energie und Garten.`} jsonLd={jsonLd}>
   <div class="container">
     <nav class="breadcrumb" aria-label="Brotkrümel"><a href="/">Startseite</a> / <span aria-current="page">Über uns</span></nav>
   </div>
   <section class="section container" style="padding-top:0">
     <div class="prose">
       <h1>Über {SITE.name}</h1>
-      <p><strong>{SITE.name}</strong> ist ein unabhängiges Projekt mit einem einfachen Ziel: Entscheidungen rund um Haus, Energie und Garten sollen auf <strong>nachvollziehbaren Zahlen</strong> beruhen – nicht auf Bauchgefühl oder Werbeversprechen.</p>
+      <p>{SITE.name} ist ein unabhängiges Projekt mit einem einfachen Ziel: Entscheidungen rund um Haus, Energie und Garten sollen auf nachvollziehbaren Zahlen beruhen statt auf Bauchgefühl.</p>
+
+      <h2>Wer dahintersteckt</h2>
+      <p>Hinter der Seite steht {AUTOR.name}. {AUTOR.kurzvita}</p>
+      <p>Die Rechner entstehen aus der Praxis: Jede Formel ist im jeweiligen Ratgebertext offengelegt, samt Rechenbeispiel und den Annahmen, die dahinterstecken. Wo eine Schätzung ungenau wird, steht das dabei.</p>
+      <p>Kontakt: <a href={`mailto:${SITE.email}`}>{SITE.email}</a></p>
 
       <h2>Wofür wir stehen</h2>
       <ul>

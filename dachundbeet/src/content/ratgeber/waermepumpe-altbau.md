@@ -5,6 +5,7 @@ seoTitle: "Wärmepumpe im Altbau: Wann sie sich lohnt (Ratgeber 2026)"
 category: "Energie"
 icon: "🔥"
 pubDate: 2026-07-22
+updated: 2026-09-06
 rechner: "waermepumpe"
 ---
 
@@ -53,8 +54,6 @@ Läuft die Wärmepumpe teilweise mit eigenem Solarstrom, sinken die Stromkosten 
 - Wenn eine **funktionierende, junge Gasheizung** vorhanden ist und keine Förderung greift.
 - Ohne **Heizlastberechnung** durch einen Fachbetrieb – eine falsch ausgelegte Anlage läuft ineffizient.
 
-## Fazit
-
-Die Wärmepumpe funktioniert in vielen Altbauten besser als ihr Ruf – vorausgesetzt, die Vorlauftemperatur stimmt und die Anlage ist sauber ausgelegt. Mit Förderung ist der Umstieg oft überraschend attraktiv. Prüfe zuerst deine [Heizlast](/rechner/heizlast) und vergleiche dann die Kosten im [Wärmepumpen-Rechner](/rechner/waermepumpe).
+Ob eine Wärmepumpe in deinen Altbau passt, entscheidet die nötige Vorlauftemperatur, nicht das Baujahr. Prüfe zuerst die [Heizlast](/rechner/heizlast), dann die Betriebskosten im [Wärmepumpen-Rechner](/rechner/waermepumpe). Die Förderung verschiebt die Rechnung häufig deutlich.
 
 *Alle Angaben dienen der Orientierung und ersetzen keine individuelle Fachberatung.*

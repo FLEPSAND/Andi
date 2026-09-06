@@ -21,6 +21,21 @@ export const SITE = {
 } as const;
 
 /**
+ * Autor der Inhalte. Google bewertet bei Ratgeberthemen mit, ob eine erkennbare
+ * Person hinter den Texten steht (E-E-A-T). Angaben bitte nur ergänzen, wenn sie
+ * zutreffen — erfundene Qualifikationen schaden mehr, als sie nützen.
+ */
+export const AUTOR = {
+  name: 'Andreas Fleps',
+  rolle: 'Betreiber von Dach & Beet',
+  kurzvita:
+    'Andreas Fleps betreibt Dach & Beet und entwickelt Online-Rechner für ' +
+    'Alltagsfragen rund um Haus, Energie und Garten. Zuvor sind unter ' +
+    'besoldungsrechner.com Rechner zur Beamtenbesoldung und zum Tarifrecht im ' +
+    'öffentlichen Dienst entstanden.',
+} as const;
+
+/**
  * Google AdSense.
  * `enabled` erst auf true setzen, wenn die Site im AdSense-Konto freigegeben ist.
  * Solange false, werden dezente Platzhalter statt echter Anzeigen gerendert.

@@ -5,6 +5,7 @@ seoTitle: "Klimaanlage Stromkosten: Was kostet Kühlen wirklich? (2026)"
 category: "Energie"
 icon: "❄️"
 pubDate: 2026-07-22
+updated: 2026-09-06
 rechner: "klimaanlage-stromkosten"
 ---
 
@@ -39,8 +40,6 @@ Ein Split-Klimagerät mit 2,5 kW Kühlleistung, EER 3,5, läuft an 90 Tagen im J
 
 Der Kühlbedarf ist meist am höchsten, wenn die Sonne intensiv scheint – also genau dann, wenn eine [Photovoltaik-Anlage](/rechner/pv-solar) am meisten Strom liefert. Wer beides kombiniert, kühlt einen guten Teil des Sommers praktisch mit eigenem, kostenlosem Solarstrom.
 
-## Fazit
-
-Die Kühlkosten einer Klimaanlage sind überschaubarer, als viele befürchten – vorausgesetzt, du wählst ein effizientes Gerät und eine vernünftige Zieltemperatur. Rechne deinen konkreten Fall im [Klimaanlagen-Rechner](/rechner/klimaanlage-stromkosten) durch, bevor du dich für ein Modell entscheidest.
+Die Betriebskosten fallen meist niedriger aus als befürchtet, sofern Gerät und Zieltemperatur zusammenpassen. Was dein Modell über den Sommer kostet, zeigt der [Klimaanlagen-Rechner](/rechner/klimaanlage-stromkosten).
 
 *Alle Angaben dienen der Orientierung und ersetzen keine individuelle Fachberatung.*

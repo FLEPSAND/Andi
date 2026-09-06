@@ -5,6 +5,7 @@ seoTitle: "Brennholz kaufen & lagern: Was wirklich zählt (2026)"
 category: "Haus"
 icon: "🪵"
 pubDate: 2026-07-22
+updated: 2026-09-06
 rechner: "brennholz"
 ---
 
@@ -46,8 +47,6 @@ Frisch geschlagenes Holz hat einen Wassergehalt von 50 % und mehr. Beim Verbrenn
 - **Sonnige, windige Lage:** Beschleunigt die Trocknung deutlich gegenüber schattigen, feuchten Ecken.
 - **Nicht zu dicht stapeln:** Luftzirkulation zwischen den Scheiten ist wichtiger als eine kompakte Lagerung.
 
-## Fazit
-
-Gut gelagertes, trockenes Holz der richtigen Menge zu haben, ist die Basis für eine effiziente und sichere Heizsaison mit Holz. Nutze den [Brennholz-Rechner](/rechner/brennholz), um Bedarf und Kosten für deine Situation realistisch zu planen – und kaufe Holz idealerweise ein bis zwei Jahre im Voraus, damit es Zeit zum Trocknen hat.
+Wenn du mit Holz heizt, kauf es ein bis zwei Jahre im Voraus. Die Restfeuchte entscheidet stärker über den nutzbaren Heizwert als die Holzart. Wie viele Raummeter du pro Saison brauchst und was sie kosten, rechnet der [Brennholz-Rechner](/rechner/brennholz) aus.
 
 *Alle Angaben dienen der Orientierung und ersetzen keine individuelle Fachberatung.*

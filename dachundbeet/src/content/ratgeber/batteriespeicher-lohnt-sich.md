@@ -5,6 +5,7 @@ seoTitle: "Batteriespeicher für PV-Anlage: Lohnt sich das? (2026)"
 category: "Energie"
 icon: "🔋"
 pubDate: 2026-07-22
+updated: 2026-09-06
 rechner: "batteriespeicher"
 ---
 
@@ -39,8 +40,6 @@ Bei 8.000 kWh Jahresertrag, einer Steigerung des Eigenverbrauchs von 30 % auf 60
 
 Ist der Eigenverbrauch schon ohne Speicher hoch – etwa weil eine Wärmepumpe oder ein E-Auto tagsüber viel Solarstrom direkt verbrauchen – bringt ein zusätzlicher Speicher weniger zusätzlichen Nutzen, weil weniger Überschuss zum Zwischenspeichern übrig bleibt.
 
-## Fazit
-
-Ein Batteriespeicher lohnt sich vor allem dann, wenn der Eigenverbrauch ohne Speicher noch niedrig ist und ausreichend Solarüberschuss zum Speichern anfällt. Bei den heutigen Preisen liegt die Amortisation meist im Bereich von 7–12 Jahren – bei einer Lebensdauer von 10–15 Jahren rechnet sich die Investition für die meisten Haushalte über die Zeit. Rechne deinen konkreten Fall im [Batteriespeicher-Rechner](/rechner/batteriespeicher) durch, am besten gemeinsam mit dem [Photovoltaik-Rechner](/rechner/pv-solar).
+Ob sich ein Speicher lohnt, hängt weniger am Anschaffungspreis als daran, wie viel Solarüberschuss bei dir überhaupt anfällt. Ist dein Eigenverbrauch ohne Speicher schon hoch, bringt er wenig. Die Zahlen für deinen Fall liefert der [Batteriespeicher-Rechner](/rechner/batteriespeicher), sinnvollerweise zusammen mit dem [Photovoltaik-Rechner](/rechner/pv-solar).
 
 *Alle Angaben dienen der Orientierung und ersetzen keine individuelle Fachberatung.*
