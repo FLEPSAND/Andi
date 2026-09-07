@@ -32,7 +32,13 @@ for (const datei of readdirSync(ratgeberOrdner)) {
 // https://astro.build
 export default defineConfig({
   site: SITE.url,
-  trailingSlash: 'ignore',
+  /**
+   * 'never' statt 'ignore': Jede Seite ist damit unter genau einer Schreibweise
+   * erreichbar — ohne abschließenden Schrägstrich, passend zum canonical-Tag,
+   * zur Sitemap und zu Cloudflare Pages. Bei 'ignore' entstanden zwei Adressen
+   * pro Seite, die Google als getrennte URLs behandelt hat.
+   */
+  trailingSlash: 'never',
   compressHTML: true,
   integrations: [
     sitemap({
