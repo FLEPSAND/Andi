@@ -59,3 +59,11 @@ class WebSocketTransport {
 ```
 
 Then in `js/remote.js` swap `new MockTransport(...)` for your implementation.
+
+## Andi Notes
+
+Im Ordner [`freenotes/`](freenotes/) liegt außerdem **Andi Notes** — eine
+Notiz-App für Handschrift, Zeichnen, PDF-Annotation, Texterkennung, Aufnahme
+mit Live-Mitschrift und Auswertung des Inhalts. Ebenfalls statisch, ohne
+Build-Schritt, alle Daten bleiben im Browser. Details in
+[`freenotes/README.md`](freenotes/README.md).

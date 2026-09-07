@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Notizen mit Handschrift, vielen Stiften, Ebenen, PDF, OCR, Aufnahme und Auswertung — alles im Browser.">
+  <title>Andi Notes</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<div class="app" id="app" data-mode="text" data-panel="closed" data-spread="single">
+
+  <!-- ═══════════════ Seitenleiste ═══════════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">✎</span>
+      <span class="brand-name">Andi&nbsp;Notes</span>
+      <button class="icon-btn only-narrow" id="btn-sidebar-close" aria-label="Seitenleiste schließen">✕</button>
+    </div>
+
+    <div class="search">
+      <input type="search" id="q" placeholder="Suchen…" autocomplete="off" spellcheck="false" aria-label="Notizen durchsuchen">
+    </div>
+
+    <div class="sidebar-scroll">
+      <div class="section-head">
+        <span>Ordner</span>
+        <button class="icon-btn" id="btn-new-folder" title="Neuer Ordner" aria-label="Neuer Ordner">+</button>
+      </div>
+      <nav class="folders" id="folders" aria-label="Ordner"></nav>
+
+      <div class="section-head" id="tags-head" hidden>
+        <span>Schlagwörter</span>
+      </div>
+      <div class="tagcloud" id="tagcloud"></div>
+
+      <div class="section-head">
+        <span>Notizen</span>
+        <span class="count" id="notelist-count"></span>
+      </div>
+      <div class="notelist" id="notelist" aria-label="Notizen"></div>
+    </div>
+
+    <div class="sidebar-foot">
+      <button class="btn primary" id="btn-new-note">Neue Notiz</button>
+      <button class="btn" id="btn-import-pdf" title="PDF importieren">PDF</button>
+      <button class="icon-btn" id="btn-settings" title="Einstellungen" aria-label="Einstellungen">⚙</button>
+    </div>
+  </aside>
+
+  <!-- ═══════════════ Arbeitsfläche ═══════════════ -->
+  <main class="workspace">
+    <header class="topbar">
+      <button class="icon-btn only-narrow" id="btn-sidebar-open" aria-label="Notizen">☰</button>
+
+      <button class="note-icon" id="btn-note-icon" title="Symbol wählen">📄</button>
+      <input class="title-input" id="note-title" placeholder="Ohne Titel" aria-label="Titel der Notiz">
+
+      <div class="modes" role="group" aria-label="Modus">
+        <button class="mode-btn" data-mode="text" title="Text (Alt+1)">Text</button>
+        <button class="mode-btn" data-mode="draw" title="Zeichnen (Alt+2)">Zeichnen</button>
+      </div>
+
+      <div class="spacer"></div>
+
+      <button class="icon-btn" id="btn-star" title="Favorit" aria-label="Favorit">☆</button>
+      <button class="icon-btn" id="btn-record" title="Aufnehmen und live mitschreiben" aria-label="Aufnehmen">🎙</button>
+      <button class="icon-btn" id="btn-pip" title="Video mitschreiben" aria-label="Video">▶</button>
+      <button class="btn" id="btn-ai">KI</button>
+      <div class="menu-wrap">
+        <button class="icon-btn" id="btn-more" aria-label="Mehr" aria-haspopup="true">⋯</button>
+        <div class="menu" id="menu-more" hidden>
+          <button data-act="template">Vorlage wählen…</button>
+          <button data-act="page-add">Seite anhängen</button>
+          <button data-act="page-extend">Seite erweitern (länger)</button>
+          <button data-act="page-dup">Seite duplizieren</button>
+          <button data-act="page-del">Seite löschen</button>
+          <hr>
+          <button data-act="spread">Zweiseitenmodus</button>
+          <button data-act="split">Split-Screen (zweite Notiz)</button>
+          <hr>
+          <button data-act="tags">Schlagwörter bearbeiten…</button>
+          <button data-act="move">In Ordner verschieben…</button>
+          <button data-act="duplicate">Notiz duplizieren</button>
+          <button data-act="version">Version sichern</button>
+          <hr>
+          <button data-act="export-md">Als Markdown exportieren</button>
+          <button data-act="export-png">Seite als Bild sichern</button>
+          <button data-act="export-print">Als PDF drucken</button>
+          <button data-act="backup">Backup (JSON)</button>
+          <button data-act="restore">Backup einspielen</button>
+          <hr>
+          <button data-act="delete" class="danger">Notiz löschen</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Werkzeugleiste Text -->
+    <div class="toolbar toolbar-text" id="toolbar-text">
+      <button class="tb" data-cmd="bold" title="Fett"><b>B</b></button>
+      <button class="tb" data-cmd="italic" title="Kursiv"><i>I</i></button>
+      <button class="tb" data-cmd="underline" title="Unterstrichen"><u>U</u></button>
+      <button class="tb" data-cmd="strikeThrough" title="Durchgestrichen"><s>S</s></button>
+      <span class="tb-sep"></span>
+      <button class="tb" data-block="h1" title="Überschrift 1">H1</button>
+      <button class="tb" data-block="h2" title="Überschrift 2">H2</button>
+      <button class="tb" data-block="p" title="Fließtext">¶</button>
+      <span class="tb-sep"></span>
+      <button class="tb" data-cmd="insertUnorderedList" title="Liste">•—</button>
+      <button class="tb" data-cmd="insertOrderedList" title="Nummerierte Liste">1.</button>
+      <button class="tb" data-act="todo" title="Aufgabe">☐</button>
+      <button class="tb" data-block="blockquote" title="Zitat">❝</button>
+      <button class="tb" data-block="pre" title="Code">&lt;/&gt;</button>
+      <span class="tb-sep"></span>
+      <label class="tb tb-color" title="Textfarbe">
+        <span id="text-color-dot" class="dot"></span>
+        <input type="color" id="text-color" value="#e5484d">
+      </label>
+      <button class="tb" data-act="highlight-text" title="Text markieren">▨</button>
+      <button class="tb" data-act="clear-format" title="Formatierung entfernen">⌫</button>
+    </div>
+
+    <!-- Werkzeugleiste Zeichnen -->
+    <div class="toolbar toolbar-draw" id="toolbar-draw">
+      <div class="pen-rack" id="pen-rack" role="group" aria-label="Stifte"></div>
+
+      <span class="tb-sep"></span>
+
+      <button class="tb tool" data-mode-tool="eraser" title="Radierer (E)">◻</button>
+      <button class="tb tool" data-mode-tool="lasso" title="Auswahl (S)">◌</button>
+      <div class="menu-wrap">
+        <button class="tb tool" id="btn-shapes" data-mode-tool="shape" title="Formen (F)">▭</button>
+        <div class="menu small" id="menu-shapes" hidden></div>
+      </div>
+
+      <span class="tb-sep"></span>
+
+      <div class="color-block">
+        <select id="palette-select" aria-label="Farbpalette"></select>
+        <div class="swatches" id="swatches" role="group" aria-label="Farbe"></div>
+        <label class="tb tb-color" title="Eigene Farbe">
+          <span id="ink-color-dot" class="dot"></span>
+          <input type="color" id="ink-color" value="#111318">
+        </label>
+      </div>
+
+      <span class="tb-sep"></span>
+
+      <label class="slider" title="Strichstärke">
+        <span class="slider-label">Dicke</span>
+        <input type="range" id="ink-size" min="0.5" max="40" step="0.5" value="3" aria-label="Strichstärke">
+        <span class="size-preview" id="size-preview"></span>
+      </label>
+      <label class="slider" title="Deckkraft">
+        <span class="slider-label">Deckkraft</span>
+        <input type="range" id="ink-opacity" min="0.05" max="1" step="0.05" value="1" aria-label="Deckkraft">
+      </label>
+
+      <span class="tb-sep"></span>
+
+      <button class="tb" id="btn-undo" title="Rückgängig (Strg+Z)">↶</button>
+      <button class="tb" id="btn-redo" title="Wiederholen">↷</button>
+      <button class="tb" id="btn-layers" title="Ebenen">▤</button>
+      <button class="tb" id="btn-ocr-page" title="Seite in Text umwandeln">OCR</button>
+
+      <span class="tb-sep"></span>
+
+      <label class="toggle" title="Handballenschutz: nur Stifteingaben zeichnen">
+        <input type="checkbox" id="pen-only"> Nur Stift
+      </label>
+      <label class="toggle" id="eraser-mode-wrap" title="Radierer folgt dem Stiftdruck">
+        <input type="checkbox" id="eraser-pressure" checked> Druck-Radierer
+      </label>
+    </div>
+
+    <!-- Auswahl-Popup -->
+    <div class="selbar" id="selbar" hidden>
+      <span id="selbar-count"></span>
+      <button class="tb" data-sel="dup" title="Duplizieren">⧉</button>
+      <button class="tb" data-sel="del" title="Löschen">🗑</button>
+      <label class="tb tb-color" title="Farbe der Auswahl">
+        <span class="dot" id="sel-color-dot"></span>
+        <input type="color" id="sel-color" value="#111318">
+      </label>
+      <button class="tb" data-sel="close" title="Auswahl aufheben">✕</button>
+    </div>
+
+    <div class="canvas-area">
+      <div class="pages" id="pages" tabindex="-1"></div>
+      <aside class="splitview" id="splitview" hidden>
+        <div class="split-head">
+          <select id="split-note" aria-label="Zweite Notiz"></select>
+          <button class="icon-btn" id="btn-split-close" aria-label="Split schließen">✕</button>
+        </div>
+        <div class="split-body" id="split-body"></div>
+      </aside>
+    </div>
+
+    <div class="statusbar">
+      <span id="page-info">–</span>
+      <span class="chip" id="layer-info" hidden></span>
+      <span class="chip rec" id="rec-info" hidden></span>
+      <span class="spacer"></span>
+      <span class="zoom">
+        <button id="btn-zoom-out" title="Kleiner" aria-label="Kleiner">−</button>
+        <span id="zoom-value">100 %</span>
+        <button id="btn-zoom-in" title="Größer" aria-label="Größer">+</button>
+      </span>
+      <span id="save-state">gespeichert</span>
+    </div>
+  </main>
+
+  <!-- ═══════════════ Rechtes Panel ═══════════════ -->
+  <aside class="aipanel" id="aipanel" aria-label="Werkzeuge">
+    <div class="panel-head">
+      <div class="tabs" role="tablist">
+        <button class="tab" data-tab="summary" role="tab" title="Auswertung">Analyse</button>
+        <button class="tab" data-tab="chat" role="tab" title="Fragen zur Notiz">Chat</button>
+        <button class="tab" data-tab="ocr" role="tab" title="Texterkennung">OCR</button>
+        <button class="tab" data-tab="layers" role="tab" title="Ebenen">Ebenen</button>
+        <button class="tab" data-tab="audio" role="tab" title="Aufnahmen">Audio</button>
+        <button class="tab" data-tab="history" role="tab" title="Versionen">Verlauf</button>
+      </div>
+      <button class="icon-btn" id="btn-ai-close" aria-label="Panel schließen">✕</button>
+    </div>
+
+    <div class="panel-body">
+      <section class="tabpane" data-pane="summary">
+        <div class="row wrap">
+          <button class="btn" data-ai="summary">Zusammenfassung</button>
+          <button class="btn" data-ai="keypoints">Kernpunkte</button>
+          <button class="btn" data-ai="actions">Aufgaben</button>
+          <button class="btn" data-ai="quiz">Lernfragen</button>
+        </div>
+        <div class="ai-out" id="ai-out"><p class="muted">Grundlage ist der Text der Notiz — getippt, per OCR erkannt, aus dem PDF gelesen oder transkribiert.</p></div>
+      </section>
+
+      <section class="tabpane" data-pane="chat" hidden>
+        <div class="chat" id="chat"></div>
+        <form class="chat-form" id="chat-form">
+          <textarea id="chat-input" rows="2" placeholder="Frage zur Notiz…" aria-label="Frage"></textarea>
+          <button class="btn primary" type="submit">Senden</button>
+        </form>
+      </section>
+
+      <section class="tabpane" data-pane="ocr" hidden>
+        <p class="muted">Macht aus Handschrift oder einer PDF-Seite durchsuchbaren Text. Das Erkennungsmodell wird beim ersten Mal geladen (etwa 10&nbsp;MB) und danach zwischengespeichert.</p>
+        <div class="row">
+          <select id="ocr-lang" aria-label="Sprache">
+            <option value="deu">Deutsch</option>
+            <option value="eng">Englisch</option>
+            <option value="deu+eng">Deutsch + Englisch</option>
+          </select>
+          <button class="btn" id="btn-ocr-run">Seite erkennen</button>
+        </div>
+        <div class="ai-out" id="ocr-out"></div>
+        <button class="btn" id="btn-ocr-insert" hidden>In Notiz einfügen</button>
+      </section>
+
+      <section class="tabpane" data-pane="layers" hidden>
+        <div class="row">
+          <button class="btn" id="btn-layer-add">Neue Ebene</button>
+          <button class="btn" id="btn-layer-merge" title="Mit der Ebene darunter verbinden">Verbinden</button>
+        </div>
+        <div class="layer-list" id="layer-list"></div>
+        <label class="check"><input type="checkbox" id="dim-layers"> Inaktive Ebenen abschwächen</label>
+      </section>
+
+      <section class="tabpane" data-pane="audio" hidden>
+        <div class="rec-box">
+          <button class="btn primary" id="btn-rec-toggle">Aufnahme starten</button>
+          <span class="rec-time" id="rec-time">0:00</span>
+          <div class="level"><span id="rec-level"></span></div>
+        </div>
+        <label class="check"><input type="checkbox" id="live-transcribe"> Live mitschreiben</label>
+        <select id="rec-lang" aria-label="Sprache der Transkription">
+          <option value="de-DE">Deutsch</option>
+          <option value="en-US">Englisch</option>
+          <option value="fr-FR">Französisch</option>
+        </select>
+        <p class="hint" id="transcribe-hint"></p>
+        <div class="transcript" id="transcript"></div>
+        <div class="rec-list" id="rec-list"></div>
+      </section>
+
+      <section class="tabpane" data-pane="history" hidden>
+        <p class="muted">Jede gesicherte Version enthält alle Seiten der Notiz. Ältere Stände lassen sich zurückholen — der aktuelle wird davor gesichert.</p>
+        <div class="row">
+          <button class="btn" id="btn-version-save">Version sichern</button>
+        </div>
+        <div class="version-list" id="version-list"></div>
+      </section>
+    </div>
+
+    <div class="panel-foot">
+      <span class="provider-badge" id="provider-badge">lokal</span>
+      <button class="link" id="btn-open-settings">ändern</button>
+    </div>
+  </aside>
+</div>
+
+<!-- ═══════════════ Video ═══════════════ -->
+<div class="videobox" id="videobox" hidden>
+  <div class="videobox-head">
+    <strong>Video mitschreiben</strong>
+    <button class="icon-btn" id="btn-video-close" aria-label="Schließen">✕</button>
+  </div>
+  <video id="video" playsinline controls></video>
+  <div class="videobox-empty" id="video-empty">
+    <p class="muted">Videodatei öffnen oder eine direkte Video-URL einfügen. Bild-in-Bild hält das Video über allen Fenstern, während du schreibst.</p>
+  </div>
+  <div class="videobox-foot">
+    <button class="btn" id="btn-video-file">Datei…</button>
+    <input type="url" id="video-url" placeholder="https://…/video.mp4" aria-label="Video-URL">
+    <button class="btn" id="btn-video-load">Laden</button>
+    <button class="btn" id="btn-video-pip">PiP</button>
+    <button class="btn primary" id="btn-video-shot" title="Standbild in die Notiz (Strg+Umschalt+S)">Screenshot</button>
+  </div>
+</div>
+
+<!-- ═══════════════ Vorlagen ═══════════════ -->
+<dialog id="template-dialog">
+  <div class="dialog-body">
+    <h2>Vorlage für diese Seite</h2>
+    <div class="template-grid" id="template-grid"></div>
+    <menu>
+      <button class="btn" id="btn-template-all">Auf alle Seiten anwenden</button>
+      <button class="btn primary" id="btn-template-close">Fertig</button>
+    </menu>
+  </div>
+</dialog>
+
+<!-- ═══════════════ Symbol ═══════════════ -->
+<dialog id="icon-dialog">
+  <div class="dialog-body">
+    <h2>Symbol und Farbe</h2>
+    <div class="icon-grid" id="icon-grid"></div>
+    <div class="color-row" id="note-colors"></div>
+    <menu>
+      <button class="btn" id="btn-icon-clear">Zurücksetzen</button>
+      <button class="btn primary" id="btn-icon-close">Fertig</button>
+    </menu>
+  </div>
+</dialog>
+
+<!-- ═══════════════ Einstellungen ═══════════════ -->
+<dialog id="settings-dialog">
+  <form method="dialog" class="dialog-body">
+    <h2>Einstellungen</h2>
+
+    <fieldset>
+      <legend>Auswertung</legend>
+      <label class="radio"><input type="radio" name="provider" value="local"> <span><strong>Lokal</strong> — Analyse im Browser, ohne Netz und ohne Schlüssel. Sucht und ordnet, was in der Notiz steht.</span></label>
+      <label class="radio"><input type="radio" name="provider" value="anthropic"> <span><strong>Anthropic (Claude)</strong> — echter Modellaufruf, API-Schlüssel nötig.</span></label>
+      <label class="radio"><input type="radio" name="provider" value="custom"> <span><strong>Eigener Endpunkt</strong> — OpenAI-kompatible <code>/chat/completions</code>-API.</span></label>
+
+      <div class="field" data-for="anthropic custom">
+        <label for="set-key">API-Schlüssel</label>
+        <input type="password" id="set-key" autocomplete="off" placeholder="sk-…">
+        <p class="hint">Bleibt in diesem Browser und geht nur an den gewählten Anbieter. Auf einem geteilten Gerät besser leer lassen.</p>
+      </div>
+      <div class="field" data-for="anthropic custom">
+        <label for="set-model">Modell</label>
+        <input type="text" id="set-model" placeholder="claude-sonnet-5">
+      </div>
+      <div class="field" data-for="custom">
+        <label for="set-base">Basis-URL</label>
+        <input type="url" id="set-base" placeholder="https://api.example.com/v1">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Schreiben</legend>
+      <label class="check"><input type="checkbox" id="set-penonly"> Nur Stifteingaben zeichnen (Handballenschutz)</label>
+      <label class="check"><input type="checkbox" id="set-pressure"> Stiftdruck auswerten</label>
+      <label class="check"><input type="checkbox" id="set-smooth"> Striche glätten</label>
+      <label class="check"><input type="checkbox" id="set-autoversions"> Automatisch Versionen sichern</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Darstellung</legend>
+      <label class="field">
+        <span>Design</span>
+        <select id="set-theme">
+          <option value="auto">Wie im System</option>
+          <option value="light">Hell</option>
+          <option value="dark">Dunkel</option>
+        </select>
+      </label>
+    </fieldset>
+
+    <fieldset>
+      <legend>Daten</legend>
+      <p class="hint">Notizen, Zeichnungen, PDFs und Aufnahmen liegen ausschließlich in diesem Browser. Kein Server, kein Konto, keine Telemetrie. Sicherung über <em>⋯ → Backup</em>.</p>
+      <p class="hint" id="storage-info"></p>
+    </fieldset>
+
+    <menu>
+      <button value="cancel" class="btn">Abbrechen</button>
+      <button value="save" class="btn primary">Speichern</button>
+    </menu>
+  </form>
+</dialog>
+
+<input type="file" id="file-pdf" accept="application/pdf" hidden>
+<input type="file" id="file-video" accept="video/*" hidden>
+<input type="file" id="file-restore" accept="application/json" hidden>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
