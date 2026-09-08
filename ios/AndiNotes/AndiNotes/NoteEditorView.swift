@@ -26,6 +26,8 @@ struct NoteEditorView: View {
     @State private var tagText = ""
     @State private var pdfImages: [Int: UIImage] = [:]
     @State private var status: String?
+    @State private var isSelectingRegion = false
+    @State private var askImage: AskImage?
 
     private var pages: [Page] { note.orderedPages }
     private var currentPage: Page? {
@@ -63,6 +65,11 @@ struct NoteEditorView: View {
         }
         .sheet(item: $shareItem) { item in
             ShareSheet(items: [item.url])
+        }
+        .sheet(item: $askImage) { item in
+            AskSelectionView(image: item.image, page: currentPage) { answer in
+                appendToPage(answer)
+            }
         }
         .fileImporter(isPresented: $showPDFImporter,
                       allowedContentTypes: [.pdf]) { result in
@@ -111,6 +118,17 @@ struct NoteEditorView: View {
                     Divider().frame(height: 30)
                     sliders
                 }
+
+                Divider().frame(height: 30)
+                Button {
+                    isSelectingRegion.toggle()
+                    if isSelectingRegion { show("Bereich aufziehen, den die Auswertung ansehen soll.") }
+                } label: {
+                    Label("Fragen", systemImage: "sparkles.rectangle.stack")
+                        .font(.callout)
+                }
+                .buttonStyle(.bordered)
+                .tint(isSelectingRegion ? .accentColor : .secondary)
 
                 Divider().frame(height: 30)
                 undoRedo
@@ -222,9 +240,18 @@ struct NoteEditorView: View {
                 PageCanvas(page: page,
                            tools: tools,
                            pdfImage: pdfImages[page.index],
+                           isSelectingRegion: isSelectingRegion,
                            onChange: save,
                            onController: { found in
                                DispatchQueue.main.async { controller = found }
+                           },
+                           onRegionSelected: { rect in
+                               isSelectingRegion = false
+                               guard let image = controller?.image(of: rect) else {
+                                   show("Der Ausschnitt ließ sich nicht lesen.")
+                                   return
+                               }
+                               askImage = AskImage(image: image)
                            })
                     .id(page.persistentModelID)
             } else {
@@ -342,6 +369,34 @@ struct NoteEditorView: View {
 
     private func save() {
         note.touch()
+    }
+
+    /// Appends assistant output to the page's typed text.
+    private func appendToPage(_ text: String) {
+        guard let page = currentPage else { return }
+        let existing: NSMutableAttributedString
+        if let data = page.textRTF,
+           let attributed = try? NSAttributedString(
+            data: data,
+            options: [.documentType: NSAttributedString.DocumentType.rtf],
+            documentAttributes: nil
+           ) {
+            existing = NSMutableAttributedString(attributedString: attributed)
+        } else {
+            existing = NSMutableAttributedString()
+        }
+        existing.append(NSAttributedString(
+            string: "\n\n" + text,
+            attributes: [.font: UIFont.systemFont(ofSize: 15),
+                         .foregroundColor: UIColor.black]
+        ))
+        page.textRTF = try? existing.data(
+            from: NSRange(location: 0, length: existing.length),
+            documentAttributes: [.documentType: NSAttributedString.DocumentType.rtf]
+        )
+        controller?.renderComposites()
+        save()
+        show("Übernommen.")
     }
 
     private func show(_ message: String) {
@@ -590,6 +645,11 @@ struct ColorRow: View {
 struct ShareItem: Identifiable {
     let id = UUID()
     let url: URL
+}
+
+struct AskImage: Identifiable {
+    let id = UUID()
+    let image: UIImage
 }
 
 struct ShareSheet: UIViewControllerRepresentable {

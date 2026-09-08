@@ -23,10 +23,14 @@ struct PageCanvas: UIViewControllerRepresentable {
     let tools: ToolState
     /// Rendered PDF page, if the note came from a PDF.
     var pdfImage: UIImage?
+    /// True while the assistant is waiting for a rectangle to be drawn.
+    var isSelectingRegion: Bool = false
     /// Called after the pen leaves the page, so the caller can save.
     var onChange: () -> Void
     /// Handed a controller reference so the editor can trigger exports.
     var onController: ((PageCanvasController) -> Void)?
+    /// The chosen area, in page coordinates.
+    var onRegionSelected: ((CGRect) -> Void)?
 
     func makeUIViewController(context: Context) -> PageCanvasController {
         let controller = PageCanvasController()
@@ -34,6 +38,8 @@ struct PageCanvas: UIViewControllerRepresentable {
         controller.tools = tools
         controller.pdfImage = pdfImage
         controller.onChange = onChange
+        controller.onRegionSelected = onRegionSelected
+        controller.isSelectingRegion = isSelectingRegion
         onController?(controller)
         return controller
     }
@@ -43,6 +49,10 @@ struct PageCanvas: UIViewControllerRepresentable {
         controller.tools = tools
         controller.pdfImage = pdfImage
         controller.onChange = onChange
+        controller.onRegionSelected = onRegionSelected
+        if controller.isSelectingRegion != isSelectingRegion {
+            controller.isSelectingRegion = isSelectingRegion
+        }
         controller.apply()
     }
 }
@@ -68,6 +78,18 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
     private var lastSize: CGSize = .zero
     private var isApplyingDrawing = false
     private var hasSetInitialZoom = false
+
+    private let selectionOverlay = RegionSelectionView()
+    /// Handed the chosen rectangle in page coordinates.
+    var onRegionSelected: ((CGRect) -> Void)?
+    var isSelectingRegion = false {
+        didSet {
+            guard isViewLoaded else { return }
+            selectionOverlay.isHidden = !isSelectingRegion
+            selectionOverlay.reset()
+            canvasView.isScrollEnabled = !isSelectingRegion
+        }
+    }
 
     private var pageSize: CGSize { page.size }
 
@@ -115,12 +137,31 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
         textView.isScrollEnabled = false
         view.addSubview(textView)
 
+        selectionOverlay.isHidden = true
+        selectionOverlay.onFinish = { [weak self] rect in
+            guard let self else { return }
+            self.isSelectingRegion = false
+            let zoom = self.canvasView.zoomScale
+            let origin = CGPoint(x: -self.canvasView.contentOffset.x,
+                                 y: -self.canvasView.contentOffset.y)
+            // Screen rectangle back into page coordinates.
+            let inPage = CGRect(x: (rect.minX - origin.x) / zoom,
+                                y: (rect.minY - origin.y) / zoom,
+                                width: rect.width / zoom,
+                                height: rect.height / zoom)
+                .intersection(CGRect(origin: .zero, size: self.pageSize))
+            guard inPage.width > 12, inPage.height > 12 else { return }
+            self.onRegionSelected?(inPage)
+        }
+        view.addSubview(selectionOverlay)
+
         apply()
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         canvasView.frame = view.bounds
+        selectionOverlay.frame = view.bounds
         canvasView.contentSize = pageSize
         if !hasSetInitialZoom, view.bounds.width > 0 {
             hasSetInitialZoom = true
@@ -375,6 +416,22 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
                              includeText: false)
     }
 
+    /// The chosen part of the page as its own image — for OCR and the
+    /// assistant, which should only see what was picked.
+    func image(of pageRect: CGRect, scale: CGFloat = 3) -> UIImage? {
+        let full = PageRenderer.flatten(page: page,
+                                        pdfData: page.note?.pdfData,
+                                        scale: scale,
+                                        includeTemplate: false)
+        guard let cgImage = full.cgImage else { return nil }
+        let crop = CGRect(x: pageRect.minX * scale,
+                          y: pageRect.minY * scale,
+                          width: pageRect.width * scale,
+                          height: pageRect.height * scale)
+        guard let cropped = cgImage.cropping(to: crop) else { return nil }
+        return UIImage(cgImage: cropped, scale: scale, orientation: .up)
+    }
+
     func clearActiveLayer() {
         isApplyingDrawing = true
         canvasView.drawing = PKDrawing()
@@ -385,4 +442,84 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
 
     func undo() { canvasView.undoManager?.undo() }
     func redo() { canvasView.undoManager?.redo() }
+}
+
+// MARK: - Bereichsauswahl
+
+/// A transparent layer that lets someone drag a rectangle over part of the
+/// page. Used by the assistant: pick a formula, ask about it.
+final class RegionSelectionView: UIView {
+    var onFinish: ((CGRect) -> Void)?
+
+    private var start: CGPoint?
+    private var current: CGPoint?
+    private let shape = CAShapeLayer()
+    private let hint = UILabel()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = UIColor.black.withAlphaComponent(0.12)
+
+        shape.fillColor = UIColor.tintColor.withAlphaComponent(0.12).cgColor
+        shape.strokeColor = UIColor.tintColor.cgColor
+        shape.lineWidth = 2
+        shape.lineDashPattern = [6, 4]
+        layer.addSublayer(shape)
+
+        hint.text = "Bereich mit dem Finger oder Stift aufziehen"
+        hint.textColor = .white
+        hint.font = .systemFont(ofSize: 14, weight: .medium)
+        hint.textAlignment = .center
+        hint.backgroundColor = UIColor.black.withAlphaComponent(0.55)
+        hint.layer.cornerRadius = 10
+        hint.layer.masksToBounds = true
+        addSubview(hint)
+
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+        addGestureRecognizer(pan)
+    }
+
+    required init?(coder: NSCoder) { fatalError("init(coder:) wird nicht verwendet") }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        hint.frame = CGRect(x: (bounds.width - 340) / 2, y: 16, width: 340, height: 34)
+    }
+
+    func reset() {
+        start = nil
+        current = nil
+        shape.path = nil
+        hint.isHidden = false
+    }
+
+    private var rect: CGRect {
+        guard let start, let current else { return .zero }
+        return CGRect(x: min(start.x, current.x),
+                      y: min(start.y, current.y),
+                      width: abs(current.x - start.x),
+                      height: abs(current.y - start.y))
+    }
+
+    @objc private func handlePan(_ gesture: UIPanGestureRecognizer) {
+        let point = gesture.location(in: self)
+        switch gesture.state {
+        case .began:
+            start = point
+            current = point
+            hint.isHidden = true
+        case .changed:
+            current = point
+            shape.path = UIBezierPath(roundedRect: rect, cornerRadius: 6).cgPath
+        case .ended:
+            current = point
+            let chosen = rect
+            shape.path = nil
+            start = nil
+            current = nil
+            onFinish?(chosen)
+        default:
+            reset()
+        }
+    }
 }

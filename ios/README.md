@@ -21,6 +21,10 @@ Vor dem ersten Start zwei Dinge einstellen:
 Dann Gerät auswählen und starten. Auf dem Simulator läuft alles außer
 Apple Pencil und Mikrofonaufnahme sinnvoll.
 
+Auf einem Mac mit Apple Silicon läuft die App ohne Zusatzarbeit: in Xcode als
+Ziel **My Mac (Designed for iPad)** wählen. Zeichnen geht dort nur mit der Maus
+oder über ein angeschlossenes iPad per Sidecar.
+
 Das Projekt nutzt eine dateisystem-synchronisierte Gruppe: neue Dateien im
 Ordner `AndiNotes/` landen automatisch im Ziel, sie müssen nicht einzeln
 hinzugefügt werden. Das setzt Xcode 16 voraus.
@@ -37,6 +41,8 @@ AndiNotes/
   Pens.swift            Stiftvorgaben, Paletten, Werkzeugzustand
   Templates.swift       Seitenvorlagen, mit Core Graphics gezeichnet
   InspectorView.swift   Ebenen, Analyse, Chat, OCR, Audio, Verlauf
+  AskSelectionView.swift  Bereich auswählen und dazu fragen
+  WelcomeView.swift     Startbildschirm beim ersten Öffnen
   Services.swift        PDF, Seiten-Rendering, Export, Vision-OCR, Schlüsselbund
   AIService.swift       Auswertung lokal oder über die Claude-API
   AudioService.swift    Aufnahme und Live-Mitschrift
@@ -55,7 +61,8 @@ Textfeld werden in `syncOverlays()` nachgeführt.
 
 ## Was drin ist
 
-Neun Stifte (Füller, Kugelschreiber, Fineliner, Bleistift, Pinsel, Textmarker,
+Startbildschirm beim ersten Öffnen; neun Stifte (Füller, Kugelschreiber,
+Fineliner, Bleistift, Pinsel, Textmarker,
 Wachsmaler, Wasserfarbe, Neon), jeder mit eigener Farbe, Dicke und Deckkraft;
 fünf Paletten und freier Farbwähler; Radierer wahlweise pixel- oder
 strichweise; Lasso; Lineal; Ebenen mit Sichtbarkeit, Sperre und Umbenennen;
@@ -63,7 +70,19 @@ dreizehn Seitenvorlagen; Seiten anhängen, verlängern, duplizieren, löschen;
 Ordner, Schlagwörter, Favoriten und Volltextsuche über getippten, erkannten und
 PDF-Text; PDF-Import samt Beschriften; Texterkennung mit Vision auf dem Gerät;
 Tonaufnahme mit Live-Mitschrift; Versionsverlauf; Export als PDF, PNG und
-Markdown über das Teilen-Menü.
+Markdown über das Teilen-Menü; Auswahl fragen (siehe unten).
+
+## Auswahl fragen
+
+Der Knopf **Fragen** in der Werkzeugleiste schaltet einen Auswahlrahmen ein:
+einen Bereich der Seite aufziehen — eine Formel, einen Absatz, eine beschriftete
+Skizze — und dazu *Erklären*, *Kurzfassung*, *Lösungsweg*, *Übersetzen* oder
+*Abfragen* wählen. Gelesen wird der Ausschnitt mit Vision auf dem Gerät; an die
+Auswertung geht nur der erkannte Text, nicht das Bild. Die Antwort lässt sich
+mit einem Tipp in die Notiz übernehmen.
+
+Der erkannte Text bleibt an der Seite hängen, damit Suche und Zusammenfassung
+ihn später mitlesen.
 
 ## Auswertung
 

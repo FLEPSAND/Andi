@@ -25,6 +25,7 @@ struct ContentView: View {
     @State private var columnVisibility: NavigationSplitViewVisibility = .all
     @State private var tools = ToolState()
     @State private var showSettings = false
+    @AppStorage("didSeeWelcome") private var didSeeWelcome = false
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
@@ -52,6 +53,10 @@ struct ContentView: View {
         }
         .sheet(isPresented: $showSettings) {
             SettingsView()
+        }
+        .sheet(isPresented: Binding(get: { !didSeeWelcome },
+                                    set: { if !$0 { didSeeWelcome = true } })) {
+            WelcomeView()
         }
         .task {
             if notes.isEmpty { createWelcomeNote() }
