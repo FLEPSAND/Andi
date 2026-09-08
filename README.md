@@ -67,3 +67,10 @@ Notiz-App für Handschrift, Zeichnen, PDF-Annotation, Texterkennung, Aufnahme
 mit Live-Mitschrift und Auswertung des Inhalts. Ebenfalls statisch, ohne
 Build-Schritt, alle Daten bleiben im Browser. Details in
 [`freenotes/README.md`](freenotes/README.md).
+
+## Andi Notes für iOS
+
+Unter [`ios/`](ios/) liegt dieselbe App nativ für iPhone und iPad: SwiftUI,
+SwiftData und PencilKit, also echter Apple-Pencil-Druck, Ebenen, Vorlagen,
+PDF-Annotation, Texterkennung mit Vision und Aufnahme mit Live-Mitschrift.
+Bauanleitung in [`ios/README.md`](ios/README.md).
