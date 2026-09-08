@@ -30,9 +30,12 @@ struct AndiNotesApp: App {
         }
     }()
 
+    @State private var settings = AppSettings.shared
+
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .preferredColorScheme(settings.appearance.colorScheme)
         }
         .modelContainer(container)
     }

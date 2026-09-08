@@ -80,6 +80,7 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
     private var hasSetInitialZoom = false
 
     private let selectionOverlay = RegionSelectionView()
+    private let markOverlay = QuickMarkView()
     /// Handed the chosen rectangle in page coordinates.
     var onRegionSelected: ((CGRect) -> Void)?
     var isSelectingRegion = false {
@@ -137,6 +138,16 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
         textView.isScrollEnabled = false
         view.addSubview(textView)
 
+        markOverlay.isHidden = true
+        markOverlay.onMark = { [weak self] from, to in
+            guard let self else { return }
+            self.addMark(from: self.toPage(from), to: self.toPage(to))
+        }
+        markOverlay.onTap = { [weak self] point in
+            guard let self else { return }
+            self.removeMark(near: self.toPage(point))
+        }
+
         selectionOverlay.isHidden = true
         selectionOverlay.onFinish = { [weak self] rect in
             guard let self else { return }
@@ -154,6 +165,7 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
             self.onRegionSelected?(inPage)
         }
         view.addSubview(selectionOverlay)
+        view.addSubview(markOverlay)
 
         apply()
     }
@@ -162,6 +174,7 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
         super.viewDidLayoutSubviews()
         canvasView.frame = view.bounds
         selectionOverlay.frame = view.bounds
+        markOverlay.frame = view.bounds
         canvasView.contentSize = pageSize
         if !hasSetInitialZoom, view.bounds.width > 0 {
             hasSetInitialZoom = true
@@ -206,6 +219,12 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
         canvasView.drawingPolicy = tools.fingerDrawingAllowed ? .anyInput : .pencilOnly
         canvasView.isRulerActive = tools.isRulerActive
         canvasView.isUserInteractionEnabled = true
+
+        let marking = tools.mode == .quickMark
+        markOverlay.isHidden = !marking
+        markOverlay.previewColor = UIColor(tools.color)
+        markOverlay.previewWidth = tools.width
+        if marking { markOverlay.reset() }
 
         let editingText = tools.mode == .text
         textView.isHidden = !editingText
@@ -266,12 +285,15 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
         }
 
         let above = layers.enumerated().filter { $0.offset > activeIndex && $0.element.isVisible }
-        overlayView.image = above.isEmpty ? nil : renderer.image { _ in
+        let marks = page.annotations
+        overlayView.image = (above.isEmpty && marks.isEmpty) ? nil : renderer.image { context in
             for (_, layer) in above {
                 drawing(of: layer)
                     .image(from: CGRect(origin: .zero, size: size), scale: scale)
                     .draw(in: CGRect(origin: .zero, size: size))
             }
+            // Marks go on top: they highlight, they must not be buried.
+            AnnotationRenderer.draw(marks, in: context.cgContext)
         }
     }
 
@@ -279,7 +301,7 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
         guard let data = page.textRTF, !data.isEmpty,
               let attributed = try? NSAttributedString(
                 data: data,
-                options: [.documentType: NSAttributedString.DocumentType.rtf],
+                options: [.documentType: RichText.type],
                 documentAttributes: nil
               ), attributed.length > 0 else { return }
         let inset = textView.textContainerInset
@@ -337,6 +359,47 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
         textView.center = CGPoint(x: frame.midX, y: frame.midY)
     }
 
+    // MARK: Schnellmarker
+
+    /// Screen point into page coordinates.
+    private func toPage(_ point: CGPoint) -> CGPoint {
+        let zoom = canvasView.zoomScale
+        return CGPoint(x: (point.x + canvasView.contentOffset.x) / zoom,
+                       y: (point.y + canvasView.contentOffset.y) / zoom)
+    }
+
+    private func addMark(from: CGPoint, to: CGPoint) {
+        var marks = page.annotations
+        marks.append(LineAnnotation(style: tools.markStyle,
+                                    colorHex: tools.color.hexString,
+                                    width: Double(max(2, tools.width)),
+                                    opacity: tools.opacity,
+                                    start: from,
+                                    end: to))
+        page.annotations = marks
+        renderComposites()
+        onChange?()
+    }
+
+    private func removeMark(near point: CGPoint) {
+        let marks = page.annotations
+        guard let hit = marks
+            .filter({ $0.distance(to: point) < max(14, $0.width * 3) })
+            .min(by: { $0.distance(to: point) < $1.distance(to: point) }) else { return }
+        page.annotations = marks.filter { $0.id != hit.id }
+        renderComposites()
+        onChange?()
+    }
+
+    func removeLastMark() {
+        var marks = page.annotations
+        guard !marks.isEmpty else { return }
+        marks.removeLast()
+        page.annotations = marks
+        renderComposites()
+        onChange?()
+    }
+
     // MARK: PKCanvasViewDelegate
 
     func canvasViewDrawingDidChange(_ canvasView: PKCanvasView) {
@@ -361,7 +424,7 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
         if let data = page.textRTF, !data.isEmpty,
            let attributed = try? NSAttributedString(
             data: data,
-            options: [.documentType: NSAttributedString.DocumentType.rtf],
+            options: [.documentType: RichText.type],
             documentAttributes: nil
            ) {
             textView.attributedText = attributed
@@ -376,7 +439,7 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
         let attributed = textView.attributedText ?? NSAttributedString()
         page.textRTF = try? attributed.data(
             from: NSRange(location: 0, length: attributed.length),
-            documentAttributes: [.documentType: NSAttributedString.DocumentType.rtf]
+            documentAttributes: [.documentType: RichText.type]
         )
         onChange?()
         renderComposites()

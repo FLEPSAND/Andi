@@ -144,7 +144,7 @@ struct ContentView: View {
             ))
             page.textRTF = try? text.data(
                 from: NSRange(location: 0, length: text.length),
-                documentAttributes: [.documentType: NSAttributedString.DocumentType.rtf]
+                documentAttributes: [.documentType: RichText.type]
             )
         }
         context.insert(note)

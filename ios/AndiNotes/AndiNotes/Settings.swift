@@ -6,6 +6,28 @@
 import SwiftUI
 import Observation
 
+enum Appearance: String, CaseIterable, Identifiable {
+    case system, light, dark
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .system: return "System"
+        case .light: return "Hell"
+        case .dark: return "Dunkel"
+        }
+    }
+
+    var colorScheme: ColorScheme? {
+        switch self {
+        case .system: return nil
+        case .light: return .light
+        case .dark: return .dark
+        }
+    }
+}
+
 enum AIProviderKind: String, CaseIterable, Identifiable {
     case local
     case anthropic
@@ -45,6 +67,9 @@ final class AppSettings {
     var autoVersions: Bool {
         didSet { defaults.set(autoVersions, forKey: "autoVersions") }
     }
+    var appearance: Appearance {
+        didSet { defaults.set(appearance.rawValue, forKey: "appearance") }
+    }
 
     private let defaults = UserDefaults.standard
 
@@ -53,6 +78,7 @@ final class AppSettings {
         model = defaults.string(forKey: "model") ?? "claude-sonnet-5"
         onDeviceSpeechOnly = defaults.object(forKey: "onDeviceSpeechOnly") as? Bool ?? true
         autoVersions = defaults.object(forKey: "autoVersions") as? Bool ?? true
+        appearance = Appearance(rawValue: defaults.string(forKey: "appearance") ?? "") ?? .system
     }
 }
 
@@ -92,6 +118,18 @@ struct SettingsView: View {
                     Text(settings.onDeviceSpeechOnly
                          ? "Die Mitschrift verlässt das Gerät nicht. Dafür muss das Sprachpaket geladen sein — sonst bleibt die Mitschrift leer, die Aufnahme läuft trotzdem."
                          : "Ist kein Sprachpaket auf dem Gerät, schickt iOS den Ton zur Erkennung an Apple.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
+
+                Section("Darstellung") {
+                    Picker("Erscheinungsbild", selection: $settings.appearance) {
+                        ForEach(Appearance.allCases) { mode in
+                            Text(mode.title).tag(mode)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    Text("Die Seiten selbst bleiben immer hell — Handschrift, Vorlagen und Ausdruck sollen gleich aussehen.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }

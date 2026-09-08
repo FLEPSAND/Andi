@@ -86,7 +86,7 @@ enum PageRenderer {
             if includeText, let data = page.textRTF, !data.isEmpty,
                let attributed = try? NSAttributedString(
                 data: data,
-                options: [.documentType: NSAttributedString.DocumentType.rtf],
+                options: [.documentType: RichText.type],
                 documentAttributes: nil
                ) {
                 let rect = CGRect(x: 34, y: 36, width: size.width - 68, height: size.height - 72)
@@ -100,6 +100,8 @@ enum PageRenderer {
                     .image(from: CGRect(origin: .zero, size: size), scale: scale)
                     .draw(in: CGRect(origin: .zero, size: size))
             }
+
+            AnnotationRenderer.draw(page.annotations, in: context.cgContext)
         }
     }
 }

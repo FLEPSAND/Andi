@@ -43,6 +43,9 @@ AndiNotes/
   InspectorView.swift   Ebenen, Analyse, Chat, OCR, Audio, Verlauf
   AskSelectionView.swift  Bereich auswählen und dazu fragen
   WelcomeView.swift     Startbildschirm beim ersten Öffnen
+  VideoPane.swift       Video neben der Notiz, Standbild, Bild-in-Bild
+  RichText.swift        Textformat der Seiten (RTFD, mit Bildern)
+  Annotations.swift     Schnellmarker: Linienstile über der Handschrift
   Services.swift        PDF, Seiten-Rendering, Export, Vision-OCR, Schlüsselbund
   AIService.swift       Auswertung lokal oder über die Claude-API
   AudioService.swift    Aufnahme und Live-Mitschrift
@@ -64,13 +67,39 @@ Textfeld werden in `syncOverlays()` nachgeführt.
 Startbildschirm beim ersten Öffnen; neun Stifte (Füller, Kugelschreiber,
 Fineliner, Bleistift, Pinsel, Textmarker,
 Wachsmaler, Wasserfarbe, Neon), jeder mit eigener Farbe, Dicke und Deckkraft;
-fünf Paletten und freier Farbwähler; Radierer wahlweise pixel- oder
-strichweise; Lasso; Lineal; Ebenen mit Sichtbarkeit, Sperre und Umbenennen;
+fünf Paletten und freier Farbwähler; Schnellmarker mit sechs Linienstilen;
+Radierer wahlweise pixel- oder strichweise; Lasso; Lineal; Ebenen mit Sichtbarkeit, Sperre und Umbenennen;
 dreizehn Seitenvorlagen; Seiten anhängen, verlängern, duplizieren, löschen;
 Ordner, Schlagwörter, Favoriten und Volltextsuche über getippten, erkannten und
 PDF-Text; PDF-Import samt Beschriften; Texterkennung mit Vision auf dem Gerät;
 Tonaufnahme mit Live-Mitschrift; Versionsverlauf; Export als PDF, PNG und
-Markdown über das Teilen-Menü; Auswahl fragen (siehe unten).
+Markdown über das Teilen-Menü; Video daneben mit Standbild; Hell- und
+Dunkelmodus umschaltbar; Auswahl fragen (siehe unten).
+
+## Schnellmarker
+
+Ein Zug entlang einer Zeile wird zu einer sauberen, waagerechten Markierung.
+Der Knopf neben Radierer und Lasso schaltet das Werkzeug ein, ein langer Druck
+darauf wählt den Stil: durchgezogen, gestrichelt, Wellenlinie, Zickzack,
+Doppellinie oder Balken hinter dem Text. Ein Tipp auf eine Markierung entfernt
+sie wieder.
+
+PencilKit kennt keine Linienstile, deshalb liegen diese Anmerkungen als eigene
+kleine Datenstruktur an der Seite (`Annotations.swift`) und werden mit Core
+Graphics über die Handschrift gezeichnet — im Editor wie im PDF-Export.
+
+## Video daneben
+
+Der Knopf **▶** oben rechts klappt einen Videobereich neben die Seite: eine
+Videodatei öffnen oder eine direkte Adresse einfügen, dann links mitschreiben.
+*Standbild* setzt das aktuelle Bild samt Zeitmarke in die Notiz. Klappt man den
+Bereich zu, während das Video läuft, übernimmt Bild-in-Bild.
+
+Portale wie YouTube oder Vimeo lassen sich nicht einbetten — die App sagt das
+und verweist auf die Bild-in-Bild-Funktion des jeweiligen Players.
+
+Weil Standbilder in der Notiz landen, wird getippter Text als RTFD statt RTF
+gespeichert (`RichText.swift`): gleiche Formatierung, aber mit Bildern.
 
 ## Auswahl fragen
 

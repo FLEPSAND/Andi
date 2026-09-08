@@ -103,6 +103,8 @@ enum ToolMode: String {
     case erase
     case lasso
     case text
+    /// One drag along a line of text makes a styled mark.
+    case quickMark
 }
 
 /// What the toolbar and the canvas agree on. Held by the editor and passed
@@ -121,6 +123,7 @@ final class ToolState {
     var eraseWholeStrokes: Bool = false
     var fingerDrawingAllowed: Bool = false
     var isRulerActive: Bool = false
+    var markStyle: MarkStyle = .solid
 
     /// Per-pen settings, so every pen keeps its own colour and thickness.
     private var preferences: [String: PenSettings] = [:]
@@ -144,7 +147,7 @@ final class ToolState {
             return PKEraserTool(eraseWholeStrokes ? .vector : .bitmap, width: eraserWidth)
         case .lasso:
             return PKLassoTool()
-        case .draw, .text:
+        case .draw, .text, .quickMark:
             return PKInkingTool(preset.ink,
                                 color: UIColor(color).withAlphaComponent(opacity),
                                 width: width)

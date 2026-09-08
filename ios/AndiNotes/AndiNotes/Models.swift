@@ -160,8 +160,11 @@ final class Page {
     var pdfText: String = ""
     var ocrText: String = ""
 
-    /// Typed text as RTF, so formatting survives without a second schema.
+    /// Typed text as RTFD, so formatting and images survive in one blob.
     @Attribute(.externalStorage) var textRTF: Data?
+
+    /// Quick-marker lines (see Annotations.swift), stored as JSON.
+    var annotationsData: Data?
 
     var activeLayerIndex: Int = 0
     var note: Note?
@@ -198,11 +201,16 @@ final class Page {
         return list[min(max(activeLayerIndex, 0), list.count - 1)]
     }
 
+    var annotations: [LineAnnotation] {
+        get { AnnotationStore.load(annotationsData) }
+        set { annotationsData = AnnotationStore.save(newValue) }
+    }
+
     var plainText: String {
         guard let textRTF, !textRTF.isEmpty else { return "" }
         return (try? NSAttributedString(
             data: textRTF,
-            options: [.documentType: NSAttributedString.DocumentType.rtf],
+            options: [.documentType: RichText.type],
             documentAttributes: nil
         ).string) ?? ""
     }
@@ -300,6 +308,7 @@ struct VersionSnapshot: Codable {
         var pdfText: String
         var ocrText: String
         var textRTF: Data?
+        var annotations: Data?
         var layers: [LayerData]
     }
 
@@ -316,6 +325,7 @@ struct VersionSnapshot: Codable {
                 pdfText: page.pdfText,
                 ocrText: page.ocrText,
                 textRTF: page.textRTF,
+                annotations: page.annotationsData,
                 layers: page.orderedLayers.map {
                     LayerData(name: $0.name,
                               index: $0.index,
@@ -340,6 +350,7 @@ struct VersionSnapshot: Codable {
             page.pdfText = data.pdfText
             page.ocrText = data.ocrText
             page.textRTF = data.textRTF
+            page.annotationsData = data.annotations
             page.layers = data.layers.map { layerData in
                 let layer = InkLayer(name: layerData.name, index: layerData.index)
                 layer.isVisible = layerData.isVisible

@@ -283,26 +283,7 @@ struct AnalysisPanel: View {
 
     private func insert() {
         guard let page, !output.isEmpty else { return }
-        let existing: NSMutableAttributedString
-        if let data = page.textRTF,
-           let attributed = try? NSAttributedString(
-            data: data,
-            options: [.documentType: NSAttributedString.DocumentType.rtf],
-            documentAttributes: nil
-           ) {
-            existing = NSMutableAttributedString(attributedString: attributed)
-        } else {
-            existing = NSMutableAttributedString()
-        }
-        existing.append(NSAttributedString(
-            string: "\n\n" + output,
-            attributes: [.font: UIFont.systemFont(ofSize: 15),
-                         .foregroundColor: UIColor.black]
-        ))
-        page.textRTF = try? existing.data(
-            from: NSRange(location: 0, length: existing.length),
-            documentAttributes: [.documentType: NSAttributedString.DocumentType.rtf]
-        )
+        page.textRTF = RichText.appending(output, to: page.textRTF)
         onChange()
     }
 }

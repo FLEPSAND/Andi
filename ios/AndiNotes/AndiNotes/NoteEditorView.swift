@@ -28,6 +28,8 @@ struct NoteEditorView: View {
     @State private var status: String?
     @State private var isSelectingRegion = false
     @State private var askImage: AskImage?
+    @State private var showVideo = false
+    @State private var video = VideoModel()
 
     private var pages: [Page] { note.orderedPages }
     private var currentPage: Page? {
@@ -42,6 +44,14 @@ struct NoteEditorView: View {
             Divider()
             HStack(spacing: 0) {
                 canvasArea
+                if showVideo {
+                    Divider()
+                    VideoPane(model: video,
+                              onSnapshot: insertSnapshot,
+                              onClose: { withAnimation { showVideo = false } })
+                        .frame(width: 380)
+                        .transition(.move(edge: .trailing))
+                }
                 if showInspector {
                     Divider()
                     InspectorView(note: note,
@@ -155,6 +165,7 @@ struct NoteEditorView: View {
         HStack(spacing: 6) {
             toolButton("eraser", systemImage: "eraser", mode: .erase)
             toolButton("lasso", systemImage: "lasso", mode: .lasso)
+            quickMarkButton
             Toggle(isOn: Binding(get: { tools.isRulerActive },
                                  set: { tools.isRulerActive = $0 })) {
                 Image(systemName: "ruler")
@@ -171,6 +182,31 @@ struct NoteEditorView: View {
                 .toggleStyle(.button)
             }
         }
+    }
+
+    /// Quick marker: the button switches the tool, a long press picks the
+    /// line style.
+    private var quickMarkButton: some View {
+        Menu {
+            ForEach(MarkStyle.allCases) { style in
+                Button {
+                    tools.markStyle = style
+                    tools.mode = .quickMark
+                } label: {
+                    Label(style.title, systemImage: style.symbol)
+                }
+            }
+            Divider()
+            Button("Letzte Markierung entfernen") { controller?.removeLastMark() }
+        } label: {
+            Image(systemName: tools.markStyle.symbol)
+                .frame(width: 30, height: 30)
+        } primaryAction: {
+            tools.mode = tools.mode == .quickMark ? .draw : .quickMark
+        }
+        .buttonStyle(.bordered)
+        .tint(tools.mode == .quickMark ? .accentColor : .secondary)
+        .help("Schnellmarker: \(tools.markStyle.title)")
     }
 
     private func toolButton(_ id: String, systemImage: String, mode: ToolMode) -> some View {
@@ -333,6 +369,14 @@ struct NoteEditorView: View {
         }
 
         ToolbarItem(placement: .topBarTrailing) {
+            Button {
+                withAnimation { showVideo.toggle() }
+            } label: {
+                Image(systemName: showVideo ? "play.rectangle.fill" : "play.rectangle")
+            }
+        }
+
+        ToolbarItem(placement: .topBarTrailing) {
             Menu {
                 Section("Seite") {
                     Button("Vorlage wählen…") { showTemplates = true }
@@ -348,6 +392,15 @@ struct NoteEditorView: View {
                         showTags = true
                     }
                     Button("Version sichern") { saveVersion() }
+                }
+                Section("Ansicht") {
+                    Button {
+                        let current = AppSettings.shared.appearance
+                        AppSettings.shared.appearance = current == .dark ? .light : .dark
+                    } label: {
+                        Label(AppSettings.shared.appearance == .dark ? "Heller Modus" : "Dunkler Modus",
+                              systemImage: AppSettings.shared.appearance == .dark ? "sun.max" : "moon")
+                    }
                 }
                 Section("Teilen") {
                     Button("Als PDF") { exportPDF() }
@@ -374,29 +427,22 @@ struct NoteEditorView: View {
     /// Appends assistant output to the page's typed text.
     private func appendToPage(_ text: String) {
         guard let page = currentPage else { return }
-        let existing: NSMutableAttributedString
-        if let data = page.textRTF,
-           let attributed = try? NSAttributedString(
-            data: data,
-            options: [.documentType: NSAttributedString.DocumentType.rtf],
-            documentAttributes: nil
-           ) {
-            existing = NSMutableAttributedString(attributedString: attributed)
-        } else {
-            existing = NSMutableAttributedString()
-        }
-        existing.append(NSAttributedString(
-            string: "\n\n" + text,
-            attributes: [.font: UIFont.systemFont(ofSize: 15),
-                         .foregroundColor: UIColor.black]
-        ))
-        page.textRTF = try? existing.data(
-            from: NSRange(location: 0, length: existing.length),
-            documentAttributes: [.documentType: NSAttributedString.DocumentType.rtf]
-        )
+        page.textRTF = RichText.appending(text, to: page.textRTF)
         controller?.renderComposites()
         save()
         show("Übernommen.")
+    }
+
+    /// Drops a still frame with its timestamp into the page.
+    private func insertSnapshot(_ image: UIImage, at time: String) {
+        guard let page = currentPage else { return }
+        page.textRTF = RichText.appending(image: image,
+                                          caption: "Video bei \(time)",
+                                          width: page.size.width - 80,
+                                          to: page.textRTF)
+        controller?.renderComposites()
+        save()
+        show("Standbild bei \(time) eingefügt.")
     }
 
     private func show(_ message: String) {
