@@ -36,6 +36,7 @@ struct AndiNotesApp: App {
         WindowGroup {
             ContentView()
                 .preferredColorScheme(settings.appearance.colorScheme)
+                .task { await Store.shared.load() }
         }
         .modelContainer(container)
     }

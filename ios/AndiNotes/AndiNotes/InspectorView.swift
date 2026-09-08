@@ -43,6 +43,9 @@ struct InspectorView: View {
     let controller: PageCanvasController?
     let onChange: () -> Void
 
+    @State private var store = Store.shared
+    @State private var showPaywall = false
+
     var body: some View {
         VStack(spacing: 0) {
             Picker("Bereich", selection: $tab) {
@@ -62,18 +65,30 @@ struct InspectorView: View {
                 case .analysis:
                     AnalysisPanel(note: note, page: page, onChange: onChange)
                 case .chat:
-                    ChatPanel(note: note, onChange: onChange)
+                    gated(.assistant) { ChatPanel(note: note, onChange: onChange) }
                 case .ocr:
-                    OCRPanel(page: page, controller: controller, onChange: onChange)
+                    gated(.ocr) { OCRPanel(page: page, controller: controller, onChange: onChange) }
                 case .audio:
-                    AudioPanel(note: note, onChange: onChange)
+                    gated(.recording) { AudioPanel(note: note, onChange: onChange) }
                 case .history:
-                    HistoryPanel(note: note, onChange: onChange)
+                    gated(.versions) { HistoryPanel(note: note, onChange: onChange) }
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .background(.regularMaterial)
+        .sheet(isPresented: $showPaywall) { PaywallView() }
+    }
+
+    /// Zeigt den Bereich oder den Hinweis, wozu er gehört.
+    @ViewBuilder
+    private func gated<Content: View>(_ feature: Feature,
+                                      @ViewBuilder content: () -> Content) -> some View {
+        if store.allows(feature) {
+            content()
+        } else {
+            LockedFeatureHint(feature: feature) { showPaywall = true }
+        }
     }
 }
 

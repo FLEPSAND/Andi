@@ -119,14 +119,11 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 
 .brand-mark {
-  display: grid;
-  place-items: center;
   width: 26px;
   height: 26px;
   border-radius: 8px;
-  background: var(--accent);
-  color: #fff;
-  font-size: 14px;
+  background: url("../icon.svg") center / cover no-repeat;
+  flex: none;
 }
 
 .brand-name { flex: 1; }

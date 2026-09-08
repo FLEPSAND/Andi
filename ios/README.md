@@ -50,6 +50,9 @@ AndiNotes/
   AIService.swift       Auswertung lokal oder über die Claude-API
   AudioService.swift    Aufnahme und Live-Mitschrift
   Settings.swift        Einstellungen
+  Store.swift           Käufe (StoreKit 2) und die Stufen-Logik
+  PaywallView.swift     Kaufseite mit Vergleichstabelle
+  Products.storekit     Testprodukte für Xcode, ohne App Store Connect
 ```
 
 ## Wie die Ebenen funktionieren
@@ -113,6 +116,37 @@ mit einem Tipp in die Notiz übernehmen.
 Der erkannte Text bleibt an der Seite hängen, damit Suche und Zusammenfassung
 ihn später mitlesen.
 
+## Stufen und Käufe
+
+Was kostenlos ist und was nicht, steht an genau einer Stelle: `Feature.required`
+in `Store.swift`. Voreinstellung:
+
+| Stufe | Enthalten |
+|-------|-----------|
+| Kostenlos | Alle Stifte, Schnellmarker, Ebenen, Vorlagen, PDF, Export, Auswertung auf dem Gerät — ohne Obergrenze bei Notizen, Seiten und Ordnern |
+| Plus | Aufnahme, Live-Mitschrift, Texterkennung, Videobereich, Versionsverlauf |
+| Pro | Zusätzlich der Assistent: Ausschnitt erklären, Lösungsweg, Chat zur Notiz |
+
+Zum Ändern reicht es, in `Feature.required` eine Zeile umzuhängen; Kaufseite und
+Sperrhinweise ziehen automatisch nach.
+
+### Ohne App Store Connect testen
+
+`Products.storekit` enthält die vier Produkte mit Testpreisen. In Xcode: Schema
+bearbeiten → *Run* → *Options* → **StoreKit Configuration** auf `Products.storekit`
+stellen. Käufe laufen dann lokal, ohne Sandbox-Konto. Falls Xcode die Datei nicht
+annimmt: *File → New → File → StoreKit Configuration File* und die vier Produkt-IDs
+aus `ProductID` neu eintragen.
+
+### Vor der ersten Einreichung
+
+- Produkte in App Store Connect anlegen, exakt mit den IDs aus `ProductID`.
+- Steuer- und Bankdaten hinterlegen — ohne die lässt sich nichts verkaufen.
+- In `LegalLinks` (in `PaywallView.swift`) die eigene Datenschutzerklärung
+  eintragen. Ohne erreichbare Adresse lehnt Apple die App ab.
+- Preise, Laufzeit und Kündigungshinweis müssen auf der Kaufseite stehen. Sie
+  stehen dort — aber ohne erfundene Streichpreise, und das sollte so bleiben.
+
 ## Auswertung
 
 In den Einstellungen steht der Anbieter:
@@ -162,6 +196,10 @@ mit; dafür bräuchte es zusätzlich CloudKit-Assets oder einen iCloud-Ordner.
   Format gespeichert, PencilKit erwartet ein anderes.
 - Split-Screen zweier Notizen nebeneinander fehlt; auf dem iPad geht dafür
   Stage Manager mit zwei Fenstern derselben App.
+- Der Assistent läuft über einen Schlüssel, den die Nutzerin selbst einträgt.
+  Für den Verkauf ist das schief: entweder man verlangt kein Geld dafür, oder
+  man betreibt einen eigenen Server mit eigenem Schlüssel — der kostet dann pro
+  Anfrage, was ein Angebot „einmal zahlen, dauerhaft nutzen" schwierig macht.
 
 ## Web-Version
 

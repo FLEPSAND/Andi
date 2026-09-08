@@ -30,6 +30,8 @@ struct NoteEditorView: View {
     @State private var askImage: AskImage?
     @State private var showVideo = false
     @State private var video = VideoModel()
+    @State private var store = Store.shared
+    @State private var showPaywall = false
 
     private var pages: [Page] { note.orderedPages }
     private var currentPage: Page? {
@@ -44,7 +46,7 @@ struct NoteEditorView: View {
             Divider()
             HStack(spacing: 0) {
                 canvasArea
-                if showVideo {
+                if showVideo, store.allows(.video) {
                     Divider()
                     VideoPane(model: video,
                               onSnapshot: insertSnapshot,
@@ -76,6 +78,7 @@ struct NoteEditorView: View {
         .sheet(item: $shareItem) { item in
             ShareSheet(items: [item.url])
         }
+        .sheet(isPresented: $showPaywall) { PaywallView() }
         .sheet(item: $askImage) { item in
             AskSelectionView(image: item.image, page: currentPage) { answer in
                 appendToPage(answer)
@@ -131,6 +134,7 @@ struct NoteEditorView: View {
 
                 Divider().frame(height: 30)
                 Button {
+                    guard store.allows(.assistant) else { showPaywall = true; return }
                     isSelectingRegion.toggle()
                     if isSelectingRegion { show("Bereich aufziehen, den die Auswertung ansehen soll.") }
                 } label: {
@@ -370,7 +374,8 @@ struct NoteEditorView: View {
 
         ToolbarItem(placement: .topBarTrailing) {
             Button {
-                withAnimation { showVideo.toggle() }
+                if store.allows(.video) { withAnimation { showVideo.toggle() } }
+                else { showPaywall = true }
             } label: {
                 Image(systemName: showVideo ? "play.rectangle.fill" : "play.rectangle")
             }

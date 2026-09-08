@@ -85,11 +85,21 @@ final class AppSettings {
 struct SettingsView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var settings = AppSettings.shared
+    @State private var store = Store.shared
     @State private var apiKey = ""
+    @State private var showPaywall = false
 
     var body: some View {
         NavigationStack {
             Form {
+                Section("Stufe") {
+                    LabeledContent("Freigeschaltet", value: store.tier.title)
+                    Button("Stufen und Preise ansehen") { showPaywall = true }
+                    Button("Käufe wiederherstellen") {
+                        Task { await store.restore() }
+                    }
+                }
+
                 Section("Auswertung") {
                     Picker("Anbieter", selection: $settings.provider) {
                         ForEach(AIProviderKind.allCases) { kind in
@@ -161,6 +171,7 @@ struct SettingsView: View {
             .onAppear {
                 apiKey = KeychainStore.get(account: "anthropic")
             }
+            .sheet(isPresented: $showPaywall) { PaywallView() }
         }
     }
 
