@@ -327,9 +327,55 @@ struct NoteListView: View {
     let onNew: () -> Void
     let onEmptyTrash: () -> Void
 
+    @State private var settings = AppSettings.shared
     @State private var confirmEmpty = false
 
     var body: some View {
+        Group {
+            if settings.libraryLayout == .grid {
+                noteGrid
+            } else {
+                noteList
+            }
+        }
+        .searchable(text: $search, prompt: "Suchen")
+        .navigationTitle(title)
+        .navigationBarTitleDisplayMode(.inline)
+        .overlay {
+            if notes.isEmpty {
+                ContentUnavailableView(
+                    emptyTitle,
+                    systemImage: emptySymbol,
+                    description: isTrash && search.isEmpty
+                        ? Text("Gelöschte Notizen liegen hier 30 Tage lang.")
+                        : nil
+                )
+            }
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                layoutToggle
+                if isTrash {
+                    Button("Leeren", role: .destructive) { confirmEmpty = true }
+                        .disabled(notes.isEmpty)
+                } else {
+                    Button(action: onNew) {
+                        Image(systemName: "square.and.pencil")
+                    }
+                }
+            }
+        }
+        .confirmationDialog("Papierkorb leeren?",
+                            isPresented: $confirmEmpty,
+                            titleVisibility: .visible) {
+            Button("Endgültig löschen", role: .destructive, action: onEmptyTrash)
+            Button("Abbrechen", role: .cancel) {}
+        } message: {
+            Text("Danach lassen sich diese Notizen nicht mehr zurückholen.")
+        }
+    }
+
+    private var noteList: some View {
         List(selection: $selection) {
             ForEach(notes) { note in
                 NoteRow(note: note)
@@ -362,39 +408,58 @@ struct NoteListView: View {
                     }
             }
         }
-        .searchable(text: $search, prompt: "Suchen")
-        .navigationTitle(title)
-        .navigationBarTitleDisplayMode(.inline)
-        .overlay {
-            if notes.isEmpty {
-                ContentUnavailableView(
-                    emptyTitle,
-                    systemImage: emptySymbol,
-                    description: isTrash && search.isEmpty
-                        ? Text("Gelöschte Notizen liegen hier 30 Tage lang.")
-                        : nil
-                )
-            }
-        }
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                if isTrash {
-                    Button("Leeren", role: .destructive) { confirmEmpty = true }
-                        .disabled(notes.isEmpty)
-                } else {
-                    Button(action: onNew) {
-                        Image(systemName: "square.and.pencil")
-                    }
+    }
+
+    private var noteGrid: some View {
+        ScrollView {
+            LazyVGrid(columns: [GridItem(.adaptive(minimum: 150), spacing: 14)], spacing: 14) {
+                ForEach(notes) { note in
+                    NoteTile(note: note, isSelected: selection == note)
+                        .onTapGesture { selection = note }
+                        .contextMenu { tileContextMenu(for: note) }
                 }
             }
+            .padding(14)
         }
-        .confirmationDialog("Papierkorb leeren?",
-                            isPresented: $confirmEmpty,
-                            titleVisibility: .visible) {
-            Button("Endgültig löschen", role: .destructive, action: onEmptyTrash)
-            Button("Abbrechen", role: .cancel) {}
-        } message: {
-            Text("Danach lassen sich diese Notizen nicht mehr zurückholen.")
+    }
+
+    private var layoutToggle: some View {
+        Button {
+            settings.libraryLayout = settings.libraryLayout == .grid ? .list : .grid
+        } label: {
+            Image(systemName: settings.libraryLayout == .grid ? "list.bullet" : "square.grid.2x2")
+        }
+        .help(settings.libraryLayout == .grid ? "Als Liste anzeigen" : "Als Raster anzeigen")
+    }
+
+    @ViewBuilder
+    private func tileContextMenu(for note: Note) -> some View {
+        if isTrash {
+            Button {
+                note.restoreFromTrash()
+            } label: {
+                Label("Zurückholen", systemImage: "arrow.uturn.backward")
+            }
+            Button(role: .destructive) {
+                if selection == note { selection = nil }
+                context.delete(note)
+            } label: {
+                Label("Endgültig löschen", systemImage: "trash")
+            }
+        } else {
+            Button {
+                note.isStarred.toggle()
+                note.touch()
+            } label: {
+                Label(note.isStarred ? "Favorit entfernen" : "Favorit",
+                      systemImage: note.isStarred ? "star.slash" : "star")
+            }
+            Button(role: .destructive) {
+                if selection == note { selection = nil }
+                note.moveToTrash()
+            } label: {
+                Label("Löschen", systemImage: "trash")
+            }
         }
     }
 
@@ -494,6 +559,92 @@ struct NoteRow: View {
         var parts = [note.updatedAt.formatted(.relative(presentation: .named))]
         parts.append("\(note.orderedPages.count) S.")
         if !note.tags.isEmpty { parts.append(note.tags.map { "#\($0)" }.joined(separator: " ")) }
+        return parts.joined(separator: " · ")
+    }
+}
+
+// MARK: - Kachel (Rasteransicht)
+
+struct NoteTile: View {
+    let note: Note
+    let isSelected: Bool
+
+    @State private var thumbnail: UIImage?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            ZStack(alignment: .topTrailing) {
+                thumbnailArea
+                if note.isStarred {
+                    Image(systemName: "star.fill")
+                        .font(.caption)
+                        .foregroundStyle(.yellow)
+                        .padding(6)
+                        .background(.thinMaterial, in: Circle())
+                        .padding(6)
+                }
+            }
+            Text(note.displayTitle)
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .lineLimit(1)
+            Text(subtitle)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .lineLimit(1)
+        }
+        .padding(8)
+        .background(Color(uiColor: .secondarySystemBackground), in: RoundedRectangle(cornerRadius: 12))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .strokeBorder(isSelected ? Color.accentColor : Color.clear, lineWidth: 2)
+        )
+        .task(id: thumbnailKey) { loadThumbnail() }
+    }
+
+    private var thumbnailArea: some View {
+        ZStack {
+            if let thumbnail {
+                Image(uiImage: thumbnail)
+                    .resizable()
+                    .scaledToFill()
+            } else {
+                Color(uiColor: .tertiarySystemBackground)
+                    .overlay(Text(note.displayIcon).font(.largeTitle))
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .aspectRatio(PageGeometry.a4.width / PageGeometry.a4.height, contentMode: .fit)
+        .clipShape(RoundedRectangle(cornerRadius: 6))
+    }
+
+    /// Identität + `updatedAt`: eine geänderte Notiz bekommt einen neuen
+    /// Schlüssel, das alte Bild fällt aus dem Zwischenspeicher.
+    private var thumbnailKey: String {
+        "\(note.persistentModelID)-\(note.updatedAt.timeIntervalSince1970)"
+    }
+
+    private func loadThumbnail() {
+        guard let page = note.orderedPages.first else { return }
+        let key = thumbnailKey
+        if let cached = ThumbnailCache.shared.image(for: key) {
+            thumbnail = cached
+            return
+        }
+        // Page ist nicht Sendable, darum bleibt das Zeichnen auf dem MainActor.
+        // Der Zwischenspeicher hält die Kosten klein.
+        let image = PageRenderer.flatten(page: page, pdfData: note.pdfData, scale: 0.35)
+        ThumbnailCache.shared.set(image, for: key)
+        thumbnail = image
+    }
+
+    private var subtitle: String {
+        if note.isTrashed {
+            let days = note.daysLeftInTrash
+            return days == 0 ? "wird bald gelöscht" : "noch \(days) Tage"
+        }
+        var parts = [note.updatedAt.formatted(.relative(presentation: .named))]
+        parts.append("\(note.orderedPages.count) S.")
         return parts.joined(separator: " · ")
     }
 }

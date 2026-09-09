@@ -51,6 +51,12 @@ enum AIProviderKind: String, CaseIterable, Identifiable {
     }
 }
 
+/// Wie die mittlere Spalte ihre Notizen zeigt: Raster oder Liste.
+enum LibraryLayout: String, CaseIterable {
+    case grid
+    case list
+}
+
 @Observable
 final class AppSettings {
     static let shared = AppSettings()
@@ -67,6 +73,9 @@ final class AppSettings {
     var autoVersions: Bool {
         didSet { defaults.set(autoVersions, forKey: "autoVersions") }
     }
+    var libraryLayout: LibraryLayout {
+        didSet { defaults.set(libraryLayout.rawValue, forKey: "libraryLayout") }
+    }
     var appearance: Appearance {
         didSet { defaults.set(appearance.rawValue, forKey: "appearance") }
     }
@@ -78,6 +87,7 @@ final class AppSettings {
         model = defaults.string(forKey: "model") ?? "claude-sonnet-5"
         onDeviceSpeechOnly = defaults.object(forKey: "onDeviceSpeechOnly") as? Bool ?? true
         autoVersions = defaults.object(forKey: "autoVersions") as? Bool ?? true
+        libraryLayout = LibraryLayout(rawValue: defaults.string(forKey: "libraryLayout") ?? "") ?? .grid
         appearance = Appearance(rawValue: defaults.string(forKey: "appearance") ?? "") ?? .system
     }
 }
