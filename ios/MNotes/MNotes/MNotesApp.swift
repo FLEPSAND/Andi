@@ -14,9 +14,9 @@ struct MNotesApp: App {
     /// matching `iCloud.<bundle-id>` container (see README).
     private static let cloudContainerID = "iCloud.de.mnotes.app"
 
-    /// One container for the whole app. Notes sync over CloudKit when the
-    /// container and entitlements are set up; otherwise the app falls back to
-    /// a plain local store so data is never lost.
+    /// One container for the whole app. Notes sync over CloudKit when an
+    /// iCloud account is available and the container is provisioned; otherwise
+    /// the app falls back to a plain local store so data is never lost.
     private let container: ModelContainer = {
         let schema = Schema([
             Folder.self,
@@ -27,16 +27,31 @@ struct MNotesApp: App {
             NoteVersion.self
         ])
 
-        let cloud = ModelConfiguration(
-            schema: schema,
-            isStoredInMemoryOnly: false,
-            cloudKitDatabase: .private(cloudContainerID)
-        )
+        // CloudKit mirroring crashes (SIGTRAP) instead of throwing when the
+        // container is missing — on the simulator and without an iCloud
+        // account. That has to be decided up front, a try/catch can't help.
+        #if targetEnvironment(simulator)
+        let useCloudKit = false
+        #else
+        let useCloudKit = FileManager.default.ubiquityIdentityToken != nil
+        #endif
+
+        let configuration: ModelConfiguration
+        if useCloudKit {
+            configuration = ModelConfiguration(
+                schema: schema,
+                isStoredInMemoryOnly: false,
+                cloudKitDatabase: .private(cloudContainerID)
+            )
+        } else {
+            configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+        }
+
         do {
-            return try ModelContainer(for: schema, configurations: [cloud])
+            return try ModelContainer(for: schema, configurations: [configuration])
         } catch {
-            // CloudKit not available (no container, no entitlement, or not
-            // signed into iCloud): fall back to a local store so notes still
+            // CloudKit not available after all (no entitlement, not signed in,
+            // or a broken store): fall back to a local store so notes still
             // persist. Recordings stay on device either way.
             let local = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
             if let store = try? ModelContainer(for: schema, configurations: [local]) {
