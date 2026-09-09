@@ -60,15 +60,15 @@ class WebSocketTransport {
 
 Then in `js/remote.js` swap `new MockTransport(...)` for your implementation.
 
-## Andi Notes
+## MNotes
 
-Im Ordner [`freenotes/`](freenotes/) liegt außerdem **Andi Notes** — eine
+Im Ordner [`mnotes/`](mnotes/) liegt außerdem **MNotes** — eine
 Notiz-App für Handschrift, Zeichnen, PDF-Annotation, Texterkennung, Aufnahme
 mit Live-Mitschrift und Auswertung des Inhalts. Ebenfalls statisch, ohne
 Build-Schritt, alle Daten bleiben im Browser. Details in
-[`freenotes/README.md`](freenotes/README.md).
+[`mnotes/README.md`](mnotes/README.md).
 
-## Andi Notes für iOS
+## MNotes für iOS
 
 Unter [`ios/`](ios/) liegt dieselbe App nativ für iPhone und iPad: SwiftUI,
 SwiftData und PencilKit, also echter Apple-Pencil-Druck, Ebenen, Vorlagen,

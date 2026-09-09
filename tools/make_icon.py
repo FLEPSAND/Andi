@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-Zeichnet das App-Icon von Andi Notes als PNG.
+Zeichnet das App-Icon von MNotes als PNG.
 
 Kein Bildbearbeitungsprogramm nötig: die Form steht als Bézierkurven im Code,
 wird abgetastet und mit weichen Kreisen gestempelt. Dieselbe Geometrie liegt
-als SVG in freenotes/icon.svg — wer das Icon ändert, ändert beides.
+als SVG in mnotes/icon.svg — wer das Icon ändert, ändert beides.
 
     python3 tools/make_icon.py
 """
@@ -179,6 +179,6 @@ def write_png(path, raw):
 
 
 if __name__ == "__main__":
-    target = "ios/AndiNotes/AndiNotes/Assets.xcassets/AppIcon.appiconset/icon-1024.png"
+    target = "ios/MNotes/MNotes/Assets.xcassets/AppIcon.appiconset/icon-1024.png"
     size = write_png(target, render())
     print(f"{target} geschrieben, {size} Bytes")

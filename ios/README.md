@@ -1,4 +1,4 @@
-# Andi Notes für iPhone und iPad
+# MNotes für iPhone und iPad
 
 Native App in SwiftUI. Handschrift läuft über PencilKit, es gibt also echten
 Apple-Pencil-Druck, Neigung, Handballenerkennung und das Doppeltippen am Stift.
@@ -9,14 +9,14 @@ Gespeichert wird mit SwiftData auf dem Gerät.
 Xcode 16 oder neuer, iOS 17 als Mindestversion.
 
 ```
-open ios/AndiNotes/AndiNotes.xcodeproj
+open ios/MNotes/MNotes.xcodeproj
 ```
 
 Vor dem ersten Start zwei Dinge einstellen:
 
-1. Ziel **AndiNotes** → Reiter *Signing & Capabilities* → dein Team auswählen.
-2. Die Bundle-ID `de.andi.notes` gegen eine eigene tauschen, etwa
-   `de.deinname.andinotes` — sie muss weltweit eindeutig sein.
+1. Ziel **MNotes** → Reiter *Signing & Capabilities* → dein Team auswählen.
+2. Die Bundle-ID `de.mnotes.app` gegen eine eigene tauschen, etwa
+   `de.deinname.mnotes`. Sie muss weltweit eindeutig sein.
 
 Dann Gerät auswählen und starten. Auf dem Simulator läuft alles außer
 Apple Pencil und Mikrofonaufnahme sinnvoll.
@@ -26,14 +26,14 @@ Ziel **My Mac (Designed for iPad)** wählen. Zeichnen geht dort nur mit der Maus
 oder über ein angeschlossenes iPad per Sidecar.
 
 Das Projekt nutzt eine dateisystem-synchronisierte Gruppe: neue Dateien im
-Ordner `AndiNotes/` landen automatisch im Ziel, sie müssen nicht einzeln
+Ordner `MNotes/` landen automatisch im Ziel, sie müssen nicht einzeln
 hinzugefügt werden. Das setzt Xcode 16 voraus.
 
 ## Aufbau
 
 ```
-AndiNotes/
-  AndiNotesApp.swift    Einstiegspunkt, SwiftData-Container
+MNotes/
+  MNotesApp.swift       Einstiegspunkt, SwiftData-Container
   Models.swift          Ordner, Notiz, Seite, Ebene, Aufnahme, Version
   ContentView.swift     Dreispaltige Navigation, Ordner- und Notizliste
   NoteEditorView.swift  Editor, Werkzeugleiste, Stiftregal, Seitenleiste unten
@@ -165,20 +165,20 @@ installiert sein, sonst bleibt die Mitschrift leer und nur die Aufnahme läuft.
 
 Der iCloud-Abgleich ist vorbereitet und im Code eingeschaltet. Das Datenmodell
 ist CloudKit-tauglich (alle Eigenschaften haben Vorgaben, alle Beziehungen sind
-optional). `AndiNotesApp.swift` nutzt die CloudKit-Datenbank; ohne gültigen
+optional). `MNotesApp.swift` nutzt die CloudKit-Datenbank; ohne gültigen
 Container fällt die App automatisch auf eine rein lokale Ablage zurück, damit
 keine Daten verloren gehen.
 
 Vor dem ersten Start auf einem echten Gerät sind drei Dinge nötig:
 
-1. In Xcode: Ziel **AndiNotes** → *Signing & Capabilities* → dein **Team**
+1. In Xcode: Ziel **MNotes** → *Signing & Capabilities* → dein **Team**
    auswählen (Apple Developer Account).
 2. Die Bundle-ID in eine weltweit eindeutige tauschen, etwa
    `de.deinname.andinotes` — in *Signing & Capabilities* und in
-   `AndiNotesApp.swift` (Konstante `cloudContainerID`).
+   `MNotesApp.swift` (Konstante `cloudContainerID`).
 3. Im Apple Developer Portal (oder direkt in Xcode über *+ Capability → iCloud*)
    einen CloudKit-Container `iCloud.de.deinname.andinotes` anlegen und ihn in
-   `AndiNotes.entitlements` und `AndiNotesApp.swift` eintragen.
+   `MNotes.entitlements` und `MNotesApp.swift` eintragen.
 
 Die Hintergrundmodi (`audio` und `remote-notification`) sind bereits gesetzt.
 Aufnahmen liegen als Dateien in Application Support und wandern **nicht** mit;
@@ -204,6 +204,6 @@ dafür bräuchte es zusätzlich CloudKit-Assets oder einen iCloud-Ordner.
 
 ## Web-Version
 
-Unter [`../freenotes/`](../freenotes/) liegt dieselbe Idee als Web-App. Sie
+Unter [`../mnotes/`](../mnotes/) liegt dieselbe Idee als Web-App. Sie
 läuft überall im Browser, auch offline, hat aber kein PencilKit — Druck und
 Neigung des Apple Pencil sind dort nur eingeschränkt verfügbar.
