@@ -113,10 +113,9 @@ final class Store {
         updateListener = listenForUpdates()
     }
 
-    deinit {
-        updateListener?.cancel()
-    }
-
+    // Kein `deinit`: Store ist ein Singleton und lebt bis zum Prozessende.
+    // (Ein deinit dürfte außerdem nicht auf das @MainActor-isolierte
+    // `updateListener` zugreifen — Swift verbietet das aus gutem Grund.)
     var tier: Tier {
         purchasedIDs.map(ProductID.tier(for:)).max() ?? .free
     }

@@ -437,10 +437,10 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
 
     func saveText() {
         let attributed = textView.attributedText ?? NSAttributedString()
-        page.textRTF = try? attributed.data(
+        page.setRTF(try? attributed.data(
             from: NSRange(location: 0, length: attributed.length),
             documentAttributes: [.documentType: RichText.type]
-        )
+        ))
         onChange?()
         renderComposites()
     }

@@ -29,7 +29,7 @@ struct ContentView: View {
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
-            SidebarView(selection: $sidebar,
+            SidebarView(selection: sidebarSelection,
                         folders: folders,
                         notes: notes,
                         showSettings: $showSettings)
@@ -101,6 +101,15 @@ struct ContentView: View {
         }
     }
 
+    /// `List(selection:)` on iOS takes an optional binding; `sidebar` stays
+    /// non-optional as the source of truth, bridged here.
+    private var sidebarSelection: Binding<SidebarSelection?> {
+        Binding(
+            get: { sidebar },
+            set: { if let value = $0 { sidebar = value } }
+        )
+    }
+
     // MARK: Anlegen
 
     private func newNote() {
@@ -142,10 +151,10 @@ struct ContentView: View {
                 attributes: [.font: UIFont.systemFont(ofSize: 15),
                              .foregroundColor: UIColor.black]
             ))
-            page.textRTF = try? text.data(
+            page.setRTF(try? text.data(
                 from: NSRange(location: 0, length: text.length),
                 documentAttributes: [.documentType: RichText.type]
-            )
+            ))
         }
         context.insert(note)
         selectedNote = note
@@ -156,7 +165,7 @@ struct ContentView: View {
 
 struct SidebarView: View {
     @Environment(\.modelContext) private var context
-    @Binding var selection: SidebarSelection
+    @Binding var selection: SidebarSelection?
     let folders: [Folder]
     let notes: [Note]
     @Binding var showSettings: Bool
@@ -166,47 +175,10 @@ struct SidebarView: View {
 
     var body: some View {
         List(selection: $selection) {
-            Section {
-                Label("Alle Notizen", systemImage: "tray.full")
-                    .badge(notes.count)
-                    .tag(SidebarSelection.all)
-                Label("Favoriten", systemImage: "star")
-                    .badge(notes.filter(\.isStarred).count)
-                    .tag(SidebarSelection.starred)
-            }
-
-            Section("Ordner") {
-                ForEach(folders) { folder in
-                    Label(folder.name, systemImage: "folder")
-                        .badge(folder.noteCount)
-                        .tag(SidebarSelection.folder(folder.persistentModelID))
-                        .contextMenu {
-                            Button("Umbenennen") {
-                                newName = folder.name
-                                renaming = folder
-                            }
-                            Button("Löschen", role: .destructive) {
-                                context.delete(folder)
-                            }
-                        }
-                }
-                Button {
-                    let folder = Folder(name: "Neuer Ordner", sortIndex: folders.count)
-                    context.insert(folder)
-                    newName = folder.name
-                    renaming = folder
-                } label: {
-                    Label("Ordner anlegen", systemImage: "plus")
-                }
-            }
-
+            quickAccessSection
+            folderSection
             if !allTags.isEmpty {
-                Section("Schlagwörter") {
-                    ForEach(allTags, id: \.self) { tag in
-                        Label("#\(tag)", systemImage: "number")
-                            .tag(SidebarSelection.tag(tag))
-                    }
-                }
+                tagsSection
             }
         }
         .navigationTitle("Andi Notes")
@@ -219,14 +191,67 @@ struct SidebarView: View {
                 }
             }
         }
-        .alert("Ordnername", isPresented: Binding(get: { renaming != nil },
-                                                  set: { if !$0 { renaming = nil } })) {
+        .alert("Ordnername", isPresented: isRenaming) {
             TextField("Name", text: $newName)
             Button("Sichern") {
                 renaming?.name = newName
                 renaming = nil
             }
             Button("Abbrechen", role: .cancel) { renaming = nil }
+        }
+    }
+
+    private var isRenaming: Binding<Bool> {
+        Binding(
+            get: { renaming != nil },
+            set: { if !$0 { renaming = nil } }
+        )
+    }
+
+    private var quickAccessSection: some View {
+        Section {
+            Label("Alle Notizen", systemImage: "tray.full")
+                .badge(notes.count)
+                .tag(SidebarSelection.all)
+            Label("Favoriten", systemImage: "star")
+                .badge(notes.filter(\.isStarred).count)
+                .tag(SidebarSelection.starred)
+        }
+    }
+
+    private var folderSection: some View {
+        Section("Ordner") {
+            ForEach(folders) { folder in
+                Label(folder.name, systemImage: "folder")
+                    .badge(folder.noteCount)
+                    .tag(SidebarSelection.folder(folder.persistentModelID))
+                    .contextMenu {
+                        Button("Umbenennen") {
+                            newName = folder.name
+                            renaming = folder
+                        }
+                        Button("Löschen", role: .destructive) {
+                            context.delete(folder)
+                        }
+                    }
+            }
+            Button {
+                let folder = Folder(name: "Neuer Ordner", sortIndex: folders.count)
+                context.insert(folder)
+                newName = folder.name
+                renaming = folder
+            } label: {
+                Label("Ordner anlegen", systemImage: "plus")
+            }
+        }
+    }
+
+    private var tagsSection: some View {
+        Section("Schlagwörter") {
+            ForEach(allTags, id: \.self) { tag in
+                Label("#\(tag)", systemImage: "number")
+                    .tag(SidebarSelection.tag(tag))
+            }
         }
     }
 

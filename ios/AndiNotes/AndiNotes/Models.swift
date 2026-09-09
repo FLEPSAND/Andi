@@ -163,6 +163,10 @@ final class Page {
     /// Typed text as RTFD, so formatting and images survive in one blob.
     @Attribute(.externalStorage) var textRTF: Data?
 
+    /// Denormalised plain text, kept in sync with `textRTF` via `setRTF`.
+    /// Lets search, previews and titles avoid decoding RTFD on every access.
+    var textPlain: String = ""
+
     /// Quick-marker lines (see Annotations.swift), stored as JSON.
     var annotationsData: Data?
 
@@ -207,12 +211,18 @@ final class Page {
     }
 
     var plainText: String {
+        // Fast path: the denormalised copy, refreshed on every write.
+        if !textPlain.isEmpty { return textPlain }
+        // Fallback for pages written before `textPlain` existed.
         guard let textRTF, !textRTF.isEmpty else { return "" }
-        return (try? NSAttributedString(
-            data: textRTF,
-            options: [.documentType: RichText.type],
-            documentAttributes: nil
-        ).string) ?? ""
+        return RichText.attributed(textRTF)?.string ?? ""
+    }
+
+    /// Stores the typed text and refreshes the denormalised plain text so the
+    /// expensive RTFD decode happens once per write, not on every read.
+    func setRTF(_ data: Data?) {
+        textRTF = data
+        textPlain = RichText.attributed(data)?.string ?? ""
     }
 
     /// Adds `points` of extra height — the native "Seite erweitern".
@@ -349,7 +359,7 @@ struct VersionSnapshot: Codable {
                             pdfPageIndex: data.pdfPageIndex)
             page.pdfText = data.pdfText
             page.ocrText = data.ocrText
-            page.textRTF = data.textRTF
+            page.setRTF(data.textRTF)
             page.annotationsData = data.annotations
             page.layers = data.layers.map { layerData in
                 let layer = InkLayer(name: layerData.name, index: layerData.index)

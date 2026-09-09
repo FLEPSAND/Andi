@@ -8,8 +8,15 @@ import SwiftData
 
 @main
 struct AndiNotesApp: App {
-    /// One container for the whole app. Everything is stored locally; see the
-    /// README for how to turn on iCloud sync.
+    /// CloudKit container for iCloud sync. It must match the app's bundle ID
+    /// and the container created in the Apple Developer portal. Before
+    /// shipping, change the bundle ID to something unique and create the
+    /// matching `iCloud.<bundle-id>` container (see README).
+    private static let cloudContainerID = "iCloud.de.andi.notes"
+
+    /// One container for the whole app. Notes sync over CloudKit when the
+    /// container and entitlements are set up; otherwise the app falls back to
+    /// a plain local store so data is never lost.
     private let container: ModelContainer = {
         let schema = Schema([
             Folder.self,
@@ -19,14 +26,25 @@ struct AndiNotesApp: App {
             Recording.self,
             NoteVersion.self
         ])
-        let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+
+        let cloud = ModelConfiguration(
+            schema: schema,
+            isStoredInMemoryOnly: false,
+            cloudKitDatabase: .private(cloudContainerID)
+        )
         do {
-            return try ModelContainer(for: schema, configurations: [configuration])
+            return try ModelContainer(for: schema, configurations: [cloud])
         } catch {
-            // A broken store must not lock the app out of starting; fall back
-            // to memory so the user can at least export or start over.
-            let fallback = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
-            return try! ModelContainer(for: schema, configurations: [fallback])
+            // CloudKit not available (no container, no entitlement, or not
+            // signed into iCloud): fall back to a local store so notes still
+            // persist. Recordings stay on device either way.
+            let local = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+            if let store = try? ModelContainer(for: schema, configurations: [local]) {
+                return store
+            }
+            // Last resort: memory, so the app can at least open.
+            let memory = ModelConfiguration(schema: schema, isStoredInMemoryOnly: true)
+            return try! ModelContainer(for: schema, configurations: [memory])
         }
     }()
 

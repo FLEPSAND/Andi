@@ -161,27 +161,28 @@ Die Live-Mitschrift nutzt `SFSpeechRecognizer`. Ist der Schalter „Nur Erkennun
 auf dem Gerät" an, verlässt nichts das iPad — dafür muss das Sprachpaket
 installiert sein, sonst bleibt die Mitschrift leer und nur die Aufnahme läuft.
 
-## iCloud-Abgleich nachrüsten
+## iCloud-Abgleich
 
-Das Datenmodell ist bereits CloudKit-tauglich: alle Eigenschaften haben
-Vorgaben, alle Beziehungen sind optional, es gibt keine `unique`-Bedingungen.
-Zum Einschalten:
+Der iCloud-Abgleich ist vorbereitet und im Code eingeschaltet. Das Datenmodell
+ist CloudKit-tauglich (alle Eigenschaften haben Vorgaben, alle Beziehungen sind
+optional). `AndiNotesApp.swift` nutzt die CloudKit-Datenbank; ohne gültigen
+Container fällt die App automatisch auf eine rein lokale Ablage zurück, damit
+keine Daten verloren gehen.
 
-1. Ziel → *Signing & Capabilities* → **iCloud** hinzufügen, *CloudKit*
-   ankreuzen, einen Container anlegen.
-2. **Background Modes** hinzufügen und *Remote notifications* ankreuzen.
-3. In `AndiNotesApp.swift` die Konfiguration ersetzen:
+Vor dem ersten Start auf einem echten Gerät sind drei Dinge nötig:
 
-```swift
-let configuration = ModelConfiguration(
-    schema: schema,
-    isStoredInMemoryOnly: false,
-    cloudKitDatabase: .private("iCloud.de.deinname.andinotes")
-)
-```
+1. In Xcode: Ziel **AndiNotes** → *Signing & Capabilities* → dein **Team**
+   auswählen (Apple Developer Account).
+2. Die Bundle-ID in eine weltweit eindeutige tauschen, etwa
+   `de.deinname.andinotes` — in *Signing & Capabilities* und in
+   `AndiNotesApp.swift` (Konstante `cloudContainerID`).
+3. Im Apple Developer Portal (oder direkt in Xcode über *+ Capability → iCloud*)
+   einen CloudKit-Container `iCloud.de.deinname.andinotes` anlegen und ihn in
+   `AndiNotes.entitlements` und `AndiNotesApp.swift` eintragen.
 
-Aufnahmen liegen als Dateien in Application Support und wandern dabei **nicht**
-mit; dafür bräuchte es zusätzlich CloudKit-Assets oder einen iCloud-Ordner.
+Die Hintergrundmodi (`audio` und `remote-notification`) sind bereits gesetzt.
+Aufnahmen liegen als Dateien in Application Support und wandern **nicht** mit;
+dafür bräuchte es zusätzlich CloudKit-Assets oder einen iCloud-Ordner.
 
 ## Grenzen
 

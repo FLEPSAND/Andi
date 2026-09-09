@@ -298,7 +298,7 @@ struct AnalysisPanel: View {
 
     private func insert() {
         guard let page, !output.isEmpty else { return }
-        page.textRTF = RichText.appending(output, to: page.textRTF)
+        page.setRTF(RichText.appending(output, to: page.textRTF))
         onChange()
     }
 }

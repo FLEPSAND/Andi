@@ -12,6 +12,7 @@ import UniformTypeIdentifiers
 
 struct NoteEditorView: View {
     @Environment(\.modelContext) private var context
+    @Environment(\.scenePhase) private var scenePhase
     @Bindable var note: Note
     let tools: ToolState
 
@@ -32,6 +33,7 @@ struct NoteEditorView: View {
     @State private var video = VideoModel()
     @State private var store = Store.shared
     @State private var showPaywall = false
+    @State private var didEdit = false
 
     private var pages: [Page] { note.orderedPages }
     private var currentPage: Page? {
@@ -112,6 +114,10 @@ struct NoteEditorView: View {
         }
         .onAppear { loadPDFImageIfNeeded() }
         .onChange(of: pageIndex) { _, _ in loadPDFImageIfNeeded() }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .background { autoSaveVersionIfNeeded() }
+        }
+        .onDisappear { autoSaveVersionIfNeeded() }
     }
 
     // MARK: Werkzeugleiste
@@ -427,12 +433,13 @@ struct NoteEditorView: View {
 
     private func save() {
         note.touch()
+        didEdit = true
     }
 
     /// Appends assistant output to the page's typed text.
     private func appendToPage(_ text: String) {
         guard let page = currentPage else { return }
-        page.textRTF = RichText.appending(text, to: page.textRTF)
+        page.setRTF(RichText.appending(text, to: page.textRTF))
         controller?.renderComposites()
         save()
         show("Übernommen.")
@@ -441,10 +448,10 @@ struct NoteEditorView: View {
     /// Drops a still frame with its timestamp into the page.
     private func insertSnapshot(_ image: UIImage, at time: String) {
         guard let page = currentPage else { return }
-        page.textRTF = RichText.appending(image: image,
-                                          caption: "Video bei \(time)",
-                                          width: page.size.width - 80,
-                                          to: page.textRTF)
+        page.setRTF(RichText.appending(image: image,
+                                       caption: "Video bei \(time)",
+                                       width: page.size.width - 80,
+                                       to: page.textRTF))
         controller?.renderComposites()
         save()
         show("Standbild bei \(time) eingefügt.")
@@ -478,7 +485,7 @@ struct NoteEditorView: View {
         let copy = Page(index: source.index + 1,
                         template: source.template,
                         size: source.size)
-        copy.textRTF = source.textRTF
+        copy.setRTF(source.textRTF)
         copy.layers = source.orderedLayers.map { layer in
             let new = InkLayer(name: layer.name, index: layer.index)
             new.drawingData = layer.drawingData
@@ -515,8 +522,17 @@ struct NoteEditorView: View {
         if all.count > 15 {
             for old in all.dropFirst(15) { context.delete(old) }
         }
-        save()
+        note.touch()
+        didEdit = false
         if !silent { show("Version gesichert.") }
+    }
+
+    /// Saves an automatic version when leaving or backgrounding a note that
+    /// has unsnapshotted edits — honours the "Automatisch Versionen sichern"
+    /// setting in the preferences.
+    private func autoSaveVersionIfNeeded() {
+        guard AppSettings.shared.autoVersions, didEdit else { return }
+        saveVersion(label: "automatisch", silent: true)
     }
 
     // MARK: PDF
