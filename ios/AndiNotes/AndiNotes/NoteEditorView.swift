@@ -402,7 +402,10 @@ struct NoteEditorView: View {
                         tagText = note.tags.joined(separator: ", ")
                         showTags = true
                     }
-                    Button("Version sichern") { saveVersion() }
+                    Button("Version sichern") {
+                        if store.allows(.versions) { saveVersion() }
+                        else { showPaywall = true }
+                    }
                 }
                 Section("Ansicht") {
                     Button {
@@ -504,6 +507,9 @@ struct NoteEditorView: View {
             show("Die letzte Seite bleibt.")
             return
         }
+        // Absichtlich ohne Stufenprüfung: das ist keine Funktion, sondern ein
+        // Netz vor einer Löschung. Wer nicht zahlt, sieht den Verlauf nicht,
+        // verliert seine Seite aber auch nicht endgültig.
         saveVersion(label: "vor Seite löschen", silent: true)
         context.delete(page)
         let remaining = note.orderedPages.filter { $0.persistentModelID != page.persistentModelID }
@@ -531,7 +537,7 @@ struct NoteEditorView: View {
     /// has unsnapshotted edits — honours the "Automatisch Versionen sichern"
     /// setting in the preferences.
     private func autoSaveVersionIfNeeded() {
-        guard AppSettings.shared.autoVersions, didEdit else { return }
+        guard store.allows(.versions), AppSettings.shared.autoVersions, didEdit else { return }
         saveVersion(label: "automatisch", silent: true)
     }
 
