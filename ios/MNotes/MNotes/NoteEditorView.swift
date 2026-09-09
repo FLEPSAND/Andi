@@ -34,6 +34,7 @@ struct NoteEditorView: View {
     @State private var store = Store.shared
     @State private var showPaywall = false
     @State private var didEdit = false
+    @State private var isRecognising = false
     @State private var showPhotoPicker = false
     @State private var photoItem: PhotosPickerItem?
 
@@ -122,11 +123,27 @@ struct NoteEditorView: View {
             }
         }
         .onAppear { loadPDFImageIfNeeded() }
-        .onChange(of: pageIndex) { _, _ in loadPDFImageIfNeeded() }
-        .onChange(of: scenePhase) { _, phase in
-            if phase == .background { autoSaveVersionIfNeeded() }
+        .onChange(of: pageIndex) { oldValue, _ in
+            loadPDFImageIfNeeded()
+            // Erkennen der verlassene Seite.
+            if let left = page(at: oldValue) {
+                Task { await recogniseHandwritingIfNeeded(for: left) }
+            }
         }
-        .onDisappear { autoSaveVersionIfNeeded() }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .background {
+                autoSaveVersionIfNeeded()
+                if let page = currentPage {
+                    Task { await recogniseHandwritingIfNeeded(for: page) }
+                }
+            }
+        }
+        .onDisappear {
+            autoSaveVersionIfNeeded()
+            if let page = currentPage {
+                Task { await recogniseHandwritingIfNeeded(for: page) }
+            }
+        }
     }
 
     // MARK: Werkzeugleiste
@@ -591,6 +608,57 @@ struct NoteEditorView: View {
     private func autoSaveVersionIfNeeded() {
         guard store.allows(.versions), AppSettings.shared.autoVersions, didEdit else { return }
         saveVersion(label: "automatisch", silent: true)
+    }
+
+    // MARK: Automatische Handschrifterkennung
+
+    /// Recognises handwriting on a page in the background, once per changed
+    /// ink. Honours the `autoOCR` setting and the Plus tier.
+    private func recogniseHandwritingIfNeeded(for page: Page) async {
+        guard AppSettings.shared.autoOCR, store.allows(.ocr), !isRecognising else { return }
+
+        let fingerprint = inkFingerprint(for: page)
+        // Unchanged? The stored text is still current.
+        guard fingerprint != page.ocrSourceHash else { return }
+        // No ink at all — nothing to recognise, don't even render.
+        guard page.orderedLayers.contains(where: { ($0.drawingData?.count ?? 0) > 0 }) else { return }
+
+        isRecognising = true
+        defer { isRecognising = false }
+
+        // Ink-only render. `Page` is not Sendable, so this stays on the
+        // MainActor; the recognition itself runs off the actor via `await`.
+        let image = PageRenderer.flatten(page: page,
+                                         pdfData: nil,
+                                         scale: 3,
+                                         includeTemplate: false,
+                                         includeText: false)
+
+        do {
+            let text = try await OCRService.recognize(image: image)
+            if !text.isEmpty {
+                page.ocrText = text
+                note.touch()
+            }
+            // Remember what we looked at so unchanged ink isn't re-read.
+            page.ocrSourceHash = fingerprint
+        } catch {
+            // Leave the hash untouched so a later trigger tries again.
+        }
+    }
+
+    /// Cheap fingerprint of the ink: per-layer byte counts. It changes only
+    /// when a stroke is added, removed or replaced.
+    private func inkFingerprint(for page: Page) -> String {
+        page.orderedLayers
+            .map { "\($0.drawingData?.count ?? 0)" }
+            .joined(separator: "-")
+    }
+
+    private func page(at index: Int) -> Page? {
+        let list = pages
+        guard list.indices.contains(index) else { return nil }
+        return list[index]
     }
 
     // MARK: PDF

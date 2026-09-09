@@ -189,6 +189,10 @@ final class Page {
     var pdfText: String = ""
     var ocrText: String = ""
 
+    /// Cheap fingerprint of the ink (per-layer byte counts), so background OCR
+    /// skips pages that haven't changed. Needs a default for CloudKit.
+    var ocrSourceHash: String = ""
+
     /// Typed text as RTFD, so formatting and images survive in one blob.
     @Attribute(.externalStorage) var textRTF: Data?
 

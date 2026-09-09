@@ -76,6 +76,9 @@ final class AppSettings {
     var libraryLayout: LibraryLayout {
         didSet { defaults.set(libraryLayout.rawValue, forKey: "libraryLayout") }
     }
+    var autoOCR: Bool {
+        didSet { defaults.set(autoOCR, forKey: "autoOCR") }
+    }
     var appearance: Appearance {
         didSet { defaults.set(appearance.rawValue, forKey: "appearance") }
     }
@@ -88,6 +91,7 @@ final class AppSettings {
         onDeviceSpeechOnly = defaults.object(forKey: "onDeviceSpeechOnly") as? Bool ?? true
         autoVersions = defaults.object(forKey: "autoVersions") as? Bool ?? true
         libraryLayout = LibraryLayout(rawValue: defaults.string(forKey: "libraryLayout") ?? "") ?? .grid
+        autoOCR = defaults.object(forKey: "autoOCR") as? Bool ?? false
         appearance = Appearance(rawValue: defaults.string(forKey: "appearance") ?? "") ?? .system
     }
 }
@@ -156,6 +160,10 @@ struct SettingsView: View {
 
                 Section("Notizen") {
                     Toggle("Automatisch Versionen sichern", isOn: $settings.autoVersions)
+                    Toggle("Handschrift automatisch erkennen", isOn: $settings.autoOCR)
+                    Text("Erkennt geschriebene Wörter im Hintergrund, damit die Suche sie findet. Kostet Rechenzeit und Akku.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                 }
 
                 Section("Daten") {
