@@ -12,14 +12,34 @@ Xcode 16 oder neuer, iOS 17 als Mindestversion.
 open ios/MNotes/MNotes.xcodeproj
 ```
 
-Vor dem ersten Start zwei Dinge einstellen:
+Vor dem ersten Start vier Dinge einstellen:
 
 1. Ziel **MNotes** → Reiter *Signing & Capabilities* → dein Team auswählen.
 2. Die Bundle-ID `de.mnotes.app` gegen eine eigene tauschen, etwa
    `de.deinname.mnotes`. Sie muss weltweit eindeutig sein.
+3. Im selben Reiter unter *iCloud* den Container `iCloud.<deine-bundle-id>`
+   anlegen. Fehlt er, startet die App trotzdem, speichert dann aber nur
+   lokal und synchronisiert stillschweigend nichts.
+4. *Product → Scheme → Edit Scheme → Run → Options* → bei **StoreKit
+   Configuration** die Datei `Products.storekit` auswählen. Ohne sie bleibt
+   die Kaufseite leer, weil kein echter App Store dahintersteht.
 
 Dann Gerät auswählen und starten. Auf dem Simulator läuft alles außer
 Apple Pencil und Mikrofonaufnahme sinnvoll.
+
+## Auf dem eigenen iPhone testen
+
+Am iPhone einmalig *Einstellungen → Datenschutz & Sicherheit → Entwicklermodus*
+einschalten und neu starten. Danach das Gerät per Kabel anschließen, in Xcode
+oben als Ziel auswählen und auf Start drücken.
+
+Beim ersten Start meldet das iPhone einen unbekannten Entwickler. Unter
+*Einstellungen → Allgemein → VPN & Geräteverwaltung* das eigene Profil
+freigeben, dann startet die App.
+
+Käufe laufen über die StoreKit-Datei aus Schritt 4, also ohne echtes Geld.
+Was gekauft wurde, lässt sich in Xcode unter *Debug → StoreKit → Manage
+Transactions* wieder zurücksetzen.
 
 Auf einem Mac mit Apple Silicon läuft die App ohne Zusatzarbeit: in Xcode als
 Ziel **My Mac (Designed for iPad)** wählen. Zeichnen geht dort nur mit der Maus
