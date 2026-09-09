@@ -105,6 +105,8 @@ enum ToolMode: String {
     case text
     /// One drag along a line of text makes a styled mark.
     case quickMark
+    /// One drag draws a clean line, arrow, rectangle, ellipse or triangle.
+    case shape
 }
 
 /// What the toolbar and the canvas agree on. Held by the editor and passed
@@ -124,6 +126,7 @@ final class ToolState {
     var fingerDrawingAllowed: Bool = false
     var isRulerActive: Bool = false
     var markStyle: MarkStyle = .solid
+    var shapeKind: ShapeKind = .rectangle
 
     /// Per-pen settings, so every pen keeps its own colour and thickness.
     private var preferences: [String: PenSettings] = [:]
@@ -147,11 +150,17 @@ final class ToolState {
             return PKEraserTool(eraseWholeStrokes ? .vector : .bitmap, width: eraserWidth)
         case .lasso:
             return PKLassoTool()
-        case .draw, .text, .quickMark:
-            return PKInkingTool(preset.ink,
-                                color: UIColor(color).withAlphaComponent(opacity),
-                                width: width)
+        case .draw, .text, .quickMark, .shape:
+            return inkingTool
         }
+    }
+
+    /// Der aktive Stift als Werkzeug. Das Formenwerkzeug baut sich daraus
+    /// seinen Strich, damit eine Form aussieht wie von Hand gezogen.
+    var inkingTool: PKInkingTool {
+        PKInkingTool(preset.ink,
+                     color: UIColor(color).withAlphaComponent(opacity),
+                     width: width)
     }
 
     func loadPreferences(for id: String) {

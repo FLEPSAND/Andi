@@ -81,6 +81,7 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
 
     private let selectionOverlay = RegionSelectionView()
     private let markOverlay = QuickMarkView()
+    private let shapeOverlay = ShapeDrawView()
     /// Handed the chosen rectangle in page coordinates.
     var onRegionSelected: ((CGRect) -> Void)?
     var isSelectingRegion = false {
@@ -148,6 +149,14 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
             self.removeMark(near: self.toPage(point))
         }
 
+        shapeOverlay.isHidden = true
+        shapeOverlay.onShape = { [weak self] from, to, constrained in
+            guard let self else { return }
+            self.addShape(from: self.toPage(from),
+                          to: self.toPage(to),
+                          constrained: constrained)
+        }
+
         selectionOverlay.isHidden = true
         selectionOverlay.onFinish = { [weak self] rect in
             guard let self else { return }
@@ -166,6 +175,7 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
         }
         view.addSubview(selectionOverlay)
         view.addSubview(markOverlay)
+        view.addSubview(shapeOverlay)
 
         apply()
     }
@@ -175,6 +185,7 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
         canvasView.frame = view.bounds
         selectionOverlay.frame = view.bounds
         markOverlay.frame = view.bounds
+        shapeOverlay.frame = view.bounds
         canvasView.contentSize = pageSize
         if !hasSetInitialZoom, view.bounds.width > 0 {
             hasSetInitialZoom = true
@@ -226,6 +237,13 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
         markOverlay.previewWidth = tools.width
         if marking { markOverlay.reset() }
 
+        let shaping = tools.mode == .shape
+        shapeOverlay.isHidden = !shaping
+        shapeOverlay.kind = tools.shapeKind
+        shapeOverlay.previewColor = UIColor(tools.color)
+        shapeOverlay.previewWidth = tools.width
+        if shaping { shapeOverlay.reset() }
+
         let editingText = tools.mode == .text
         textView.isHidden = !editingText
         canvasView.isScrollEnabled = true
@@ -239,6 +257,7 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
         // A locked layer may be looked at but not drawn on.
         if active?.isLocked == true, tools.mode != .lasso {
             canvasView.tool = PKLassoTool()
+            shapeOverlay.isHidden = true
         }
     }
 
@@ -379,6 +398,36 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
         page.annotations = marks
         renderComposites()
         onChange?()
+    }
+
+    // MARK: Formen
+
+    /// Legt die aufgespannte Form als echten Strich in die aktive Ebene. Damit
+    /// gilt für sie alles, was für Handschrift gilt: Radierer, Lasso,
+    /// Rückgängig. Der Umweg über den `undoManager` der Leinwand sorgt dafür,
+    /// dass ein Rückgängig die Form wieder entfernt.
+    private func addShape(from: CGPoint, to: CGPoint, constrained: Bool) {
+        guard page.activeLayer?.isLocked == false else { return }
+
+        let stroke = ShapeBuilder.stroke(for: tools.shapeKind,
+                                         from: from,
+                                         to: to,
+                                         constrained: constrained,
+                                         ink: tools.inkingTool.ink,
+                                         width: tools.width)
+
+        replaceDrawing(with: PKDrawing(strokes: canvasView.drawing.strokes + [stroke]))
+    }
+
+    /// Tauscht die Zeichnung der aktiven Ebene und merkt den Stand davor fürs
+    /// Rückgängig. Das Zurückschreiben in die Ebene übernimmt der Delegat, der
+    /// auch bei einer gesetzten Zeichnung anspringt.
+    private func replaceDrawing(with drawing: PKDrawing) {
+        let previous = canvasView.drawing
+        canvasView.undoManager?.registerUndo(withTarget: self) { controller in
+            controller.replaceDrawing(with: previous)
+        }
+        canvasView.drawing = drawing
     }
 
     private func removeMark(near point: CGPoint) {

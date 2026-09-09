@@ -52,6 +52,10 @@ final class Note {
     var createdAt: Date = Date.now
     var updatedAt: Date = Date.now
 
+    /// Wann die Notiz in den Papierkorb kam. `nil` heißt: sie ist nicht dort.
+    /// Gelöscht wird erst beim Leeren oder nach `Note.trashRetention`.
+    var trashedAt: Date?
+
     /// The imported PDF, if this note was made from one.
     @Attribute(.externalStorage) var pdfData: Data?
 
@@ -124,6 +128,31 @@ final class Note {
 
     func touch() {
         updatedAt = .now
+    }
+
+    // MARK: Papierkorb
+
+    /// So lange bleibt eine gelöschte Notiz liegen, bevor sie beim Start
+    /// endgültig verschwindet.
+    static let trashRetention: TimeInterval = 30 * 24 * 60 * 60
+
+    var isTrashed: Bool { trashedAt != nil }
+
+    /// Tage bis zur endgültigen Löschung, mindestens 0.
+    var daysLeftInTrash: Int {
+        guard let trashedAt else { return 0 }
+        let left = Note.trashRetention + trashedAt.timeIntervalSinceNow
+        return max(0, Int(ceil(left / 86_400)))
+    }
+
+    func moveToTrash() {
+        trashedAt = .now
+        touch()
+    }
+
+    func restoreFromTrash() {
+        trashedAt = nil
+        touch()
     }
 
     var chat: [ChatMessage] {

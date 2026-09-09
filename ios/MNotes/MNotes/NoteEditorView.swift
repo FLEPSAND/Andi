@@ -34,6 +34,8 @@ struct NoteEditorView: View {
     @State private var store = Store.shared
     @State private var showPaywall = false
     @State private var didEdit = false
+    @State private var showPhotoPicker = false
+    @State private var photoItem: PhotosPickerItem?
 
     private var pages: [Page] { note.orderedPages }
     private var currentPage: Page? {
@@ -89,6 +91,13 @@ struct NoteEditorView: View {
         .fileImporter(isPresented: $showPDFImporter,
                       allowedContentTypes: [.pdf]) { result in
             if case .success(let url) = result { importPDF(from: url) }
+        }
+        .photosPicker(isPresented: $showPhotoPicker,
+                      selection: $photoItem,
+                      matching: .images)
+        .onChange(of: photoItem) { _, item in
+            guard let item else { return }
+            Task { await insertPhoto(item) }
         }
         .alert("Schlagwörter", isPresented: $showTags) {
             TextField("durch Komma getrennt", text: $tagText)
@@ -176,6 +185,7 @@ struct NoteEditorView: View {
             toolButton("eraser", systemImage: "eraser", mode: .erase)
             toolButton("lasso", systemImage: "lasso", mode: .lasso)
             quickMarkButton
+            shapeButton
             Toggle(isOn: Binding(get: { tools.isRulerActive },
                                  set: { tools.isRulerActive = $0 })) {
                 Image(systemName: "ruler")
@@ -217,6 +227,29 @@ struct NoteEditorView: View {
         .buttonStyle(.bordered)
         .tint(tools.mode == .quickMark ? .accentColor : .secondary)
         .help("Schnellmarker: \(tools.markStyle.title)")
+    }
+
+    /// Formen: der Knopf schaltet das Werkzeug, das Menü wählt die Form. Die
+    /// Form entsteht im aktiven Stift, also in dessen Farbe und Strichbreite.
+    private var shapeButton: some View {
+        Menu {
+            ForEach(ShapeKind.allCases) { kind in
+                Button {
+                    tools.shapeKind = kind
+                    tools.mode = .shape
+                } label: {
+                    Label(kind.title, systemImage: kind.symbol)
+                }
+            }
+        } label: {
+            Image(systemName: tools.shapeKind.symbol)
+                .frame(width: 30, height: 30)
+        } primaryAction: {
+            tools.mode = tools.mode == .shape ? .draw : .shape
+        }
+        .buttonStyle(.bordered)
+        .tint(tools.mode == .shape ? .accentColor : .secondary)
+        .help("Form: \(tools.shapeKind.title)")
     }
 
     private func toolButton(_ id: String, systemImage: String, mode: ToolMode) -> some View {
@@ -390,6 +423,7 @@ struct NoteEditorView: View {
         ToolbarItem(placement: .topBarTrailing) {
             Menu {
                 Section("Seite") {
+                    Button("Bild einfügen…") { showPhotoPicker = true }
                     Button("Vorlage wählen…") { showTemplates = true }
                     Button("Seite anhängen") { addPage() }
                     Button("Seite verlängern") { extendPage() }
@@ -446,6 +480,24 @@ struct NoteEditorView: View {
         controller?.renderComposites()
         save()
         show("Übernommen.")
+    }
+
+    /// Legt ein Foto aus der Mediathek unten an die Seite. Verkleinert wird in
+    /// `RichText`, damit ein Urlaubsfoto die Notiz nicht sprengt.
+    private func insertPhoto(_ item: PhotosPickerItem) async {
+        defer { photoItem = nil }
+        guard let data = try? await item.loadTransferable(type: Data.self),
+              let image = UIImage(data: data) else {
+            show("Das Bild ließ sich nicht laden.")
+            return
+        }
+        guard let page = currentPage else { return }
+        page.setRTF(RichText.appending(image: image,
+                                       width: page.size.width - 80,
+                                       to: page.textRTF))
+        controller?.renderComposites()
+        save()
+        show("Bild eingefügt.")
     }
 
     /// Drops a still frame with its timestamp into the page.

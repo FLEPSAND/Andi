@@ -59,7 +59,7 @@ enum Feature: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
-        case .pens: return "Alle neun Stifte und Schnellmarker"
+        case .pens: return "Alle neun Stifte, Schnellmarker und Formen"
         case .layers: return "Ebenen"
         case .templates: return "Alle Seitenvorlagen"
         case .pdf: return "PDF öffnen und beschriften"

@@ -12,6 +12,7 @@ enum SidebarSelection: Hashable {
     case starred
     case folder(PersistentIdentifier)
     case tag(String)
+    case trash
 }
 
 struct ContentView: View {
@@ -38,9 +39,16 @@ struct ContentView: View {
                          selection: $selectedNote,
                          search: $search,
                          title: sidebarTitle,
-                         onNew: newNote)
+                         isTrash: sidebar == .trash,
+                         onNew: newNote,
+                         onEmptyTrash: emptyTrash)
         } detail: {
-            if let note = selectedNote {
+            if let note = selectedNote, note.isTrashed {
+                TrashedNoteView(note: note) {
+                    note.restoreFromTrash()
+                    sidebar = .all
+                }
+            } else if let note = selectedNote {
                 NoteEditorView(note: note, tools: tools)
                     .id(note.persistentModelID)
             } else {
@@ -59,15 +67,45 @@ struct ContentView: View {
             WelcomeView()
         }
         .task {
-            if notes.isEmpty { createWelcomeNote() }
+            purgeOldTrash()
+            if liveNotes.isEmpty { createWelcomeNote() }
             if selectedNote == nil { selectedNote = filteredNotes.first }
+        }
+        .onChange(of: sidebar) { _, _ in
+            // Eine Notiz aus dem Papierkorb darf nicht offen bleiben, wenn man
+            // ihn verlässt, und umgekehrt.
+            if let note = selectedNote, note.isTrashed != (sidebar == .trash) {
+                selectedNote = nil
+            }
+        }
+    }
+
+    // MARK: Papierkorb
+
+    private func emptyTrash() {
+        for note in notes where note.isTrashed {
+            if selectedNote == note { selectedNote = nil }
+            context.delete(note)
+        }
+    }
+
+    /// Räumt beim Start auf, was lange genug im Papierkorb lag.
+    private func purgeOldTrash() {
+        let deadline = Date.now.addingTimeInterval(-Note.trashRetention)
+        for note in notes {
+            guard let trashedAt = note.trashedAt, trashedAt < deadline else { continue }
+            if selectedNote == note { selectedNote = nil }
+            context.delete(note)
         }
     }
 
     // MARK: Auswahl
 
+    /// Alles außer dem Papierkorb sieht nur die nicht gelöschten Notizen.
+    private var liveNotes: [Note] { notes.filter { !$0.isTrashed } }
+
     private var filteredNotes: [Note] {
-        var list = notes
+        var list = liveNotes
         switch sidebar {
         case .all:
             break
@@ -77,6 +115,13 @@ struct ContentView: View {
             list = list.filter { $0.folder?.persistentModelID == id }
         case .tag(let tag):
             list = list.filter { $0.tags.contains(tag) }
+        case .trash:
+            list = notes.filter(\.isTrashed).sorted {
+                ($0.trashedAt ?? .distantPast) > ($1.trashedAt ?? .distantPast)
+            }
+            return search.isEmpty ? list : list.filter {
+                $0.displayTitle.lowercased().contains(search.lowercased())
+            }
         }
         let query = search.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         if !query.isEmpty {
@@ -98,6 +143,7 @@ struct ContentView: View {
         case .starred: return "Favoriten"
         case .folder(let id): return folders.first { $0.persistentModelID == id }?.name ?? "Ordner"
         case .tag(let tag): return "#\(tag)"
+        case .trash: return "Papierkorb"
         }
     }
 
@@ -208,14 +254,21 @@ struct SidebarView: View {
         )
     }
 
+    /// Zählungen und Schlagwörter sollen nur zeigen, was nicht im Papierkorb
+    /// liegt. Sonst sucht man nach einem Schlagwort, das es nicht mehr gibt.
+    private var liveNotes: [Note] { notes.filter { !$0.isTrashed } }
+
     private var quickAccessSection: some View {
         Section {
             Label("Alle Notizen", systemImage: "tray.full")
-                .badge(notes.count)
+                .badge(liveNotes.count)
                 .tag(SidebarSelection.all)
             Label("Favoriten", systemImage: "star")
-                .badge(notes.filter(\.isStarred).count)
+                .badge(liveNotes.filter(\.isStarred).count)
                 .tag(SidebarSelection.starred)
+            Label("Papierkorb", systemImage: "trash")
+                .badge(notes.count - liveNotes.count)
+                .tag(SidebarSelection.trash)
         }
     }
 
@@ -223,7 +276,9 @@ struct SidebarView: View {
         Section("Ordner") {
             ForEach(folders) { folder in
                 Label(folder.name, systemImage: "folder")
-                    .badge(folder.noteCount)
+                    .badge(liveNotes.filter {
+                        $0.folder?.persistentModelID == folder.persistentModelID
+                    }.count)
                     .tag(SidebarSelection.folder(folder.persistentModelID))
                     .contextMenu {
                         Button("Umbenennen") {
@@ -256,7 +311,7 @@ struct SidebarView: View {
     }
 
     private var allTags: [String] {
-        Array(Set(notes.flatMap(\.tags))).sorted()
+        Array(Set(liveNotes.flatMap(\.tags))).sorted()
     }
 }
 
@@ -268,7 +323,11 @@ struct NoteListView: View {
     @Binding var selection: Note?
     @Binding var search: String
     let title: String
+    let isTrash: Bool
     let onNew: () -> Void
+    let onEmptyTrash: () -> Void
+
+    @State private var confirmEmpty = false
 
     var body: some View {
         List(selection: $selection) {
@@ -276,20 +335,29 @@ struct NoteListView: View {
                 NoteRow(note: note)
                     .tag(note)
                     .swipeActions(edge: .leading) {
-                        Button {
-                            note.isStarred.toggle()
-                            note.touch()
-                        } label: {
-                            Label("Favorit", systemImage: note.isStarred ? "star.slash" : "star")
+                        if isTrash {
+                            Button { note.restoreFromTrash() } label: {
+                                Label("Zurückholen", systemImage: "arrow.uturn.backward")
+                            }
+                            .tint(.blue)
+                        } else {
+                            Button {
+                                note.isStarred.toggle()
+                                note.touch()
+                            } label: {
+                                Label("Favorit", systemImage: note.isStarred ? "star.slash" : "star")
+                            }
+                            .tint(.yellow)
                         }
-                        .tint(.yellow)
                     }
                     .swipeActions(edge: .trailing) {
                         Button(role: .destructive) {
                             if selection == note { selection = nil }
-                            context.delete(note)
+                            // Ein Wisch legt in den Papierkorb, er löscht nicht.
+                            // Endgültig wird erst im Papierkorb selbst.
+                            if isTrash { context.delete(note) } else { note.moveToTrash() }
                         } label: {
-                            Label("Löschen", systemImage: "trash")
+                            Label(isTrash ? "Endgültig" : "Löschen", systemImage: "trash")
                         }
                     }
             }
@@ -300,18 +368,86 @@ struct NoteListView: View {
         .overlay {
             if notes.isEmpty {
                 ContentUnavailableView(
-                    search.isEmpty ? "Noch keine Notiz" : "Nichts gefunden",
-                    systemImage: search.isEmpty ? "note.text" : "magnifyingglass"
+                    emptyTitle,
+                    systemImage: emptySymbol,
+                    description: isTrash && search.isEmpty
+                        ? Text("Gelöschte Notizen liegen hier 30 Tage lang.")
+                        : nil
                 )
             }
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button(action: onNew) {
-                    Image(systemName: "square.and.pencil")
+                if isTrash {
+                    Button("Leeren", role: .destructive) { confirmEmpty = true }
+                        .disabled(notes.isEmpty)
+                } else {
+                    Button(action: onNew) {
+                        Image(systemName: "square.and.pencil")
+                    }
                 }
             }
         }
+        .confirmationDialog("Papierkorb leeren?",
+                            isPresented: $confirmEmpty,
+                            titleVisibility: .visible) {
+            Button("Endgültig löschen", role: .destructive, action: onEmptyTrash)
+            Button("Abbrechen", role: .cancel) {}
+        } message: {
+            Text("Danach lassen sich diese Notizen nicht mehr zurückholen.")
+        }
+    }
+
+    private var emptyTitle: String {
+        if !search.isEmpty { return "Nichts gefunden" }
+        return isTrash ? "Papierkorb ist leer" : "Noch keine Notiz"
+    }
+
+    private var emptySymbol: String {
+        if !search.isEmpty { return "magnifyingglass" }
+        return isTrash ? "trash" : "note.text"
+    }
+}
+
+// MARK: - Eine Notiz im Papierkorb
+
+/// Statt des Editors: gelöschte Notizen lassen sich ansehen, aber nicht
+/// bearbeiten. Wer weiterschreiben will, holt sie erst zurück.
+struct TrashedNoteView: View {
+    let note: Note
+    let onRestore: () -> Void
+
+    var body: some View {
+        VStack(spacing: 14) {
+            Image(systemName: "trash")
+                .font(.system(size: 34))
+                .foregroundStyle(.secondary)
+            Text(note.displayTitle)
+                .font(.headline)
+            Text(note.daysLeftInTrash == 0
+                 ? "Wird beim nächsten Start endgültig gelöscht."
+                 : "Wird in \(note.daysLeftInTrash) Tagen endgültig gelöscht.")
+                .font(.callout)
+                .foregroundStyle(.secondary)
+            Button("Zurückholen", action: onRestore)
+                .buttonStyle(.borderedProminent)
+
+            if !preview.isEmpty {
+                ScrollView {
+                    Text(preview)
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                        .frame(maxWidth: 520, alignment: .leading)
+                }
+                .padding(.top, 8)
+            }
+        }
+        .padding(24)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+
+    private var preview: String {
+        note.plainText.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
 
@@ -351,6 +487,10 @@ struct NoteRow: View {
     }
 
     private var subtitle: String {
+        if note.isTrashed {
+            let days = note.daysLeftInTrash
+            return days == 0 ? "wird bald gelöscht" : "noch \(days) Tage"
+        }
         var parts = [note.updatedAt.formatted(.relative(presentation: .named))]
         parts.append("\(note.orderedPages.count) S.")
         if !note.tags.isEmpty { parts.append(note.tags.map { "#\($0)" }.joined(separator: " ")) }

@@ -66,6 +66,7 @@ MNotes/
   VideoPane.swift       Video neben der Notiz, Standbild, Bild-in-Bild
   RichText.swift        Textformat der Seiten (RTFD, mit Bildern)
   Annotations.swift     Schnellmarker: Linienstile über der Handschrift
+  Shapes.swift          Formen als echte PencilKit-Striche
   Services.swift        PDF, Seiten-Rendering, Export, Vision-OCR, Schlüsselbund
   AIService.swift       Auswertung lokal oder über die Claude-API
   AudioService.swift    Aufnahme und Live-Mitschrift
@@ -91,10 +92,12 @@ Startbildschirm beim ersten Öffnen; neun Stifte (Füller, Kugelschreiber,
 Fineliner, Bleistift, Pinsel, Textmarker,
 Wachsmaler, Wasserfarbe, Neon), jeder mit eigener Farbe, Dicke und Deckkraft;
 fünf Paletten und freier Farbwähler; Schnellmarker mit sechs Linienstilen;
+Formen (Linie, Pfeil, Rechteck, Ellipse, Dreieck);
 Radierer wahlweise pixel- oder strichweise; Lasso; Lineal; Ebenen mit Sichtbarkeit, Sperre und Umbenennen;
 dreizehn Seitenvorlagen; Seiten anhängen, verlängern, duplizieren, löschen;
 Ordner, Schlagwörter, Favoriten und Volltextsuche über getippten, erkannten und
-PDF-Text; PDF-Import samt Beschriften; Texterkennung mit Vision auf dem Gerät;
+PDF-Text; Papierkorb mit dreißig Tagen Aufbewahrung;
+Bilder aus der Fotomediathek; PDF-Import samt Beschriften; Texterkennung mit Vision auf dem Gerät;
 Tonaufnahme mit Live-Mitschrift; Versionsverlauf; Export als PDF, PNG und
 Markdown über das Teilen-Menü; Video daneben mit Standbild; Hell- und
 Dunkelmodus umschaltbar; Auswahl fragen (siehe unten).
@@ -110,6 +113,28 @@ sie wieder.
 PencilKit kennt keine Linienstile, deshalb liegen diese Anmerkungen als eigene
 kleine Datenstruktur an der Seite (`Annotations.swift`) und werden mit Core
 Graphics über die Handschrift gezeichnet — im Editor wie im PDF-Export.
+
+## Formen
+
+Der Knopf rechts neben dem Schnellmarker zieht Linie, Pfeil, Rechteck, Ellipse
+und Dreieck. Wer nah an einem Quadrat oder an einer waagerechten Linie landet,
+bekommt sie sauber; eine eigene Taste dafür gibt es bewusst nicht.
+
+Anders als der Schnellmarker landet eine Form nicht auf einer eigenen Ebene,
+sondern wird zu einem echten `PKStroke` in der aktiven Ebene (`Shapes.swift`).
+Damit gilt für sie alles, was für Handschrift gilt: Radierer, Lasso und
+Rückgängig greifen ohne Sonderbehandlung.
+
+## Papierkorb
+
+Löschen legt eine Notiz in den Papierkorb statt sie zu entfernen. Dort liegt
+sie dreißig Tage, lässt sich lesen und zurückholen, aber nicht bearbeiten.
+Endgültig verschwindet sie beim Leeren oder beim nächsten Start nach Ablauf
+der Frist. Ordner, Zählungen und Schlagwörter blenden Gelöschtes aus.
+
+Eine Ausnahme gibt es: der stille Schnappschuss vor dem Löschen einer Seite
+läuft auch ohne gekauften Versionsverlauf. Er schützt Daten, statt eine
+Funktion anzubieten.
 
 ## Video daneben
 
@@ -143,7 +168,7 @@ in `Store.swift`. Voreinstellung:
 
 | Stufe | Enthalten |
 |-------|-----------|
-| Kostenlos | Alle Stifte, Schnellmarker, Ebenen, Vorlagen, PDF, Export, Auswertung auf dem Gerät — ohne Obergrenze bei Notizen, Seiten und Ordnern |
+| Kostenlos | Alle Stifte, Schnellmarker, Formen, Ebenen, Vorlagen, PDF, Export, Auswertung auf dem Gerät — ohne Obergrenze bei Notizen, Seiten und Ordnern |
 | Plus | Aufnahme, Live-Mitschrift, Texterkennung, Videobereich, Versionsverlauf |
 | Pro | Zusätzlich der Assistent: Ausschnitt erklären, Lösungsweg, Chat zur Notiz |
 
