@@ -159,22 +159,20 @@ struct ContentView: View {
 
     // MARK: Anlegen
 
+    /// Der in der Seitenleiste gewählte Ordner, sonst `nil`.
+    private var currentFolder: Folder? {
+        if case .folder(let id) = sidebar { return folders.first { $0.persistentModelID == id } }
+        return nil
+    }
+
     private func newNote() {
-        let folder: Folder? = {
-            if case .folder(let id) = sidebar { return folders.first { $0.persistentModelID == id } }
-            return nil
-        }()
-        let note = Note(folder: folder)
+        let note = Note(folder: currentFolder)
         context.insert(note)
         selectedNote = note
     }
 
     private func newWhiteboard() {
-        let folder: Folder? = {
-            if case .folder(let id) = sidebar { return folders.first { $0.persistentModelID == id } }
-            return nil
-        }()
-        let note = Note(kind: .whiteboard, folder: folder)
+        let note = Note(kind: .whiteboard, folder: currentFolder)
         if let page = note.pages?.first {
             page.width = Double(PageGeometry.board.width)
             page.height = Double(PageGeometry.board.height)
