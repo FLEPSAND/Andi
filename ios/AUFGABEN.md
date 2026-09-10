@@ -4,7 +4,7 @@ Drei Funktionen fehlen noch, damit MNotes den Umfang der Vorlage erreicht.
 Jede ist unten so beschrieben, dass sie ohne Rückfragen gebaut werden kann:
 betroffene Dateien, vorhandene Bausteine, Entscheidungen, Fallstricke.
 
-Aufgabe 1 und 2 sind erledigt. Offen sind Aufgabe 3 und 4.
+Aufgabe 1 bis 3 sind erledigt. Offen sind Aufgabe 4 und 5.
 
 ## Regeln, die für alle drei gelten
 
@@ -142,7 +142,7 @@ der Editor ohnehin nur eine Notiz gleichzeitig zeigt.
 
 ---
 
-## 3. Whiteboard
+## 3. Whiteboard — erledigt
 
 Eine endlose Fläche ohne Seitenränder, zum Sammeln statt zum Schreiben.
 
@@ -240,3 +240,59 @@ Zwei Wege, aufsteigend nach Aufwand:
    Seite aus, nicht nur im Simulator.
 
 Ich würde mit Weg 1 anfangen und Weg 2 nur nehmen, wenn das nicht reicht.
+
+---
+
+## 5. Whiteboard und die beiden Bildberechnungen
+
+Aufgabe 2 und 3 sind einzeln richtig, treffen sich aber an einer Stelle, die
+in keiner der beiden Vorgaben stand. Beide rendern die Seite in ein Bitmap,
+und bei einem Whiteboard ist die Seite 4000 × 3000 Punkte groß.
+
+Die Begrenzung aus Aufgabe 3 verhindert den Absturz. Sie senkt den Maßstab
+auf 1,0, es bleiben also 12 Megapixel und rund 48 MB pro Bild. Das überlebt
+ein iPhone, aber es ist kein Nebenbei.
+
+### 5a. Automatische Erkennung auf einem Whiteboard abschalten
+
+Das ist der klare Fall, und er kostet eine Zeile.
+
+`recogniseHandwritingIfNeeded` rendert mit `scale: 3`. Bei A4 ergibt das
+1785 × 2526, bei einem Whiteboard greift die Begrenzung und es bleiben
+4000 × 3000. Zwei Dinge daran sind falsch:
+
+- Es sind 48 MB und eine lange Rechnung auf dem MainActor, ausgelöst beim
+  Verlassen der Notiz.
+- Es bringt nichts. Handschrift auf einem Whiteboard ist genauso groß wie
+  auf A4, wird hier aber mit einem Drittel der Auflösung abgetastet. Vision
+  liest das nicht zuverlässig.
+
+Also am Anfang der Funktion aussteigen:
+
+```swift
+guard note.kind != .whiteboard else { return }
+```
+
+Ein Whiteboard ist zum Sammeln da, nicht zum Durchsuchen. Wer den Text
+trotzdem braucht, kann die Erkennung im Inspektor weiterhin von Hand
+anstoßen.
+
+### 5b. Der Hintergrund eines Whiteboards, falls es hakt
+
+`renderComposites` legt das Hintergrundbild **immer** an, auch wenn es nur
+das Punktraster enthält. Bei einem Whiteboard sind das 48 MB, solange es
+geöffnet ist. Kommen sichtbare Ebenen über der aktiven dazu, noch einmal
+so viel.
+
+Erst ausprobieren: ein Whiteboard anlegen, zwei, drei Ebenen füllen, zoomen,
+zwischen Notizen wechseln. Wenn nichts stockt und die App nicht wegen
+Speicher beendet wird, lass es.
+
+Falls doch, ist der saubere Weg nicht ein kleinerer Maßstab, sondern gar
+kein Bitmap: das Punktraster ist ein sich wiederholendes Muster. Eine
+Kachel von etwa 40 × 40 Punkten als `UIColor(patternImage:)` auf
+`backgroundView.backgroundColor` ist bei jedem Zoom scharf und kostet
+Kilobytes statt Megabytes. Das Hintergrundbild wird dann nur noch gebraucht,
+wenn tatsächlich Ebenen unter der aktiven liegen.
+
+Das ist mehr Arbeit als 5a und lohnt sich nur, wenn das Problem messbar ist.
