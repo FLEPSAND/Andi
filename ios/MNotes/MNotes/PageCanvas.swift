@@ -275,12 +275,14 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
         let size = pageSize
         guard size.width > 0, size.height > 0 else { return }
 
-        let scale = min(UIScreen.main.scale, 2)
+        // Cap the bitmap edge for a whiteboard (4000 × 3000); A4 is unaffected.
+        let maxEdge: CGFloat = 4000
+        let safeScale = min(min(UIScreen.main.scale, 2), maxEdge / max(size.width, size.height))
         let layers = page.orderedLayers
         let activeIndex = min(max(page.activeLayerIndex, 0), max(layers.count - 1, 0))
 
         let format = UIGraphicsImageRendererFormat.default()
-        format.scale = scale
+        format.scale = safeScale
         format.opaque = false
         let renderer = UIGraphicsImageRenderer(size: size, format: format)
 
@@ -298,7 +300,7 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
 
             for (index, layer) in layers.enumerated() where index < activeIndex && layer.isVisible {
                 drawing(of: layer)
-                    .image(from: CGRect(origin: .zero, size: size), scale: scale)
+                    .image(from: CGRect(origin: .zero, size: size), scale: safeScale)
                     .draw(in: CGRect(origin: .zero, size: size))
             }
         }
@@ -308,7 +310,7 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
         overlayView.image = (above.isEmpty && marks.isEmpty) ? nil : renderer.image { context in
             for (_, layer) in above {
                 drawing(of: layer)
-                    .image(from: CGRect(origin: .zero, size: size), scale: scale)
+                    .image(from: CGRect(origin: .zero, size: size), scale: safeScale)
                     .draw(in: CGRect(origin: .zero, size: size))
             }
             // Marks go on top: they highlight, they must not be buried.
@@ -336,6 +338,17 @@ final class PageCanvasController: UIViewController, PKCanvasViewDelegate, UIText
     private func zoomToFit() {
         let available = view.bounds.inset(by: UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20))
         guard available.width > 0, pageSize.width > 0 else { return }
+
+        // Ein Whiteboard nicht auf die ganze Fläche verkleinern, sondern oben
+        // links in etwa Originalgröße öffnen.
+        if page.note?.kind == .whiteboard {
+            canvasView.minimumZoomScale = 0.25
+            canvasView.maximumZoomScale = 5
+            canvasView.zoomScale = 1.0
+            canvasView.contentOffset = .zero
+            return
+        }
+
         let scale = min(available.width / pageSize.width, available.height / pageSize.height)
         canvasView.minimumZoomScale = max(0.1, scale * 0.5)
         canvasView.maximumZoomScale = max(scale * 6, 5)

@@ -45,6 +45,9 @@ struct NoteEditorView: View {
         return list[min(pageIndex, list.count - 1)]
     }
 
+    /// Ein Whiteboard hat genau eine große Fläche, keine Seiten.
+    private var isWhiteboard: Bool { note.kind == .whiteboard }
+
     var body: some View {
         VStack(spacing: 0) {
             toolbar
@@ -353,7 +356,9 @@ struct NoteEditorView: View {
             } else {
                 ContentUnavailableView("Keine Seite", systemImage: "doc")
             }
-            pageStrip
+            if !isWhiteboard {
+                pageStrip
+            }
         }
     }
 
@@ -442,10 +447,12 @@ struct NoteEditorView: View {
                 Section("Seite") {
                     Button("Bild einfügen…") { showPhotoPicker = true }
                     Button("Vorlage wählen…") { showTemplates = true }
-                    Button("Seite anhängen") { addPage() }
-                    Button("Seite verlängern") { extendPage() }
-                    Button("Seite duplizieren") { duplicatePage() }
-                    Button("Seite löschen", role: .destructive) { deletePage() }
+                    if !isWhiteboard {
+                        Button("Seite anhängen") { addPage() }
+                        Button("Seite verlängern") { extendPage() }
+                        Button("Seite duplizieren") { duplicatePage() }
+                        Button("Seite löschen", role: .destructive) { deletePage() }
+                    }
                 }
                 Section("Notiz") {
                     Button("PDF öffnen…") { showPDFImporter = true }

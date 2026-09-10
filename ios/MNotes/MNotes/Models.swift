@@ -39,6 +39,7 @@ final class Folder {
 enum NoteKind: String, Codable {
     case note
     case pdf
+    case whiteboard
 }
 
 @Model
@@ -111,7 +112,12 @@ final class Note {
     }
 
     var displayIcon: String {
-        icon ?? (kind == .pdf ? "📕" : "📄")
+        if let icon { return icon }
+        switch kind {
+        case .note: return "📄"
+        case .pdf: return "📕"
+        case .whiteboard: return "⬜"
+        }
     }
 
     /// Everything readable in this note: typed text, recognised text, PDF text.
@@ -412,6 +418,8 @@ struct VersionSnapshot: Codable {
 enum PageGeometry {
     /// A4 in points (72 dpi), the unit PencilKit and PDFKit both work in.
     static let a4 = CGSize(width: 595, height: 842)
+    /// Whiteboard: eine sehr große Fläche statt wirklich endlosem Papier.
+    static let board = CGSize(width: 4000, height: 3000)
 }
 
 // MARK: - Ablageorte

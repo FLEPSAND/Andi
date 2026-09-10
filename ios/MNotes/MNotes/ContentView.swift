@@ -41,6 +41,7 @@ struct ContentView: View {
                          title: sidebarTitle,
                          isTrash: sidebar == .trash,
                          onNew: newNote,
+                         onNewWhiteboard: newWhiteboard,
                          onEmptyTrash: emptyTrash)
         } detail: {
             if let note = selectedNote, note.isTrashed {
@@ -164,6 +165,21 @@ struct ContentView: View {
             return nil
         }()
         let note = Note(folder: folder)
+        context.insert(note)
+        selectedNote = note
+    }
+
+    private func newWhiteboard() {
+        let folder: Folder? = {
+            if case .folder(let id) = sidebar { return folders.first { $0.persistentModelID == id } }
+            return nil
+        }()
+        let note = Note(kind: .whiteboard, folder: folder)
+        if let page = note.pages?.first {
+            page.width = Double(PageGeometry.board.width)
+            page.height = Double(PageGeometry.board.height)
+            page.template = .dots
+        }
         context.insert(note)
         selectedNote = note
     }
@@ -325,6 +341,7 @@ struct NoteListView: View {
     let title: String
     let isTrash: Bool
     let onNew: () -> Void
+    let onNewWhiteboard: () -> Void
     let onEmptyTrash: () -> Void
 
     @State private var settings = AppSettings.shared
@@ -362,6 +379,10 @@ struct NoteListView: View {
                     Button(action: onNew) {
                         Image(systemName: "square.and.pencil")
                     }
+                    Button(action: onNewWhiteboard) {
+                        Image(systemName: "square.grid.3x3")
+                    }
+                    .help("Whiteboard")
                 }
             }
         }

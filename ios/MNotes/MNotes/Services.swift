@@ -68,8 +68,12 @@ enum PageRenderer {
                         includeTemplate: Bool = true,
                         includeText: Bool = true) -> UIImage {
         let size = page.size
+        // Cap the bitmap edge: a whiteboard (4000 × 3000) at scale 2 would
+        // need ~384 MB, more than an iPhone survives. For A4 nothing changes.
+        let maxEdge: CGFloat = 4000
+        let safeScale = min(scale, maxEdge / max(size.width, size.height))
         let format = UIGraphicsImageRendererFormat.default()
-        format.scale = scale
+        format.scale = safeScale
         format.opaque = true
 
         return UIGraphicsImageRenderer(size: size, format: format).image { context in
@@ -97,7 +101,7 @@ enum PageRenderer {
                 guard let data = layer.drawingData, !data.isEmpty,
                       let drawing = try? PKDrawing(data: data) else { continue }
                 drawing
-                    .image(from: CGRect(origin: .zero, size: size), scale: scale)
+                    .image(from: CGRect(origin: .zero, size: size), scale: safeScale)
                     .draw(in: CGRect(origin: .zero, size: size))
             }
 
