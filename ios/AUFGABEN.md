@@ -4,7 +4,7 @@ Drei Funktionen fehlen noch, damit MNotes den Umfang der Vorlage erreicht.
 Jede ist unten so beschrieben, dass sie ohne Rückfragen gebaut werden kann:
 betroffene Dateien, vorhandene Bausteine, Entscheidungen, Fallstricke.
 
-Reihenfolge nach Nutzen für ein Kind: erst 1, dann 2, dann 3.
+Aufgabe 1 und 2 sind erledigt. Offen sind Aufgabe 3 und 4.
 
 ## Regeln, die für alle drei gelten
 
@@ -25,7 +25,7 @@ pushen.
 
 ---
 
-## 1. Bibliothek als Kachelansicht
+## 1. Bibliothek als Kachelansicht — erledigt
 
 Heute ist die mittlere Spalte eine Liste (`NoteListView` in
 `ContentView.swift`). Daneben soll ein Raster mit Vorschaubildern stehen,
@@ -88,7 +88,7 @@ löscht nicht.
 
 ---
 
-## 2. Handschrift automatisch erkennen
+## 2. Handschrift automatisch erkennen — erledigt
 
 Die Texterkennung gibt es, sie läuft aber nur, wenn man sie im Inspektor pro
 Seite anstößt. Bis dahin findet die Suche geschriebene Wörter nicht. Das soll
@@ -197,3 +197,46 @@ let safeScale = min(scale, maxEdge / max(size.width, size.height))
 Für eine A4-Seite ändert das nichts, für ein Whiteboard verhindert es den
 Absturz. Diese Begrenzung gilt auch für die Vorschaubilder aus Aufgabe 1 und
 für den PDF-Export.
+
+---
+
+## 4. Die automatische Erkennung darf das Blättern nicht bremsen
+
+Aufgabe 2 läuft, hat aber eine spürbare Kante. `recogniseHandwritingIfNeeded`
+rendert die Seite mit `scale: 3`. Bei A4 sind das 1785 × 2526 Bildpunkte,
+also 4,5 Megapixel, und das entsteht auf dem MainActor.
+
+Bei zwei der drei Auslöser stört das niemanden: beim Verlassen der Notiz und
+beim Wechsel in den Hintergrund schaut ohnehin keiner hin. Beim Blättern
+schon. Dort fällt die Bildberechnung genau in den Moment, in dem die neue
+Seite erscheinen soll.
+
+### Erst messen
+
+Schalte „Handschrift automatisch erkennen" ein, schreib etwas auf zwei Seiten
+und blättere hin und her. Wenn es sich flüssig anfühlt, lass es wie es ist
+und streich diese Aufgabe. Ein Hänger, den man nicht sieht, ist keiner.
+
+### Falls es hakt
+
+Zwei Wege, aufsteigend nach Aufwand:
+
+1. **Maßstab senken.** `scale: 3` auf `2` ändern. Ein Drittel weniger Kante,
+   also weniger als die Hälfte der Bildpunkte. Vision erkennt Handschrift bei
+   dieser Auflösung weiterhin ordentlich. Danach noch einmal prüfen, ob die
+   Erkennung schlechter wird — der manuelle Weg im Inspektor bleibt bei 3,
+   du kannst also direkt vergleichen.
+
+2. **Aus dem MainActor heraus.** Das Zeichnen braucht kein `Page`, nur die
+   `drawingData` der sichtbaren Ebenen und die Seitengröße. Beides ist
+   `Sendable`. Also: auf dem MainActor `[Data]` und `CGSize` einsammeln,
+   damit in einen `Task.detached` gehen, dort `PKDrawing(data:)` und
+   `image(from:scale:)` aufrufen und das Bild zurückgeben.
+
+   Vorsicht: Apple sagt nirgends zu, dass `PKDrawing.image(from:scale:)`
+   außerhalb des MainActors laufen darf. In der Praxis funktioniert es, aber
+   das ist eine Zusicherung, die niemand gegeben hat. Wenn du diesen Weg
+   gehst, dann probier ihn auf einem echten Gerät mit einer vollgeschriebenen
+   Seite aus, nicht nur im Simulator.
+
+Ich würde mit Weg 1 anfangen und Weg 2 nur nehmen, wenn das nicht reicht.
