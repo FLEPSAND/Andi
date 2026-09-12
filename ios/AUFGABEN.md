@@ -4,8 +4,8 @@ Drei Funktionen fehlen noch, damit MNotes den Umfang der Vorlage erreicht.
 Jede ist unten so beschrieben, dass sie ohne Rückfragen gebaut werden kann:
 betroffene Dateien, vorhandene Bausteine, Entscheidungen, Fallstricke.
 
-Aufgabe 1 bis 3 und 5a sind erledigt. Offen sind Aufgabe 4, 5b und 6.
-Beide sind vom Typ „erst messen, dann bauen" und brauchen ein Gerät.
+Aufgabe 1 bis 3 und 5a sind erledigt. Aufgabe 6 ist gebaut, aber noch
+nicht gepusht. Offen sind Aufgabe 4, 5b und 7.
 
 ## Regeln, die für alle drei gelten
 
@@ -396,3 +396,107 @@ In `NoteEditorView`:
 Bauen, auf dem iPad ansehen, und zwar im Quer- und im Hochformat.
 Die Stiftformen sind der Punkt der ganzen Aufgabe. Wenn sie nach neun
 gleichen Balken aussehen, ist es nicht fertig.
+
+---
+
+## 7. Der Editor soll die ganze Seite bekommen
+
+Rückmeldung vom Nutzer nach dem ersten Test auf dem iPad, mit einem
+Bildschirmfoto der laufenden App. Drei Dinge stören, alle betreffen das
+Aussehen, nicht die Technik.
+
+**Vorher pushen.** Aufgabe 6 liegt nur lokal. Erst committen und pushen,
+dann hier weitermachen, sonst geht die Arbeit verloren und niemand kann
+sie gegenlesen.
+
+### 7a. Vollbild beim Schreiben
+
+Heute stehen alle drei Spalten nebeneinander: Ordnerbaum, Notizliste,
+Editor. Auf einem iPad bleibt für die Seite dadurch weniger als die Hälfte
+der Breite. Zum Schreiben ist das der falsche Zuschnitt.
+
+In `ContentView.swift`:
+
+- Wird eine Notiz geöffnet, `columnVisibility` auf `.detailOnly` setzen.
+  Also in `.onChange(of: selectedNote)`, wenn der neue Wert nicht `nil` ist.
+- Der Editor bekommt dadurch die ganze Fläche. Zurück zur Bibliothek über
+  den Knopf, den `NavigationSplitView` selbst einblendet, oder über einen
+  eigenen Zurück-Pfeil links oben im Editor.
+- Auf dem iPhone ändert sich nichts, dort ist ohnehin immer nur eine
+  Spalte sichtbar.
+- Die gewählte Einstellung nicht speichern. Wer zur Bibliothek zurückgeht
+  und eine andere Notiz öffnet, will wieder Vollbild.
+
+Die obere Leiste im Editor darf dabei schmaler werden. Moduswahl,
+Lineal, „Fragen", Rückgängig und der Knopf für die Seitenleiste reichen.
+Alles andere steckt in der Stiftleiste oder im Menü.
+
+### 7b. Das Whiteboard muss auffindbar sein
+
+Der Knopf existiert seit Aufgabe 3, oben rechts in der Notizliste, als
+Rastersymbol. Der Nutzer hat ihn dreimal nicht gefunden. Ein unbeschriftetes
+Symbol neben einem anderen unbeschrifteten Symbol ist kein Fundort.
+
+In `NoteListView`:
+
+- Über die Liste beziehungsweise das Raster eine `Picker` mit
+  `.pickerStyle(.segmented)` setzen: **Alle**, **Whiteboards**, **Notizen**.
+  Die Auswahl filtert über `note.kind`.
+- Der Filter gehört in den lokalen `@State`, nicht in `AppSettings`. Er ist
+  eine Ansicht, keine Einstellung.
+- Steht der Filter auf „Whiteboards" und es gibt keine, zeigt die leere
+  Ansicht einen Knopf **Whiteboard anlegen** statt nur eines Hinweises.
+- Aus den beiden Symbolknöpfen oben rechts wird ein einziges `Menu` mit dem
+  Plus-Symbol und zwei beschrifteten Einträgen: **Neue Notiz** und
+  **Neues Whiteboard**. Beschriftung schlägt Symbol.
+- Im Papierkorb bleibt der Filter ausgeblendet.
+
+### 7c. Die Stifte sehen noch nicht nach Stiften aus
+
+Aus dem Bildschirmfoto: die neun Stifte sind kurze, fast gleich geformte
+Klötzchen, die sich nur in der Farbe unterscheiden. Sie sollen auf einen
+Blick auseinanderzuhalten sein, auch bei gleicher Farbe.
+
+Vier Punkte, die den Unterschied machen:
+
+1. **Länger machen.** Etwa 76 Punkte statt der jetzigen Länge, bei 26
+   Punkten Höhe. Ein Stift ist ein längliches Ding; zu kurz wirkt er wie
+   ein Fleck.
+2. **Heller Schaft, farbige Spitze.** Nicht der ganze Stift in der
+   Schreibfarbe. Der Schaft bleibt hell (`Color(white: 0.97)`) mit einem
+   feinen Rand, und nur die Spitze trägt die eingestellte Farbe. So sieht
+   man Form und Farbe gleichzeitig. Beim Textmarker darf der Schaft die
+   Farbe halbtransparent aufnehmen.
+3. **Wirklich verschiedene Spitzen.** Das ist der eigentliche Punkt:
+   - Füller: schmale Feder, zur Spitze zulaufend, mit einem dünnen Schlitz
+     in der Mitte und einem runden Loch am Ansatz
+   - Kugelschreiber: kegelige Metallspitze mit einer kleinen Kugel vorn
+   - Fineliner: dünne, gerade Nadelspitze in einer Hülse
+   - Bleistift: angespitztes Holz, heller Kegel mit dunkler Mine, Schaft
+     sechseckig gezeichnet
+   - Pinsel: Borstenbündel, nach vorn spitz zulaufend, leicht gewellter
+     Umriss
+   - Textmarker: breite, schräg angeschnittene Keilspitze
+   - Wachsmaler: stumpf und dick, mit einer Papierbanderole um den Schaft
+   - Wasserfarbe: runder, weicher Pinselkopf
+   - Neon: wie der Textmarker, aber mit einem Schein um die Spitze
+     (`.shadow(color: farbe.opacity(0.6), radius: 6)`)
+4. **Gruppen trennen.** Zwischen Werkzeugen (Radierer, Lasso, Form,
+   Schnellmarker) und Stiften ein `Divider` mit 8 Punkten Abstand, und ein
+   zweiter vor der Farbpalette ganz unten.
+
+Der aktive Stift schiebt sich weiterhin nach rechts heraus, und zwar
+deutlich: 16 Punkte, mit einem weichen Schatten unter dem Stift, damit er
+über den anderen zu schweben scheint.
+
+**Nicht übernehmen:** Grafiken, Symbole, Farbwerte oder Anordnungen aus der
+Vorlage. Die Formen werden mit `Path` und `Shape` selbst gezeichnet. Eine
+senkrechte Leiste und ein Stift, der wie ein Stift aussieht, sind
+allgemeine Gestaltungsmittel; die konkrete Zeichnung eines fremden
+Herstellers ist es nicht.
+
+### Danach
+
+Auf dem iPad ansehen, quer und hoch. Ein Bildschirmfoto der Leiste an den
+Nutzer, bevor der nächste Punkt angefasst wird. Bei Gestaltung ist eine
+Rückfrage billiger als drei Runden Raten.
