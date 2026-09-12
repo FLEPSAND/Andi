@@ -4,7 +4,7 @@ Drei Funktionen fehlen noch, damit MNotes den Umfang der Vorlage erreicht.
 Jede ist unten so beschrieben, dass sie ohne Rückfragen gebaut werden kann:
 betroffene Dateien, vorhandene Bausteine, Entscheidungen, Fallstricke.
 
-Aufgabe 1 bis 3 und 5a sind erledigt. Offen sind Aufgabe 4 und 5b.
+Aufgabe 1 bis 3 und 5a sind erledigt. Offen sind Aufgabe 4, 5b und 6.
 Beide sind vom Typ „erst messen, dann bauen" und brauchen ein Gerät.
 
 ## Regeln, die für alle drei gelten
@@ -297,3 +297,102 @@ Kilobytes statt Megabytes. Das Hintergrundbild wird dann nur noch gebraucht,
 wenn tatsächlich Ebenen unter der aktiven liegen.
 
 Das ist mehr Arbeit als 5a und lohnt sich nur, wenn das Problem messbar ist.
+
+---
+
+## 6. Die Stifte als senkrechte Leiste am Rand
+
+Der Wunsch kommt vom Nutzer, nach einem Vergleich mit der Vorlage: die
+Stifte sollen nicht als kleine Symbolreihe in der oberen Leiste liegen,
+sondern als senkrechte Leiste am linken Rand der Seite, und sie sollen
+aussehen wie Stifte statt wie Piktogramme. Der ausgewählte Stift schiebt
+sich seitlich heraus.
+
+**Was nicht übernommen wird:** keine Grafiken, Symbole oder Farbwerte aus
+der Vorlage. Eine senkrechte Werkzeugleiste ist ein allgemeines
+Bedienmuster und frei verwendbar, die konkrete Zeichnung eines fremden
+Herstellers nicht. Die Stiftformen werden hier selbst gezeichnet.
+
+### Was heute da ist
+
+- `PenRack` in `NoteEditorView.swift` ab Zeile 752: eine `HStack` mit
+  SF-Symbol, Name und einem farbigen Balken je Stift. Der aktive Stift
+  bekommt einen Rahmen und wandert 3 Punkte nach oben.
+- `ColorRow` ab Zeile 803 und `sliders` ab Zeile 286 stehen in derselben
+  oberen Leiste.
+- `PenPreset.all` in `Pens.swift` ab Zeile 48: neun Stifte mit `name`,
+  `inkRaw`, `width`, `colorHex`, `opacity`, `hint`.
+- `ToolState` hält `penID`, `color`, `width`, `opacity`, und merkt sich
+  über `loadPreferences`/`rememberCurrentPen` je Stift eigene Werte.
+
+### Zu bauen
+
+Eine neue Datei `PenRail.swift` mit zwei Ansichten.
+
+**`PenShape`** zeichnet einen Stift, etwa 34 Punkte breit und 96 hoch,
+liegend nach rechts zeigend:
+
+- Ein Schaft als `RoundedRectangle`, gefüllt in der aktuellen Farbe des
+  Stifts (`ToolState.preferences`, sonst `preset.colorHex`).
+- Eine Spitze als `Path` aus drei Punkten, ein Dreieck nach rechts.
+- Die Form unterscheidet sich je `inkRaw`, damit die neun Stifte
+  unterscheidbar bleiben:
+  - `fountainPen`: schmale, lange Spitze mit einem Schlitz in der Mitte
+  - `pen`: kurze, stumpfe Spitze mit einer kleinen Kugel vorn
+  - `monoline`: dünner Schaft, sehr spitze Spitze
+  - `pencil`: sechseckiger Schaft (ein `Path`, kein Rechteck), Spitze
+    holzfarben mit dunkler Mine
+  - `marker`: breiter Schaft, abgeschrägte Spitze, Farbe halbtransparent
+  - `crayon`: kurzer, dicker Schaft mit gerundeter Spitze
+  - `watercolor`: Schaft mit einem angedeuteten Pinselkopf aus Borsten
+- Der Schaft bekommt oben einen hellen Streifen als angedeuteten Glanz.
+  Ein `LinearGradient` von Weiß mit 0,25 Deckkraft nach Klar reicht.
+
+**`PenRail`** ist die Leiste selbst:
+
+- Senkrechte `VStack` mit 6 Punkten Abstand, in einer `ScrollView`, damit
+  sie auf dem iPhone im Querformat nicht abgeschnitten wird.
+- Oben die drei Werkzeuge, die keine Stifte sind: Radierer, Lasso,
+  Schnellmarker, Formen. Als kleine runde Knöpfe mit SF-Symbol, nicht als
+  Stiftform.
+- Darunter die neun Stifte als `PenShape`.
+- Der aktive Stift schiebt sich um 14 Punkte nach rechts heraus
+  (`.offset(x:)` mit `.animation(.spring(response: 0.28, dampingFraction: 0.8))`).
+- Ein Tipp auf einen bereits aktiven Stift öffnet einen `.popover` mit
+  Farbwähler, Strichbreite und Deckkraft. Das ist der neue Ort für
+  `ColorRow` und `sliders`.
+- Ganz unten ein Knopf für die Farbpalette.
+
+### Einbau in den Editor
+
+In `NoteEditorView`:
+
+- `canvasArea` in eine `HStack` legen, links die `PenRail` mit fester
+  Breite von 56 Punkten, rechts die bisherige Leinwand.
+- Die Leiste über die Leinwand legen statt daneben, mit
+  `.background(.thinMaterial, in: RoundedRectangle(cornerRadius: 18))`
+  und 8 Punkten Abstand vom Rand. So bleibt die Seite so groß wie bisher.
+- Aus der oberen Leiste entfernen: `PenRack`, `ColorRow`, `sliders` und
+  `eraserAndLasso`. Dort bleiben nur noch Moduswahl, der Knopf „Fragen",
+  Lineal und Rückgängig.
+- Im Textmodus (`tools.mode == .text`) die Leiste ausblenden.
+- Auf dem iPhone im Hochformat ist links wenig Platz. Dort die Leiste
+  schmaler machen (40 Punkte) und die Stifte entsprechend kleiner
+  zeichnen. `horizontalSizeClass == .compact` ist die Unterscheidung.
+
+### Worauf zu achten ist
+
+- `ToolState.rememberCurrentPen()` muss weiterhin gerufen werden, wenn
+  Farbe, Breite oder Deckkraft im Popover geändert werden. Sonst vergisst
+  ein Stift seine Einstellungen.
+- Die Stiftfarbe in der Leiste muss die **eingestellte** Farbe zeigen,
+  nicht die Vorgabe aus `PenPreset`. Also über `ToolState` gehen.
+- Die Leiste darf keine Zeicheneingaben abfangen. Sie liegt neben der
+  Leinwand, nicht darüber; wenn sie als Overlay gebaut wird, braucht der
+  Bereich außerhalb der Knöpfe `.allowsHitTesting(false)`.
+
+### Danach
+
+Bauen, auf dem iPad ansehen, und zwar im Quer- und im Hochformat.
+Die Stiftformen sind der Punkt der ganzen Aufgabe. Wenn sie nach neun
+gleichen Balken aussehen, ist es nicht fertig.
