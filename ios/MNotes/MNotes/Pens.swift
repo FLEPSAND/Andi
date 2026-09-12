@@ -144,6 +144,14 @@ final class ToolState {
 
     var preset: PenPreset { PenPreset.preset(id: penID) }
 
+    /// Die effektive Farbe eines Stifts für die Leiste — berücksichtigt
+    /// gespeicherte Overrides und die Deckkraft (Marker, Wasserfarbe).
+    func displayColor(for preset: PenPreset) -> Color {
+        let hex = preferences[preset.id]?.colorHex ?? preset.colorHex
+        let opacity = preferences[preset.id]?.opacity ?? preset.opacity
+        return Color(hex: hex).opacity(opacity)
+    }
+
     var tool: PKTool {
         switch mode {
         case .erase:

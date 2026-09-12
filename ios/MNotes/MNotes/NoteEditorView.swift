@@ -158,13 +158,7 @@ struct NoteEditorView: View {
 
                 if tools.mode != .text {
                     Divider().frame(height: 30)
-                    PenRack(tools: tools)
-                    Divider().frame(height: 30)
-                    eraserAndLasso
-                    Divider().frame(height: 30)
-                    ColorRow(tools: tools)
-                    Divider().frame(height: 30)
-                    sliders
+                    rulerToggle
                 }
 
                 Divider().frame(height: 30)
@@ -200,114 +194,13 @@ struct NoteEditorView: View {
         .frame(width: 180)
     }
 
-    private var eraserAndLasso: some View {
-        HStack(spacing: 6) {
-            toolButton("eraser", systemImage: "eraser", mode: .erase)
-            toolButton("lasso", systemImage: "lasso", mode: .lasso)
-            quickMarkButton
-            shapeButton
-            Toggle(isOn: Binding(get: { tools.isRulerActive },
-                                 set: { tools.isRulerActive = $0 })) {
-                Image(systemName: "ruler")
-            }
-            .toggleStyle(.button)
-            .help("Lineal")
-
-            if tools.mode == .erase {
-                Toggle(isOn: Binding(get: { tools.eraseWholeStrokes },
-                                     set: { tools.eraseWholeStrokes = $0; tools.saveToDefaults() })) {
-                    Text("ganze Striche")
-                        .font(.caption)
-                }
-                .toggleStyle(.button)
-            }
+    private var rulerToggle: some View {
+        Toggle(isOn: Binding(get: { tools.isRulerActive },
+                             set: { tools.isRulerActive = $0 })) {
+            Image(systemName: "ruler")
         }
-    }
-
-    /// Quick marker: the button switches the tool, a long press picks the
-    /// line style.
-    private var quickMarkButton: some View {
-        Menu {
-            ForEach(MarkStyle.allCases) { style in
-                Button {
-                    tools.markStyle = style
-                    tools.mode = .quickMark
-                } label: {
-                    Label(style.title, systemImage: style.symbol)
-                }
-            }
-            Divider()
-            Button("Letzte Markierung entfernen") { controller?.removeLastMark() }
-        } label: {
-            Image(systemName: tools.markStyle.symbol)
-                .frame(width: 30, height: 30)
-        } primaryAction: {
-            tools.mode = tools.mode == .quickMark ? .draw : .quickMark
-        }
-        .buttonStyle(.bordered)
-        .tint(tools.mode == .quickMark ? .accentColor : .secondary)
-        .help("Schnellmarker: \(tools.markStyle.title)")
-    }
-
-    /// Formen: der Knopf schaltet das Werkzeug, das Menü wählt die Form. Die
-    /// Form entsteht im aktiven Stift, also in dessen Farbe und Strichbreite.
-    private var shapeButton: some View {
-        Menu {
-            ForEach(ShapeKind.allCases) { kind in
-                Button {
-                    tools.shapeKind = kind
-                    tools.mode = .shape
-                } label: {
-                    Label(kind.title, systemImage: kind.symbol)
-                }
-            }
-        } label: {
-            Image(systemName: tools.shapeKind.symbol)
-                .frame(width: 30, height: 30)
-        } primaryAction: {
-            tools.mode = tools.mode == .shape ? .draw : .shape
-        }
-        .buttonStyle(.bordered)
-        .tint(tools.mode == .shape ? .accentColor : .secondary)
-        .help("Form: \(tools.shapeKind.title)")
-    }
-
-    private func toolButton(_ id: String, systemImage: String, mode: ToolMode) -> some View {
-        Button {
-            tools.mode = mode
-        } label: {
-            Image(systemName: systemImage)
-                .frame(width: 30, height: 30)
-        }
-        .buttonStyle(.bordered)
-        .tint(tools.mode == mode ? .accentColor : .secondary)
-    }
-
-    private var sliders: some View {
-        HStack(spacing: 12) {
-            VStack(alignment: .leading, spacing: 0) {
-                Text("Dicke").font(.caption2).foregroundStyle(.secondary)
-                Slider(value: Binding(
-                    get: { Double(tools.mode == .erase ? tools.eraserWidth : tools.width) },
-                    set: { value in
-                        if tools.mode == .erase { tools.eraserWidth = CGFloat(value) }
-                        else { tools.width = CGFloat(value); tools.rememberCurrentPen() }
-                    }
-                ), in: 1...60)
-                .frame(width: 110)
-            }
-
-            if tools.mode != .erase {
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("Deckkraft").font(.caption2).foregroundStyle(.secondary)
-                    Slider(value: Binding(
-                        get: { tools.opacity },
-                        set: { tools.opacity = $0; tools.rememberCurrentPen() }
-                    ), in: 0.1...1)
-                    .frame(width: 90)
-                }
-            }
-        }
+        .toggleStyle(.button)
+        .help("Lineal")
     }
 
     private var undoRedo: some View {
@@ -334,30 +227,43 @@ struct NoteEditorView: View {
     // MARK: Zeichenfläche
 
     private var canvasArea: some View {
-        VStack(spacing: 0) {
-            if let page = currentPage {
-                PageCanvas(page: page,
-                           tools: tools,
-                           pdfImage: pdfImages[page.index],
-                           isSelectingRegion: isSelectingRegion,
-                           onChange: save,
-                           onController: { found in
-                               DispatchQueue.main.async { controller = found }
-                           },
-                           onRegionSelected: { rect in
-                               isSelectingRegion = false
-                               guard let image = controller?.image(of: rect) else {
-                                   show("Der Ausschnitt ließ sich nicht lesen.")
-                                   return
-                               }
-                               askImage = AskImage(image: image)
-                           })
-                    .id(page.persistentModelID)
-            } else {
-                ContentUnavailableView("Keine Seite", systemImage: "doc")
+        ZStack(alignment: .leading) {
+            VStack(spacing: 0) {
+                if let page = currentPage {
+                    PageCanvas(page: page,
+                               tools: tools,
+                               pdfImage: pdfImages[page.index],
+                               isSelectingRegion: isSelectingRegion,
+                               onChange: save,
+                               onController: { found in
+                                   DispatchQueue.main.async { controller = found }
+                               },
+                               onRegionSelected: { rect in
+                                   isSelectingRegion = false
+                                   guard let image = controller?.image(of: rect) else {
+                                       show("Der Ausschnitt ließ sich nicht lesen.")
+                                       return
+                                   }
+                                   askImage = AskImage(image: image)
+                               })
+                        .id(page.persistentModelID)
+                } else {
+                    ContentUnavailableView("Keine Seite", systemImage: "doc")
+                }
+                if !isWhiteboard {
+                    pageStrip
+                }
             }
-            if !isWhiteboard {
-                pageStrip
+
+            if tools.mode != .text {
+                PenRail(tools: tools, onRemoveLastMark: { controller?.removeLastMark() })
+                    .padding(8)
+                    .background {
+                        RoundedRectangle(cornerRadius: 18)
+                            .fill(.thinMaterial)
+                            .allowsHitTesting(false)
+                    }
+                    .padding(.leading, 8)
             }
         }
     }
@@ -744,104 +650,6 @@ struct NoteEditorView: View {
             return
         }
         shareItem = ShareItem(url: url)
-    }
-}
-
-// MARK: - Stiftregal
-
-struct PenRack: View {
-    let tools: ToolState
-
-    var body: some View {
-        HStack(spacing: 4) {
-            ForEach(PenPreset.all) { preset in
-                Button {
-                    tools.mode = .draw
-                    tools.penID = preset.id
-                    tools.saveToDefaults()
-                } label: {
-                    VStack(spacing: 3) {
-                        Image(systemName: preset.symbol)
-                            .font(.system(size: 16))
-                        Text(preset.name)
-                            .font(.system(size: 9))
-                            .lineLimit(1)
-                        Capsule()
-                            .fill(penColor(preset))
-                            .frame(width: 22, height: 3)
-                    }
-                    .frame(width: 62)
-                    .padding(.vertical, 5)
-                    .background(
-                        RoundedRectangle(cornerRadius: 9)
-                            .fill(isActive(preset) ? Color.accentColor.opacity(0.16) : Color.clear)
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 9)
-                            .strokeBorder(isActive(preset) ? Color.accentColor : .clear, lineWidth: 1)
-                    )
-                    .offset(y: isActive(preset) ? -3 : 0)
-                }
-                .buttonStyle(.plain)
-                .help(preset.hint)
-            }
-        }
-        .animation(.easeOut(duration: 0.15), value: tools.penID)
-    }
-
-    private func isActive(_ preset: PenPreset) -> Bool {
-        tools.mode == .draw && tools.penID == preset.id
-    }
-
-    private func penColor(_ preset: PenPreset) -> Color {
-        isActive(preset) ? tools.color : preset.color
-    }
-}
-
-// MARK: - Farbreihe
-
-struct ColorRow: View {
-    let tools: ToolState
-
-    var body: some View {
-        HStack(spacing: 6) {
-            Menu {
-                ForEach(Palettes.names, id: \.self) { name in
-                    Button(name) {
-                        tools.paletteName = name
-                        tools.saveToDefaults()
-                    }
-                }
-            } label: {
-                Text(tools.paletteName)
-                    .font(.caption)
-            }
-
-            ForEach(Palettes.all[tools.paletteName] ?? [], id: \.self) { hex in
-                Button {
-                    tools.color = Color(hex: hex)
-                    tools.rememberCurrentPen()
-                } label: {
-                    Circle()
-                        .fill(Color(hex: hex))
-                        .frame(width: 22, height: 22)
-                        .overlay(
-                            Circle().strokeBorder(
-                                tools.color.hexString == hex ? Color.accentColor : Color.gray.opacity(0.35),
-                                lineWidth: tools.color.hexString == hex ? 2.5 : 1
-                            )
-                        )
-                }
-                .buttonStyle(.plain)
-            }
-
-            ColorPicker("", selection: Binding(
-                get: { tools.color },
-                set: { tools.color = $0; tools.rememberCurrentPen() }
-            ))
-            .labelsHidden()
-            .frame(width: 28)
-        }
     }
 }
 
