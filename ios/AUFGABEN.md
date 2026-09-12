@@ -4,7 +4,8 @@ Drei Funktionen fehlen noch, damit MNotes den Umfang der Vorlage erreicht.
 Jede ist unten so beschrieben, dass sie ohne Rückfragen gebaut werden kann:
 betroffene Dateien, vorhandene Bausteine, Entscheidungen, Fallstricke.
 
-Aufgabe 1 bis 3 sind erledigt. Offen sind Aufgabe 4 und 5.
+Aufgabe 1 bis 3 und 5a sind erledigt. Offen sind Aufgabe 4 und 5b.
+Beide sind vom Typ „erst messen, dann bauen" und brauchen ein Gerät.
 
 ## Regeln, die für alle drei gelten
 
@@ -253,7 +254,7 @@ Die Begrenzung aus Aufgabe 3 verhindert den Absturz. Sie senkt den Maßstab
 auf 1,0, es bleiben also 12 Megapixel und rund 48 MB pro Bild. Das überlebt
 ein iPhone, aber es ist kein Nebenbei.
 
-### 5a. Automatische Erkennung auf einem Whiteboard abschalten
+### 5a. Automatische Erkennung auf einem Whiteboard abschalten — erledigt
 
 Das ist der klare Fall, und er kostet eine Zeile.
 
