@@ -622,6 +622,11 @@ struct NoteEditorView: View {
     /// Recognises handwriting on a page in the background, once per changed
     /// ink. Honours the `autoOCR` setting and the Plus tier.
     private func recogniseHandwritingIfNeeded(for page: Page) async {
+        // Whiteboard überspringen: scale 3 greift hier die Begrenzung aus
+        // Aufgabe 3 (auf 1,0), Vision liest Handschrift dann nicht zuverlässig.
+        // Manuell im Inspektor bleibt die Erkennung möglich.
+        guard note.kind != .whiteboard else { return }
+
         guard AppSettings.shared.autoOCR, store.allows(.ocr), !isRecognising else { return }
 
         let fingerprint = inkFingerprint(for: page)
