@@ -41,9 +41,19 @@ Käufe laufen über die StoreKit-Datei aus Schritt 4, also ohne echtes Geld.
 Was gekauft wurde, lässt sich in Xcode unter *Debug → StoreKit → Manage
 Transactions* wieder zurücksetzen.
 
-Auf einem Mac mit Apple Silicon läuft die App ohne Zusatzarbeit: in Xcode als
-Ziel **My Mac (Designed for iPad)** wählen. Zeichnen geht dort nur mit der Maus
-oder über ein angeschlossenes iPad per Sidecar.
+## Auf dem Mac testen
+
+Auf einem Mac mit Apple Silicon läuft die App als Fenster: in Xcode oben als
+Ziel **My Mac (Designed for iPad)** wählen und starten. Das Ziel ist im
+Projekt freigeschaltet (`SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD`); fehlt es in
+der Liste, steht es im Ziel unter *General → Supported Destinations*.
+
+Auf einem Intel-Mac geht das nicht, dort bleibt der Simulator.
+
+Zeichnen geht mit der Maus, also ohne Druck und Neigung. Ein per Sidecar
+angeschlossenes iPad erlaubt den Apple Pencil, kommt dem echten Gefühl aber
+nur nahe. Was sich die neun Stifte voneinander unterscheidet, zeigt am Ende
+nur das iPad selbst.
 
 Das Projekt nutzt eine dateisystem-synchronisierte Gruppe: neue Dateien im
 Ordner `MNotes/` landen automatisch im Ziel, sie müssen nicht einzeln
